@@ -39,7 +39,7 @@ class ZlLights extends Command
         return ($this->notNullAsk($ask));
     }
 
-    public function displayGroup()
+    private function displayGroup()
     {
         $groups = \App\Group::all(['id', 'name'])->toArray();
         $this->table(['id', 'name'], $groups);
@@ -58,10 +58,10 @@ class ZlLights extends Command
         $this->line("La lumière $name à bien été ajouté");
     }
 
-    public function displayLight()
+    private function displayLight()
     {
-        $lights = \App\Light::all(['id', 'name', 'networkId'])->toArray();
-        $this->table(['id', 'name', 'networkId'], $lights);
+        $lights = \App\Light::all(['id', 'name', 'group_id', 'networkId'])->toArray();
+        $this->table(['id', 'name', 'groupId', 'networkId'], $lights);
     }
 
     private function removeLight()
@@ -82,13 +82,17 @@ class ZlLights extends Command
      */
     public function handle()
     {
-        $mode = $this->choice('Que voulez vous faire ?', ['Ajouter une lumière', 'Supprimer une lumière', 'Lister les lumières']);
+        $mode = $this->choice('What do you to do ?', [
+            'Add Light',
+            'Del Light',
+            'List Lights',
+        ]);
 
-        if ($mode == 'Ajouter une lumière')
+        if ($mode == 'Add Light')
             $this->addLight();
-        elseif ($mode == "Supprimer une lumière")
+        elseif ($mode == "Del Light")
             $this->removeLight();
-        elseif ($mode == "Lister les lumières")
+        elseif ($mode == "List Lights")
             $this->displayLight();
     }
 }

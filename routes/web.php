@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', "HomeController@index")->name('root');
+Route::get('/network', "NetworkController@index")->name('network.index');
+
+Route::resource('groups', 'GroupsController');
+Route::resource('lights', 'LightsController');

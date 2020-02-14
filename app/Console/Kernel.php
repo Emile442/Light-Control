@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\ZlGroups;
 use App\Console\Commands\ZlLights;
+use App\Console\Commands\ZlNetwork;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ZlGroups::class,
-        ZlLights::class
+        ZlLights::class,
+        ZlNetwork::class
     ];
 
     /**
