@@ -19963,3 +19963,24 @@ Created using IcoMoon - icomoon.io
   right: 3%;
 }
 
+.circle-progress {
+  width: 100px;
+  margin: 6px 6px 20px;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.circle-progress strong {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 100%;
+  text-align: center;
+  line-height: 40px;
+  font-size: 30px;
+}
+
+
+/*# sourceMappingURL=app.css.map*/

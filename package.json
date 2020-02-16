@@ -23,6 +23,7 @@
         "bootstrap": "4.4.1",
         "bootstrap4-toggle": "^3.6.1",
         "font-awesome": "^4.7.0",
+        "jquery-circle-progress": "^1.2.2",
         "noty": "^3.2.0-beta"
     }
 }

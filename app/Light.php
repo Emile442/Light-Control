@@ -17,6 +17,6 @@ class Light extends Model
     public function getStateAttribute()
     {
         $light = (new DeconzApi())->getLight($this->networkId);
-        return ($light ? $light->state->on : false);
+        return ($light ? $light->state->on : null);
     }
 }

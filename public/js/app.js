@@ -463,6 +463,163 @@
 
 
 }));
+(function() {
+  isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
+
+  if (isWindows) {
+    // if we are on windows OS we activate the perfectScrollbar function
+    var ps = new PerfectScrollbar('.sidebar-wrapper');
+    var ps2 = new PerfectScrollbar('.main-panel');
+
+    $('html').addClass('perfect-scrollbar-on');
+  } else {
+    $('html').addClass('perfect-scrollbar-off');
+  }
+})();
+
+transparent = true;
+transparentDemo = true;
+fixedTop = false;
+
+navbar_initialized = false;
+backgroundOrange = false;
+sidebar_mini_active = false;
+toggle_initialized = false;
+
+var is_iPad = navigator.userAgent.match(/iPad/i) != null;
+var scrollElement = navigator.platform.indexOf('Win') > -1 ? $(".main-panel") : $(window);
+
+seq = 0, delays = 80, durations = 500;
+seq2 = 0, delays2 = 80, durations2 = 500;
+
+$(document).ready(function() {
+
+  if ($('.full-screen-map').length == 0 && $('.bd-docs').length == 0) {
+    // On click navbar-collapse the menu will be white not transparent
+    $('.collapse').on('show.bs.collapse', function() {
+      $(this).closest('.navbar').removeClass('navbar-transparent').addClass('bg-white');
+    }).on('hide.bs.collapse', function() {
+      $(this).closest('.navbar').addClass('navbar-transparent').removeClass('bg-white');
+    });
+  }
+
+  $navbar = $('.navbar[color-on-scroll]');
+  scroll_distance = $navbar.attr('color-on-scroll') || 500;
+
+  // Check if we have the class "navbar-color-on-scroll" then add the function to remove the class "navbar-transparent" so it will transform to a plain color.
+  if ($('.navbar[color-on-scroll]').length != 0) {
+    nowuiDashboard.checkScrollForTransparentNavbar();
+    $(window).on('scroll', nowuiDashboard.checkScrollForTransparentNavbar)
+  }
+
+  $('.form-control').on("focus", function() {
+    $(this).parent('.input-group').addClass("input-group-focus");
+  }).on("blur", function() {
+    $(this).parent(".input-group").removeClass("input-group-focus");
+  });
+
+  // Activate bootstrapSwitch
+  $('.bootstrap-switch').each(function() {
+    $this = $(this);
+    data_on_label = $this.data('on-label') || '';
+    data_off_label = $this.data('off-label') || '';
+
+    $this.bootstrapSwitch({
+      onText: data_on_label,
+      offText: data_off_label
+    });
+  });
+});
+
+$(document).on('click', '.navbar-toggle', function() {
+  $toggle = $(this);
+
+  if (nowuiDashboard.misc.navbar_menu_visible == 1) {
+    $('html').removeClass('nav-open');
+    nowuiDashboard.misc.navbar_menu_visible = 0;
+    setTimeout(function() {
+      $toggle.removeClass('toggled');
+      $('#bodyClick').remove();
+    }, 550);
+
+  } else {
+    setTimeout(function() {
+      $toggle.addClass('toggled');
+    }, 580);
+
+    div = '<div id="bodyClick"></div>';
+    $(div).appendTo('body').click(function() {
+      $('html').removeClass('nav-open');
+      nowuiDashboard.misc.navbar_menu_visible = 0;
+      setTimeout(function() {
+        $toggle.removeClass('toggled');
+        $('#bodyClick').remove();
+      }, 550);
+    });
+
+    $('html').addClass('nav-open');
+    nowuiDashboard.misc.navbar_menu_visible = 1;
+  }
+});
+
+$(window).resize(function() {
+  // reset the seq for charts drawing animations
+  seq = seq2 = 0;
+
+  if ($('.full-screen-map').length == 0 && $('.bd-docs').length == 0) {
+
+    $navbar = $('.navbar');
+    isExpanded = $('.navbar').find('[data-toggle="collapse"]').attr("aria-expanded");
+    if ($navbar.hasClass('bg-white') && $(window).width() > 991) {
+      if (scrollElement.scrollTop() == 0) {
+        $navbar.removeClass('bg-white').addClass('navbar-transparent');
+      }
+    } else if ($navbar.hasClass('navbar-transparent') && $(window).width() < 991 && isExpanded != "false") {
+      $navbar.addClass('bg-white').removeClass('navbar-transparent');
+    }
+  }
+  if (is_iPad) {
+    $('body').removeClass('sidebar-mini');
+  }
+});
+
+nowuiDashboard = {
+  misc: {
+    navbar_menu_visible: 0
+  },
+
+  showNotification: function(from, align) {
+    color = 'primary';
+
+    $.notify({
+      icon: "now-ui-icons ui-1_bell-53",
+      message: "Welcome to <b>Now Ui Dashboard</b> - a beautiful freebie for every web developer."
+
+    }, {
+      type: color,
+      timer: 8000,
+      placement: {
+        from: from,
+        align: align
+      }
+    });
+  }
+
+
+};
+
+function hexToRGB(hex, alpha) {
+  var r = parseInt(hex.slice(1, 3), 16),
+    g = parseInt(hex.slice(3, 5), 16),
+    b = parseInt(hex.slice(5, 7), 16);
+
+  if (alpha) {
+    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+  } else {
+    return "rgb(" + r + ", " + g + ", " + b + ")";
+  }
+}
+
 /*\
 |*| ========================================================================
 |*| Bootstrap Toggle: bootstrap4-toggle.js v3.6.1
@@ -3599,6 +3756,559 @@ module.exports = g;
 /******/ ]);
 });
 //# sourceMappingURL=noty.js.map
+/**
+ * jquery-circle-progress - jQuery Plugin to draw animated circular progress bars:
+ * {@link http://kottenator.github.io/jquery-circle-progress/}
+ *
+ * @author Rostyslav Bryzgunov <kottenator@gmail.com>
+ * @version 1.2.2
+ * @licence MIT
+ * @preserve
+ */
+// UMD factory - https://github.com/umdjs/umd/blob/d31bb6ee7098715e019f52bdfe27b3e4bfd2b97e/templates/jqueryPlugin.js
+// Uses AMD, CommonJS or browser globals to create a jQuery plugin.
+(function(factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD - register as an anonymous module
+    define(['jquery'], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // Node/CommonJS
+    var $ = require('jquery');
+    factory($);
+    module.exports = $;
+  } else {
+    // Browser globals
+    factory(jQuery);
+  }
+})(function($) {
+  /**
+   * Inner implementation of the circle progress bar.
+   * The class is not exposed _yet_ but you can create an instance through jQuery method call.
+   *
+   * @param {object} config - You can customize any class member (property or method).
+   * @class
+   * @alias CircleProgress
+   */
+  function CircleProgress(config) {
+    this.init(config);
+  }
+
+  CircleProgress.prototype = {
+    //--------------------------------------- public options ---------------------------------------
+    /**
+     * This is the only required option. It should be from `0.0` to `1.0`.
+     * @type {number}
+     * @default 0.0
+     */
+    value: 0.0,
+
+    /**
+     * Size of the canvas in pixels.
+     * It's a square so we need only one dimension.
+     * @type {number}
+     * @default 100.0
+     */
+    size: 100.0,
+
+    /**
+     * Initial angle for `0.0` value in radians.
+     * @type {number}
+     * @default -Math.PI
+     */
+    startAngle: -Math.PI,
+
+    /**
+     * Width of the arc in pixels.
+     * If it's `'auto'` - the value is calculated as `[this.size]{@link CircleProgress#size} / 14`.
+     * @type {number|string}
+     * @default 'auto'
+     */
+    thickness: 'auto',
+
+    /**
+     * Fill of the arc. You may set it to:
+     *
+     *   - solid color:
+     *     - `'#3aeabb'`
+     *     - `{ color: '#3aeabb' }`
+     *     - `{ color: 'rgba(255, 255, 255, .3)' }`
+     *   - linear gradient _(left to right)_:
+     *     - `{ gradient: ['#3aeabb', '#fdd250'], gradientAngle: Math.PI / 4 }`
+     *     - `{ gradient: ['red', 'green', 'blue'], gradientDirection: [x0, y0, x1, y1] }`
+     *     - `{ gradient: [["red", .2], ["green", .3], ["blue", .8]] }`
+     *   - image:
+     *     - `{ image: 'http://i.imgur.com/pT0i89v.png' }`
+     *     - `{ image: imageObject }`
+     *     - `{ color: 'lime', image: 'http://i.imgur.com/pT0i89v.png' }` -
+     *       color displayed until the image is loaded
+     *
+     * @default {gradient: ['#3aeabb', '#fdd250']}
+     */
+    fill: {
+      gradient: ['#3aeabb', '#fdd250']
+    },
+
+    /**
+     * Color of the "empty" arc. Only a color fill supported by now.
+     * @type {string}
+     * @default 'rgba(0, 0, 0, .1)'
+     */
+    emptyFill: 'rgba(0, 0, 0, .1)',
+
+    /**
+     * jQuery Animation config.
+     * You can pass `false` to disable the animation.
+     * @see http://api.jquery.com/animate/
+     * @type {object|boolean}
+     * @default {duration: 1200, easing: 'circleProgressEasing'}
+     */
+    animation: {
+      duration: 1200,
+      easing: 'circleProgressEasing'
+    },
+
+    /**
+     * Default animation starts at `0.0` and ends at specified `value`. Let's call this _direct animation_.
+     * If you want to make _reversed animation_ - set `animationStartValue: 1.0`.
+     * Also you may specify any other value from `0.0` to `1.0`.
+     * @type {number}
+     * @default 0.0
+     */
+    animationStartValue: 0.0,
+
+    /**
+     * Reverse animation and arc draw.
+     * By default, the arc is filled from `0.0` to `value`, _clockwise_.
+     * With `reverse: true` the arc is filled from `1.0` to `value`, _counter-clockwise_.
+     * @type {boolean}
+     * @default false
+     */
+    reverse: false,
+
+    /**
+     * Arc line cap: `'butt'`, `'round'` or `'square'` -
+     * [read more]{@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineCap}.
+     * @type {string}
+     * @default 'butt'
+     */
+    lineCap: 'butt',
+
+    /**
+     * Canvas insertion mode: append or prepend it into the parent element?
+     * @type {string}
+     * @default 'prepend'
+     */
+    insertMode: 'prepend',
+
+    //------------------------------ protected properties and methods ------------------------------
+    /**
+     * Link to {@link CircleProgress} constructor.
+     * @protected
+     */
+    constructor: CircleProgress,
+
+    /**
+     * Container element. Should be passed into constructor config.
+     * @protected
+     * @type {jQuery}
+     */
+    el: null,
+
+    /**
+     * Canvas element. Automatically generated and prepended to [this.el]{@link CircleProgress#el}.
+     * @protected
+     * @type {HTMLCanvasElement}
+     */
+    canvas: null,
+
+    /**
+     * 2D-context of [this.canvas]{@link CircleProgress#canvas}.
+     * @protected
+     * @type {CanvasRenderingContext2D}
+     */
+    ctx: null,
+
+    /**
+     * Radius of the outer circle. Automatically calculated as `[this.size]{@link CircleProgress#size} / 2`.
+     * @protected
+     * @type {number}
+     */
+    radius: 0.0,
+
+    /**
+     * Fill of the main arc. Automatically calculated, depending on [this.fill]{@link CircleProgress#fill} option.
+     * @protected
+     * @type {string|CanvasGradient|CanvasPattern}
+     */
+    arcFill: null,
+
+    /**
+     * Last rendered frame value.
+     * @protected
+     * @type {number}
+     */
+    lastFrameValue: 0.0,
+
+    /**
+     * Init/re-init the widget.
+     *
+     * Throws a jQuery event:
+     *
+     * - `circle-inited(jqEvent)`
+     *
+     * @param {object} config - You can customize any class member (property or method).
+     */
+    init: function(config) {
+      $.extend(this, config);
+      this.radius = this.size / 2;
+      this.initWidget();
+      this.initFill();
+      this.draw();
+      this.el.trigger('circle-inited');
+    },
+
+    /**
+     * Initialize `<canvas>`.
+     * @protected
+     */
+    initWidget: function() {
+      if (!this.canvas)
+        this.canvas = $('<canvas>')[this.insertMode == 'prepend' ? 'prependTo' : 'appendTo'](this.el)[0];
+
+      var canvas = this.canvas;
+      canvas.width = this.size;
+      canvas.height = this.size;
+      this.ctx = canvas.getContext('2d');
+
+      if (window.devicePixelRatio > 1) {
+        var scaleBy = window.devicePixelRatio;
+        canvas.style.width = canvas.style.height = this.size + 'px';
+        canvas.width = canvas.height = this.size * scaleBy;
+        this.ctx.scale(scaleBy, scaleBy);
+      }
+    },
+
+    /**
+     * This method sets [this.arcFill]{@link CircleProgress#arcFill}.
+     * It could do this async (on image load).
+     * @protected
+     */
+    initFill: function() {
+      var self = this,
+        fill = this.fill,
+        ctx = this.ctx,
+        size = this.size;
+
+      if (!fill)
+        throw Error("The fill is not specified!");
+
+      if (typeof fill == 'string')
+        fill = {color: fill};
+
+      if (fill.color)
+        this.arcFill = fill.color;
+
+      if (fill.gradient) {
+        var gr = fill.gradient;
+
+        if (gr.length == 1) {
+          this.arcFill = gr[0];
+        } else if (gr.length > 1) {
+          var ga = fill.gradientAngle || 0, // gradient direction angle; 0 by default
+            gd = fill.gradientDirection || [
+                size / 2 * (1 - Math.cos(ga)), // x0
+                size / 2 * (1 + Math.sin(ga)), // y0
+                size / 2 * (1 + Math.cos(ga)), // x1
+                size / 2 * (1 - Math.sin(ga))  // y1
+              ];
+
+          var lg = ctx.createLinearGradient.apply(ctx, gd);
+
+          for (var i = 0; i < gr.length; i++) {
+            var color = gr[i],
+              pos = i / (gr.length - 1);
+
+            if ($.isArray(color)) {
+              pos = color[1];
+              color = color[0];
+            }
+
+            lg.addColorStop(pos, color);
+          }
+
+          this.arcFill = lg;
+        }
+      }
+
+      if (fill.image) {
+        var img;
+
+        if (fill.image instanceof Image) {
+          img = fill.image;
+        } else {
+          img = new Image();
+          img.src = fill.image;
+        }
+
+        if (img.complete)
+          setImageFill();
+        else
+          img.onload = setImageFill;
+      }
+
+      function setImageFill() {
+        var bg = $('<canvas>')[0];
+        bg.width = self.size;
+        bg.height = self.size;
+        bg.getContext('2d').drawImage(img, 0, 0, size, size);
+        self.arcFill = self.ctx.createPattern(bg, 'no-repeat');
+        self.drawFrame(self.lastFrameValue);
+      }
+    },
+
+    /**
+     * Draw the circle.
+     * @protected
+     */
+    draw: function() {
+      if (this.animation)
+        this.drawAnimated(this.value);
+      else
+        this.drawFrame(this.value);
+    },
+
+    /**
+     * Draw a single animation frame.
+     * @protected
+     * @param {number} v - Frame value.
+     */
+    drawFrame: function(v) {
+      this.lastFrameValue = v;
+      this.ctx.clearRect(0, 0, this.size, this.size);
+      this.drawEmptyArc(v);
+      this.drawArc(v);
+    },
+
+    /**
+     * Draw the arc (part of the circle).
+     * @protected
+     * @param {number} v - Frame value.
+     */
+    drawArc: function(v) {
+      if (v === 0)
+        return;
+
+      var ctx = this.ctx,
+        r = this.radius,
+        t = this.getThickness(),
+        a = this.startAngle;
+
+      ctx.save();
+      ctx.beginPath();
+
+      if (!this.reverse) {
+        ctx.arc(r, r, r - t / 2, a, a + Math.PI * 2 * v);
+      } else {
+        ctx.arc(r, r, r - t / 2, a - Math.PI * 2 * v, a);
+      }
+
+      ctx.lineWidth = t;
+      ctx.lineCap = this.lineCap;
+      ctx.strokeStyle = this.arcFill;
+      ctx.stroke();
+      ctx.restore();
+    },
+
+    /**
+     * Draw the _empty (background)_ arc (part of the circle).
+     * @protected
+     * @param {number} v - Frame value.
+     */
+    drawEmptyArc: function(v) {
+      var ctx = this.ctx,
+        r = this.radius,
+        t = this.getThickness(),
+        a = this.startAngle;
+
+      if (v < 1) {
+        ctx.save();
+        ctx.beginPath();
+
+        if (v <= 0) {
+          ctx.arc(r, r, r - t / 2, 0, Math.PI * 2);
+        } else {
+          if (!this.reverse) {
+            ctx.arc(r, r, r - t / 2, a + Math.PI * 2 * v, a);
+          } else {
+            ctx.arc(r, r, r - t / 2, a, a - Math.PI * 2 * v);
+          }
+        }
+
+        ctx.lineWidth = t;
+        ctx.strokeStyle = this.emptyFill;
+        ctx.stroke();
+        ctx.restore();
+      }
+    },
+
+    /**
+     * Animate the progress bar.
+     *
+     * Throws 3 jQuery events:
+     *
+     * - `circle-animation-start(jqEvent)`
+     * - `circle-animation-progress(jqEvent, animationProgress, stepValue)` - multiple event
+     *   animationProgress: from `0.0` to `1.0`; stepValue: from `0.0` to `value`
+     * - `circle-animation-end(jqEvent)`
+     *
+     * @protected
+     * @param {number} v - Final value.
+     */
+    drawAnimated: function(v) {
+      var self = this,
+        el = this.el,
+        canvas = $(this.canvas);
+
+      // stop previous animation before new "start" event is triggered
+      canvas.stop(true, false);
+      el.trigger('circle-animation-start');
+
+      canvas
+        .css({animationProgress: 0})
+        .animate({animationProgress: 1}, $.extend({}, this.animation, {
+          step: function(animationProgress) {
+            var stepValue = self.animationStartValue * (1 - animationProgress) + v * animationProgress;
+            self.drawFrame(stepValue);
+            el.trigger('circle-animation-progress', [animationProgress, stepValue]);
+          }
+        }))
+        .promise()
+        .always(function() {
+          // trigger on both successful & failure animation end
+          el.trigger('circle-animation-end');
+        });
+    },
+
+    /**
+     * Get the circle thickness.
+     * @see CircleProgress#thickness
+     * @protected
+     * @returns {number}
+     */
+    getThickness: function() {
+      return $.isNumeric(this.thickness) ? this.thickness : this.size / 14;
+    },
+
+    /**
+     * Get current value.
+     * @protected
+     * @return {number}
+     */
+    getValue: function() {
+      return this.value;
+    },
+
+    /**
+     * Set current value (with smooth animation transition).
+     * @protected
+     * @param {number} newValue
+     */
+    setValue: function(newValue) {
+      if (this.animation)
+        this.animationStartValue = this.lastFrameValue;
+      this.value = newValue;
+      this.draw();
+    }
+  };
+
+  //----------------------------------- Initiating jQuery plugin -----------------------------------
+  $.circleProgress = {
+    // Default options (you may override them)
+    defaults: CircleProgress.prototype
+  };
+
+  // ease-in-out-cubic
+  $.easing.circleProgressEasing = function(x) {
+    if (x < 0.5) {
+      x = 2 * x;
+      return 0.5 * x * x * x;
+    } else {
+      x = 2 - 2 * x;
+      return 1 - 0.5 * x * x * x;
+    }
+  };
+
+  /**
+   * Creates an instance of {@link CircleProgress}.
+   * Produces [init event]{@link CircleProgress#init} and [animation events]{@link CircleProgress#drawAnimated}.
+   *
+   * @param {object} [configOrCommand] - Config object or command name.
+   *
+   * Config example (you can specify any {@link CircleProgress} property):
+   *
+   * ```js
+   * { value: 0.75, size: 50, animation: false }
+   * ```
+   *
+   * Commands:
+   *
+   * ```js
+   * el.circleProgress('widget'); // get the <canvas>
+   * el.circleProgress('value'); // get the value
+   * el.circleProgress('value', newValue); // update the value
+   * el.circleProgress('redraw'); // redraw the circle
+   * el.circleProgress(); // the same as 'redraw'
+   * ```
+   *
+   * @param {string} [commandArgument] - Some commands (like `'value'`) may require an argument.
+   * @see CircleProgress
+   * @alias "$(...).circleProgress"
+   */
+  $.fn.circleProgress = function(configOrCommand, commandArgument) {
+    var dataName = 'circle-progress',
+      firstInstance = this.data(dataName);
+
+    if (configOrCommand == 'widget') {
+      if (!firstInstance)
+        throw Error('Calling "widget" method on not initialized instance is forbidden');
+      return firstInstance.canvas;
+    }
+
+    if (configOrCommand == 'value') {
+      if (!firstInstance)
+        throw Error('Calling "value" method on not initialized instance is forbidden');
+      if (typeof commandArgument == 'undefined') {
+        return firstInstance.getValue();
+      } else {
+        var newValue = arguments[1];
+        return this.each(function() {
+          $(this).data(dataName).setValue(newValue);
+        });
+      }
+    }
+
+    return this.each(function() {
+      var el = $(this),
+        instance = el.data(dataName),
+        config = $.isPlainObject(configOrCommand) ? configOrCommand : {};
+
+      if (instance) {
+        instance.init(config);
+      } else {
+        var initialConfig = $.extend({}, el.data());
+        if (typeof initialConfig.fill == 'string')
+          initialConfig.fill = JSON.parse(initialConfig.fill);
+        if (typeof initialConfig.animation == 'string')
+          initialConfig.animation = JSON.parse(initialConfig.animation);
+        config = $.extend(initialConfig, config);
+        config.el = el;
+        instance = new CircleProgress(config);
+        el.data(dataName, instance);
+      }
+    });
+  };
+});
+
 /*
  <a href="posts/2" data-method="delete"> <---- We want to send an HTTP DELETE request
 
@@ -3763,38 +4473,43 @@ demo = {
             }
         };
 
-        ctx = document.getElementById('lineChartExample').getContext("2d");
+        ctx = document.getElementById('lineChartExample')
 
-        gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-        gradientStroke.addColorStop(0, '#80b6f4');
-        gradientStroke.addColorStop(1, chartColor);
+        if (ctx) {
+            ctx = ctx.getContext("2d");
 
-        gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-        gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-        gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
+            gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+            gradientStroke.addColorStop(0, '#80b6f4');
+            gradientStroke.addColorStop(1, chartColor);
 
-        myChart = new Chart(ctx, {
-            type: 'line',
-            responsive: true,
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                datasets: [{
-                    label: "Active Users",
-                    borderColor: "#f96332",
-                    pointBorderColor: "#FFF",
-                    pointBackgroundColor: "#f96332",
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 4,
-                    pointHoverBorderWidth: 1,
-                    pointRadius: 4,
-                    fill: true,
-                    backgroundColor: gradientFill,
-                    borderWidth: 2,
-                    data: [542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 630]
-                }]
-            },
-            options: gradientChartOptionsConfiguration
-        });
+            gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
+            gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
+            gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                responsive: true,
+                data: {
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                    datasets: [{
+                        label: "Active Users",
+                        borderColor: "#f96332",
+                        pointBorderColor: "#FFF",
+                        pointBackgroundColor: "#f96332",
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 1,
+                        pointRadius: 4,
+                        fill: true,
+                        backgroundColor: gradientFill,
+                        borderWidth: 2,
+                        data: [542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 630]
+                    }]
+                },
+                options: gradientChartOptionsConfiguration
+            });
+        }
+
     },
 
     initDashboardPageCharts: function() {
@@ -3902,374 +4617,255 @@ demo = {
             }
         };
 
-        var ctx = document.getElementById('bigDashboardChart').getContext("2d");
+        var ctx = document.getElementById('bigDashboardChart')
 
-        var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-        gradientStroke.addColorStop(0, '#80b6f4');
-        gradientStroke.addColorStop(1, chartColor);
+        if (ctx) {
+            ctx = ctx.getContext("2d");
 
-        var gradientFill = ctx.createLinearGradient(0, 200, 0, 50);
-        gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-        gradientFill.addColorStop(1, "rgba(255, 255, 255, 0.24)");
+            var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+            gradientStroke.addColorStop(0, '#80b6f4');
+            gradientStroke.addColorStop(1, chartColor);
 
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
-                datasets: [{
-                    label: "Data",
-                    borderColor: chartColor,
-                    pointBorderColor: chartColor,
-                    pointBackgroundColor: "#1e3d60",
-                    pointHoverBackgroundColor: "#1e3d60",
-                    pointHoverBorderColor: chartColor,
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 7,
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 5,
-                    fill: true,
-                    backgroundColor: gradientFill,
-                    borderWidth: 2,
-                    data: [50, 150, 100, 190, 130, 90, 150, 160, 120, 140, 190, 95]
-                }]
-            },
-            options: {
-                layout: {
-                    padding: {
-                        left: 20,
-                        right: 20,
-                        top: 0,
-                        bottom: 0
-                    }
-                },
-                maintainAspectRatio: false,
-                tooltips: {
-                    backgroundColor: '#fff',
-                    titleFontColor: '#333',
-                    bodyFontColor: '#666',
-                    bodySpacing: 4,
-                    xPadding: 12,
-                    mode: "nearest",
-                    intersect: 0,
-                    position: "nearest"
-                },
-                legend: {
-                    position: "bottom",
-                    fillStyle: "#FFF",
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            fontColor: "rgba(255,255,255,0.4)",
-                            fontStyle: "bold",
-                            beginAtZero: true,
-                            maxTicksLimit: 5,
-                            padding: 10
-                        },
-                        gridLines: {
-                            drawTicks: true,
-                            drawBorder: false,
-                            display: true,
-                            color: "rgba(255,255,255,0.1)",
-                            zeroLineColor: "transparent"
-                        }
+            var gradientFill = ctx.createLinearGradient(0, 200, 0, 50);
+            gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
+            gradientFill.addColorStop(1, "rgba(255, 255, 255, 0.24)");
 
-                    }],
-                    xAxes: [{
-                        gridLines: {
-                            zeroLineColor: "transparent",
-                            display: false,
-
-                        },
-                        ticks: {
-                            padding: 10,
-                            fontColor: "rgba(255,255,255,0.4)",
-                            fontStyle: "bold"
-                        }
-                    }]
-                }
-            }
-        });
-
-        var cardStatsMiniLineColor = "#fff",
-            cardStatsMiniDotColor = "#fff";
-
-        ctx = document.getElementById('lineChartExample').getContext("2d");
-
-        gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-        gradientStroke.addColorStop(0, '#80b6f4');
-        gradientStroke.addColorStop(1, chartColor);
-
-        gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-        gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-        gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
-
-        myChart = new Chart(ctx, {
-            type: 'line',
-            responsive: true,
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                datasets: [{
-                    label: "Active Users",
-                    borderColor: "#f96332",
-                    pointBorderColor: "#FFF",
-                    pointBackgroundColor: "#f96332",
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 4,
-                    pointHoverBorderWidth: 1,
-                    pointRadius: 4,
-                    fill: true,
-                    backgroundColor: gradientFill,
-                    borderWidth: 2,
-                    data: [542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 630]
-                }]
-            },
-            options: gradientChartOptionsConfiguration
-        });
-
-
-        ctx = document.getElementById('lineChartExampleWithNumbersAndGrid').getContext("2d");
-
-        gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-        gradientStroke.addColorStop(0, '#18ce0f');
-        gradientStroke.addColorStop(1, chartColor);
-
-        gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-        gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-        gradientFill.addColorStop(1, hexToRGB('#18ce0f', 0.4));
-
-        myChart = new Chart(ctx, {
-            type: 'line',
-            responsive: true,
-            data: {
-                labels: ["12pm,", "3pm", "6pm", "9pm", "12am", "3am", "6am", "9am"],
-                datasets: [{
-                    label: "Email Stats",
-                    borderColor: "#18ce0f",
-                    pointBorderColor: "#FFF",
-                    pointBackgroundColor: "#18ce0f",
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 4,
-                    pointHoverBorderWidth: 1,
-                    pointRadius: 4,
-                    fill: true,
-                    backgroundColor: gradientFill,
-                    borderWidth: 2,
-                    data: [40, 500, 650, 700, 1200, 1250, 1300, 1900]
-                }]
-            },
-            options: gradientChartOptionsConfigurationWithNumbersAndGrid
-        });
-
-        var e = document.getElementById("barChartSimpleGradientsNumbers").getContext("2d");
-
-        gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-        gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-        gradientFill.addColorStop(1, hexToRGB('#2CA8FF', 0.6));
-
-        var a = {
-            type: "bar",
-            data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                datasets: [{
-                    label: "Active Countries",
-                    backgroundColor: gradientFill,
-                    borderColor: "#2CA8FF",
-                    pointBorderColor: "#FFF",
-                    pointBackgroundColor: "#2CA8FF",
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 4,
-                    pointHoverBorderWidth: 1,
-                    pointRadius: 4,
-                    fill: true,
-                    borderWidth: 1,
-                    data: [80, 99, 86, 96, 123, 85, 100, 75, 88, 90, 123, 155]
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    bodySpacing: 4,
-                    mode: "nearest",
-                    intersect: 0,
-                    position: "nearest",
-                    xPadding: 10,
-                    yPadding: 10,
-                    caretPadding: 10
-                },
-                responsive: 1,
-                scales: {
-                    yAxes: [{
-                        gridLines: 0,
-                        gridLines: {
-                            zeroLineColor: "transparent",
-                            drawBorder: false
-                        }
-                    }],
-                    xAxes: [{
-                        display: 0,
-                        gridLines: 0,
-                        ticks: {
-                            display: false
-                        },
-                        gridLines: {
-                            zeroLineColor: "transparent",
-                            drawTicks: false,
-                            display: false,
-                            drawBorder: false
-                        }
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+                    datasets: [{
+                        label: "Data",
+                        borderColor: chartColor,
+                        pointBorderColor: chartColor,
+                        pointBackgroundColor: "#1e3d60",
+                        pointHoverBackgroundColor: "#1e3d60",
+                        pointHoverBorderColor: chartColor,
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 7,
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 5,
+                        fill: true,
+                        backgroundColor: gradientFill,
+                        borderWidth: 2,
+                        data: [50, 150, 100, 190, 130, 90, 150, 160, 120, 140, 190, 95]
                     }]
                 },
-                layout: {
-                    padding: {
-                        left: 0,
-                        right: 0,
-                        top: 15,
-                        bottom: 15
+                options: {
+                    layout: {
+                        padding: {
+                            left: 20,
+                            right: 20,
+                            top: 0,
+                            bottom: 0
+                        }
+                    },
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: '#fff',
+                        titleFontColor: '#333',
+                        bodyFontColor: '#666',
+                        bodySpacing: 4,
+                        xPadding: 12,
+                        mode: "nearest",
+                        intersect: 0,
+                        position: "nearest"
+                    },
+                    legend: {
+                        position: "bottom",
+                        fillStyle: "#FFF",
+                        display: false
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                fontColor: "rgba(255,255,255,0.4)",
+                                fontStyle: "bold",
+                                beginAtZero: true,
+                                maxTicksLimit: 5,
+                                padding: 10
+                            },
+                            gridLines: {
+                                drawTicks: true,
+                                drawBorder: false,
+                                display: true,
+                                color: "rgba(255,255,255,0.1)",
+                                zeroLineColor: "transparent"
+                            }
+
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                                zeroLineColor: "transparent",
+                                display: false,
+
+                            },
+                            ticks: {
+                                padding: 10,
+                                fontColor: "rgba(255,255,255,0.4)",
+                                fontStyle: "bold"
+                            }
+                        }]
                     }
                 }
-            }
-        };
+            });
+        }
 
-        var viewsChart = new Chart(e, a);
+        var cardStatsMiniLineColor = "#fff", cardStatsMiniDotColor = "#fff";
+
+        ctx = document.getElementById('lineChartExample')
+
+        if (ctx) {
+            ctx = ctx.getContext("2d");
+
+            gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+            gradientStroke.addColorStop(0, '#80b6f4');
+            gradientStroke.addColorStop(1, chartColor);
+
+            gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
+            gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
+            gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                responsive: true,
+                data: {
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                    datasets: [{
+                        label: "Active Users",
+                        borderColor: "#f96332",
+                        pointBorderColor: "#FFF",
+                        pointBackgroundColor: "#f96332",
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 1,
+                        pointRadius: 4,
+                        fill: true,
+                        backgroundColor: gradientFill,
+                        borderWidth: 2,
+                        data: [542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 630]
+                    }]
+                },
+                options: gradientChartOptionsConfiguration
+            });
+        }
+
+
+        ctx = document.getElementById('lineChartExampleWithNumbersAndGrid')
+
+        if (ctx) {
+            ctx = ctx.getContext("2d");
+
+            gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+            gradientStroke.addColorStop(0, '#18ce0f');
+            gradientStroke.addColorStop(1, chartColor);
+
+            gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
+            gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
+            gradientFill.addColorStop(1, hexToRGB('#18ce0f', 0.4));
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                responsive: true,
+                data: {
+                    labels: ["12pm,", "3pm", "6pm", "9pm", "12am", "3am", "6am", "9am"],
+                    datasets: [{
+                        label: "Email Stats",
+                        borderColor: "#18ce0f",
+                        pointBorderColor: "#FFF",
+                        pointBackgroundColor: "#18ce0f",
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 1,
+                        pointRadius: 4,
+                        fill: true,
+                        backgroundColor: gradientFill,
+                        borderWidth: 2,
+                        data: [40, 500, 650, 700, 1200, 1250, 1300, 1900]
+                    }]
+                },
+                options: gradientChartOptionsConfigurationWithNumbersAndGrid
+            });
+        }
+
+        var e = document.getElementById("barChartSimpleGradientsNumbers")
+
+        if (e) {
+            e = e.getContext("2d");
+
+            gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
+            gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
+            gradientFill.addColorStop(1, hexToRGB('#2CA8FF', 0.6));
+
+            var a = {
+                type: "bar",
+                data: {
+                    labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                    datasets: [{
+                        label: "Active Countries",
+                        backgroundColor: gradientFill,
+                        borderColor: "#2CA8FF",
+                        pointBorderColor: "#FFF",
+                        pointBackgroundColor: "#2CA8FF",
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 1,
+                        pointRadius: 4,
+                        fill: true,
+                        borderWidth: 1,
+                        data: [80, 99, 86, 96, 123, 85, 100, 75, 88, 90, 123, 155]
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        bodySpacing: 4,
+                        mode: "nearest",
+                        intersect: 0,
+                        position: "nearest",
+                        xPadding: 10,
+                        yPadding: 10,
+                        caretPadding: 10
+                    },
+                    responsive: 1,
+                    scales: {
+                        yAxes: [{
+                            gridLines: 0,
+                            gridLines: {
+                                zeroLineColor: "transparent",
+                                drawBorder: false
+                            }
+                        }],
+                        xAxes: [{
+                            display: 0,
+                            gridLines: 0,
+                            ticks: {
+                                display: false
+                            },
+                            gridLines: {
+                                zeroLineColor: "transparent",
+                                drawTicks: false,
+                                display: false,
+                                drawBorder: false
+                            }
+                        }]
+                    },
+                    layout: {
+                        padding: {
+                            left: 0,
+                            right: 0,
+                            top: 15,
+                            bottom: 15
+                        }
+                    }
+                }
+            };
+
+            var viewsChart = new Chart(e, a);
+        }
     },
 
-    initGoogleMaps: function() {
-        var myLatlng = new google.maps.LatLng(40.748817, -73.985428);
-        var mapOptions = {
-            zoom: 13,
-            center: myLatlng,
-            scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
-            styles: [{
-                "featureType": "water",
-                "elementType": "geometry",
-                "stylers": [{
-                    "color": "#e9e9e9"
-                }, {
-                    "lightness": 17
-                }]
-            }, {
-                "featureType": "landscape",
-                "elementType": "geometry",
-                "stylers": [{
-                    "color": "#f5f5f5"
-                }, {
-                    "lightness": 20
-                }]
-            }, {
-                "featureType": "road.highway",
-                "elementType": "geometry.fill",
-                "stylers": [{
-                    "color": "#ffffff"
-                }, {
-                    "lightness": 17
-                }]
-            }, {
-                "featureType": "road.highway",
-                "elementType": "geometry.stroke",
-                "stylers": [{
-                    "color": "#ffffff"
-                }, {
-                    "lightness": 29
-                }, {
-                    "weight": 0.2
-                }]
-            }, {
-                "featureType": "road.arterial",
-                "elementType": "geometry",
-                "stylers": [{
-                    "color": "#ffffff"
-                }, {
-                    "lightness": 18
-                }]
-            }, {
-                "featureType": "road.local",
-                "elementType": "geometry",
-                "stylers": [{
-                    "color": "#ffffff"
-                }, {
-                    "lightness": 16
-                }]
-            }, {
-                "featureType": "poi",
-                "elementType": "geometry",
-                "stylers": [{
-                    "color": "#f5f5f5"
-                }, {
-                    "lightness": 21
-                }]
-            }, {
-                "featureType": "poi.park",
-                "elementType": "geometry",
-                "stylers": [{
-                    "color": "#dedede"
-                }, {
-                    "lightness": 21
-                }]
-            }, {
-                "elementType": "labels.text.stroke",
-                "stylers": [{
-                    "visibility": "on"
-                }, {
-                    "color": "#ffffff"
-                }, {
-                    "lightness": 16
-                }]
-            }, {
-                "elementType": "labels.text.fill",
-                "stylers": [{
-                    "saturation": 36
-                }, {
-                    "color": "#333333"
-                }, {
-                    "lightness": 40
-                }]
-            }, {
-                "elementType": "labels.icon",
-                "stylers": [{
-                    "visibility": "off"
-                }]
-            }, {
-                "featureType": "transit",
-                "elementType": "geometry",
-                "stylers": [{
-                    "color": "#f2f2f2"
-                }, {
-                    "lightness": 19
-                }]
-            }, {
-                "featureType": "administrative",
-                "elementType": "geometry.fill",
-                "stylers": [{
-                    "color": "#fefefe"
-                }, {
-                    "lightness": 20
-                }]
-            }, {
-                "featureType": "administrative",
-                "elementType": "geometry.stroke",
-                "stylers": [{
-                    "color": "#fefefe"
-                }, {
-                    "lightness": 17
-                }, {
-                    "weight": 1.2
-                }]
-            }]
-        };
-
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        var marker = new google.maps.Marker({
-            position: myLatlng,
-            title: "Hello World!"
-        });
-
-        // To add the marker to the map, call setMap();
-        marker.setMap(map);
-    }
 };

@@ -53,12 +53,11 @@ class DeconzApi {
     {
         $client = new Client(['http_errors' => false]);
 
-        if ($state == null) {
-            $l = $this->getLight($lightId);
-            if (is_null($l))
-                return (null);
+        $l = $this->getLight($lightId);
+        if (is_null($l))
+            return (null);
+        if ($state == null)
             $state = !$l->state->on;
-        }
 
         $rq = $client->put(
             $this->buildUrl("/lights/{$lightId}/state"),

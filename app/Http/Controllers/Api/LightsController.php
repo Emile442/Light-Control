@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Light;
 use App\Zigbee\DeconzApi;
 use Illuminate\Http\Request;
 
-class ApiController extends Controller
+class LightsController extends Controller
 {
     public function getLights($id)
     {
@@ -26,6 +27,7 @@ class ApiController extends Controller
     public function setLightState($id, $state)
     {
         $light = Light::find($id);
+        $errors = [];
         if (!$light)
             return response()->json([
                 'success' => false,
@@ -35,9 +37,12 @@ class ApiController extends Controller
             ]);
 
         $r = (new DeconzApi())->setLightState($light->networkId, $state);
+        if (is_null($r))
+            $errors[] = "Unable to connect the bridge";
         return response()->json([
             'success' => true,
-            'state' => $state
+            'state' => $state,
+            'errors' => $errors
         ]);
     }
 
@@ -55,7 +60,7 @@ class ApiController extends Controller
 
         $r = (new DeconzApi())->setLightState($light->networkId);
         if (is_null($r))
-            array_push($errors, "Connection problem with the bridge");
+            $errors[] = "Unable to connect the bridge";
         return response()->json([
             'success' => is_null($r) ? false : true,
             'state' => $r,

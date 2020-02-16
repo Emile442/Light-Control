@@ -39,6 +39,10 @@
                                                 @endforeach
                                             </td>
                                             <td class="text-right">
+                                                @if($group->lights->count())
+                                                    <button type="button" class="btn btn-round btn-change-state btn-success" data-id="{{ $group->id }}" data-state="1"><span></span>On</button>
+                                                    <button type="button" class="btn btn-round btn-change-state" data-id="{{ $group->id }}" data-state="1"><span></span>Off</button>
+                                                @endif
                                                 <a href="{{ route('groups.edit', $group) }}" class="btn btn-round btn-secondary"><i class="fa fa-edit"></i></a>
                                                 <a href="{{ route('groups.destroy', $group) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure to want to delete {{ $group->name }}?"><i class="fa fa-trash"></i></a>
                                             </td>
@@ -78,4 +82,40 @@
             </div>
         </div>
     </div>
+@endsection
+
+
+@section('js')
+    <script type="application/javascript">
+        $(document).ready(function() {
+            $('.btn-change-state').click(function () {
+                let btn = $(this);
+                $.ajax({
+                    url: "/api/v1/group/" + $(this).attr("data-id") + "/state/" + $(this).attr("data-state"),
+                    type: 'get',
+                    beforeSend: function(){
+                        btn.find('span').html('<i class="fa fa-spinner fa-spin"></i>  ')
+                    },
+                    success: function(response){
+                        if (!response.success) {
+                            response.errors.forEach(function (item) {
+                                new Noty({
+                                    type: 'error',
+                                    theme: 'mint',
+                                    layout: 'topRight',
+                                    text: item,
+                                    closeWith: ['click', 'button'],
+                                    timeout: 3000
+                                }).show();
+                            })
+                        }
+                    },
+                    complete: function(data){
+                        btn.find('span').html("")
+                    }
+                });
+
+            });
+        });
+    </script>
 @endsection

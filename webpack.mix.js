@@ -15,6 +15,8 @@ mix.copyDirectory('resources/fonts', 'public/fonts');
 mix.copyDirectory('node_modules/font-awesome/fonts', 'public/fonts');
 mix.sass('resources/sass/app.scss', 'public/css').version();
 
+mix.webpackConfig({ devtool: 'source-map' })
+
 mix.scripts([
     'resources/js/core/jquery.min.js',
     'resources/js/core/popper.min.js',
@@ -22,9 +24,10 @@ mix.scripts([
     'resources/js/plugins/perfect-scrollbar.jquery.min.js',
     'resources/js/plugins/chartjs.min.js',
     'resources/js/plugins/bootstrap-notify.js',
-    'resources/js/plugins/now-ui-dashboard.min.js',
+    'resources/js/now-ui-dashboard.js',
     'node_modules/bootstrap4-toggle/js/bootstrap4-toggle.min.js',
     'node_modules/noty/lib/noty.js',
+    'node_modules/jquery-circle-progress/dist/circle-progress.js',
     'resources/js/delete.js',
     'resources/js/app.js',
 ], 'public/js/app.js').version();

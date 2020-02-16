@@ -32,7 +32,7 @@
                                 <tbody>
                                 @foreach($lights as $light)
                                     <tr>
-                                        <td><i class="fa fa-lightbulb-o {{ $light->state ? "text-warning" : "" }}"></i></td>
+                                        <td><i class="fa fa-lightbulb-o {{ $light->state ? "text-warning" : "" }} {{ is_null($light->state) ? "text-danger" : "" }}"></i></td>
                                         <td>{{ $light->name }}</td>
                                         <td>{{ $light->group->name }}</td>
                                         <td>{{ $light->networkId }}</td>
@@ -114,14 +114,16 @@
                                 btn.removeClass(classSuccess)
                             }
                         } else {
-                            new Noty({
-                                type: 'error',
-                                theme: 'mint',
-                                layout: 'topRight',
-                                text: response.errors[0],
-                                closeWith: ['click', 'button'],
-                                timeout: 3000
-                            }).show();
+                            response.errors.forEach(function (item) {
+                                new Noty({
+                                    type: 'error',
+                                    theme: 'mint',
+                                    layout: 'topRight',
+                                    text: item,
+                                    closeWith: ['click', 'button'],
+                                    timeout: 3000
+                                }).show();
+                            })
                         }
                     },
                     complete: function(data){

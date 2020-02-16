@@ -17,8 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'v1'], function () {
-   Route::get('light/{id}', 'ApiController@getLights')->name('api.lights.show');
-   Route::get('light/{id}/state/{mode}', 'ApiController@setLightState')->name('api.lights.state');
-   Route::get('light/{id}/state', 'ApiController@switchLightState')->name('api.lights.switch');
+Route::group(['prefix' => 'v1', "namespace" => "Api"], function () {
+   Route::get('light/{id}', 'LightsController@getLights')->name('api.lights.show');
+   Route::get('light/{id}/state/{mode}', 'LightsController@setLightState')->name('api.lights.state');
+   Route::get('light/{id}/state', 'LightsController@switchLightState')->name('api.lights.switch');
+
+   Route::get('group/{id}/state/{mode}', 'GroupsController@setGroupState')->name('api.groups.state');
+   Route::get('group/{id}/state/{mode}/{period}', 'GroupsController@setGroupStateForXMinutes')->name('api.groups.state.period');
 });
