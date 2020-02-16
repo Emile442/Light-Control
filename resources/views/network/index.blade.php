@@ -13,6 +13,9 @@
                         <h5 class="card-title">Network</h5>
                     </div>
                     <div class="card-body ">
+                        <div class="alert alert-warning">
+                            <span><b> Warning - </b> Connection problem with the bridge</span>
+                        </div>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class=" text-primary">
@@ -22,12 +25,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($deconzLights as $k => $light)
-                                    <tr>
-                                        <td>{{ $k }}</td>
-                                        <td>{{ $light->name }}</td>
-                                    </tr>
-                                @endforeach
+                                @if($deconzLights)
+                                    @foreach($deconzLights as $k => $light)
+                                        <tr>
+                                            <td>{{ $k }}</td>
+                                            <td>{{ $light->name }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                                 </tbody>
                             </table>
                         </div>

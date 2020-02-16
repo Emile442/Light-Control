@@ -49,9 +49,16 @@ class DeconzApi {
         return(json_decode($rq->getBody()->getContents()));
     }
 
-    public function setLightState(int $lightId, bool $state) : bool
+    public function setLightState(int $lightId, bool $state = null)
     {
         $client = new Client(['http_errors' => false]);
+
+        if ($state == null) {
+            $l = $this->getLight($lightId);
+            if (is_null($l))
+                return (null);
+            $state = !$l->state->on;
+        }
 
         $rq = $client->put(
             $this->buildUrl("/lights/{$lightId}/state"),
@@ -60,11 +67,6 @@ class DeconzApi {
             ]
         );
 
-        if ($rq->getStatusCode() != 200)
-            return (false);
-
-        $reponse = json_decode($rq->getBody()->getContents());
-
-        return(isset($reponse->success) ? true : false);
+        return ($state);
     }
 }

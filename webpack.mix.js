@@ -23,6 +23,8 @@ mix.scripts([
     'resources/js/plugins/chartjs.min.js',
     'resources/js/plugins/bootstrap-notify.js',
     'resources/js/plugins/now-ui-dashboard.min.js',
+    'node_modules/bootstrap4-toggle/js/bootstrap4-toggle.min.js',
+    'node_modules/noty/lib/noty.js',
     'resources/js/delete.js',
     'resources/js/app.js',
 ], 'public/js/app.js').version();

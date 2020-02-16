@@ -1306,6 +1306,11 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
+bootstrap4-toggle@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/bootstrap4-toggle/-/bootstrap4-toggle-3.6.1.tgz#867f2c350727022e6358ec0d43e43b7cfb609f74"
+  integrity sha512-eRejcTc9YurhZ64nHY9Ii9DQn+F9/R74H9RPoeANVM3N1+C2lZ2tUuFCx1w3orOJ1y/iG4A7iCwdDZphMDIrYg==
+
 bootstrap@4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.4.1.tgz#8582960eea0c5cd2bede84d8b0baf3789c3e8b01"
@@ -4541,6 +4546,11 @@ normalize-url@^3.0.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
+
+noty@^3.2.0-beta:
+  version "3.2.0-beta"
+  resolved "https://registry.yarnpkg.com/noty/-/noty-3.2.0-beta.tgz#cd1117277a1b83c9b08dfc78f968c6c5960d3cfa"
+  integrity sha512-a1//Rth1MTQ/GCvGzwBXrZqCwOPyxiIKMdHT1TlcdrDYBYVfb7vzwsU0N4x+j/HeIQTi6/pbP8lRtY9gBz/d3Q==
 
 npm-run-path@^2.0.0:
   version "2.0.2"

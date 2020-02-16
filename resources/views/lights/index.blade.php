@@ -37,8 +37,9 @@
                                         <td>{{ $light->group->name }}</td>
                                         <td>{{ $light->networkId }}</td>
                                         <td class="text-right">
+                                            <button type="button" class="btn btn-round {{ $light->state ? "btn-success" : "" }} btn-change-state" data-id="{{ $light->id }}"><span></span>{{ $light->state ? "On" : "Off" }}</button>
                                             <a href="{{ route('lights.edit', $light) }}" class="btn btn-round btn-secondary"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('lights.destroy', $light) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure to want to delete {{ $light->name }}?"><i class="fa fa-trash"></i></a>
+                                            <a href="{{ route('lights.destroy', $light) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure to want to delete {{ $light->name }} ?"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -88,4 +89,47 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+    <script type="application/javascript">
+        $(document).ready(function() {
+            $('.btn-change-state').click(function () {
+                let btn = $(this);
+                let classSuccess = 'btn-success'
+
+                $.ajax({
+                    url: "/api/v1/light/" + $(this).attr("data-id") + "/state",
+                    type: 'get',
+                    beforeSend: function(){
+                        btn.find('span').html('<i class="fa fa-spinner fa-spin"></i>  ')
+                    },
+                    success: function(response){
+                        if (response.success) {
+                            if (response.state) {
+                                btn.html("On")
+                                btn.addClass(classSuccess)
+                            } else {
+                                btn.html("Off")
+                                btn.removeClass(classSuccess)
+                            }
+                        } else {
+                            new Noty({
+                                type: 'error',
+                                theme: 'mint',
+                                layout: 'topRight',
+                                text: response.errors[0],
+                                closeWith: ['click', 'button'],
+                                timeout: 3000
+                            }).show();
+                        }
+                    },
+                    complete: function(data){
+                        btn.find('span').html("")
+                    }
+                });
+
+            });
+        });
+    </script>
 @endsection
