@@ -4337,7 +4337,7 @@ module.exports = g;
 
             // If the data-method attribute is not PUT or DELETE,
             // then we don't know what to do. Just ignore.
-            if ( $.inArray(httpMethod, ['PUT', 'DELETE']) === - 1 ) {
+            if ( $.inArray(httpMethod, ['PUT', 'DELETE', 'POST']) === - 1 ) {
                 return;
             }
 
@@ -4379,8 +4379,10 @@ module.exports = g;
                     'value': link.data('method')
                 });
 
-            return form.append(token, hiddenInput)
-                .appendTo('body');
+            if (link.data('method').toUpperCase() === 'POST')
+                return form.append(token).appendTo('body');
+
+            return form.append(token, hiddenInput).appendTo('body');
         }
     };
 

@@ -14,7 +14,6 @@ use function foo\func;
 
 class DeconzApi {
 
-
     private $apiKey;
     private $baseUrl;
 
@@ -55,7 +54,7 @@ class DeconzApi {
         return(json_decode($rq->getBody()->getContents()));
     }
 
-    public function setLightState(int $lightId, bool $state = null)
+    public function setLightState(int $lightId, bool $state = null) : ?bool
     {
         $client = new Client(['http_errors' => false]);
 
@@ -75,8 +74,8 @@ class DeconzApi {
         return ($state);
     }
 
-    // Todo: WIP
-    public function setLightsState(array $ligthsId, bool $state) {
+    public function setLightsState(array $ligthsId, bool $state) : array
+    {
         $client = new Client(['http_errors' => false]);
 
         $rq = [];
@@ -90,15 +89,21 @@ class DeconzApi {
         }
 
         $errors = [];
-        $result = Promise\any($rq)->then(
-            function($value){
-                dump($value->getBody()->getContents());
-            },
-            function ($value) use (&$errors) {
-                $errors[] = "Unable to connect the light";
-                // dump($value);
-            }
-        );
+        $result = Promise\some(count($rq), $rq)
+            ->then(
+                function($res) use (&$errors, $ligthsId) {
+                    foreach ($res as $k => $item) {
+                        $body = json_decode($item->getBody()->getContents());
+                        if (isset($body[0]) && isset($body[0]->error)) {
+                            $errors[] = "Unable to connect the light #{$ligthsId[$k]}";
+                        }
+                    }
+                },
+                function ($res) use (&$errors) {
+                    $errors[] = "Unable to connect the bridge";
+                }
+            );
+
 
         $result->wait();
 

@@ -13,9 +13,11 @@
                         <h5 class="card-title">Network</h5>
                     </div>
                     <div class="card-body ">
-                        <div class="alert alert-warning">
-                            <span><b> Warning - </b> Connection problem with the bridge</span>
-                        </div>
+                        @if(is_null($deconzLights))
+                            <div class="alert alert-warning">
+                                <span><b> Warning - </b> Connection problem with the bridge</span>
+                            </div>
+                        @endif
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class=" text-primary">

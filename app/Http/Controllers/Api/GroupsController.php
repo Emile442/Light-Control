@@ -24,21 +24,13 @@ class GroupsController extends Controller
             ])->setStatusCode(404);
 
         $r = new DeconzApi();
-        $errors = [];
-
-//        Todo: WIP
-//        $lights = [];
-//        foreach ($group->lights as $light) {
-//            $lights[] = $light->networkId;
-//        }
-//        dd($r->setLightsState($lights, true));
-
-
+        $lights = [];
         foreach ($group->lights as $light) {
-            $e = $r->setLightState($light->networkId, $state);
-            if (is_null($e))
-                $errors[] = "[{$light->name}][#{$light->networkId}] Unable to connect the light";
+            $lights[] = $light->networkId;
         }
+
+        $errors = $r->setLightsState($lights, $state);
+
         return response()->json([
             'success' => empty($errors) ? true : false,
             'state' => $state,
@@ -65,4 +57,5 @@ class GroupsController extends Controller
             'errors' => $errors
         ])->setStatusCode(empty($errors) ? 200 : 504);
     }
+
 }

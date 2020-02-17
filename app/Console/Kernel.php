@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\setupUser;
 use App\Console\Commands\ZlGroups;
 use App\Console\Commands\ZlLights;
 use App\Console\Commands\ZlNetwork;
@@ -18,7 +19,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         ZlGroups::class,
         ZlLights::class,
-        ZlNetwork::class
+        ZlNetwork::class,
+        SetupUser::class
     ];
 
     /**

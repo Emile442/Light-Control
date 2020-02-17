@@ -11,8 +11,14 @@
 |
 */
 
-Route::get('/', "HomeController@index")->name('root');
-Route::get('/network', "NetworkController@index")->name('network.index');
+Route::group(["middleware" => "auth"], function () {
+    Route::get('/', "HomeController@index")->name('root');
+    Route::get('/network', "NetworkController@index")->name('network.index');
 
-Route::resource('groups', 'GroupsController');
-Route::resource('lights', 'LightsController');
+    Route::resource('groups', 'GroupsController');
+    Route::resource('lights', 'LightsController');
+});
+
+
+
+Auth::routes(['register' => false]);

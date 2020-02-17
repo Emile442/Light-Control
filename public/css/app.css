@@ -19982,5 +19982,9 @@ Created using IcoMoon - icomoon.io
   font-size: 30px;
 }
 
+.navbar-dropdown {
+  cursor: pointer;
+}
+
 
 /*# sourceMappingURL=app.css.map*/

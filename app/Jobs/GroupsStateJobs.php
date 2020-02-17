@@ -43,8 +43,11 @@ class GroupsStateJobs implements ShouldQueue
     public function handle()
     {
         $deconz = new DeconzApi();
-        foreach ($this->group->lights as $light) {
-            $deconz->setLightState($light->networkId, $this->state);
-        }
+
+        $lights = [];
+        foreach ($this->group->lights as $light)
+            $lights[] = $light->networkId;
+
+        $deconz->setLightsState($lights, $this->state);
     }
 }

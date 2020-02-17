@@ -21,6 +21,8 @@ class LightsController extends Controller
             ])->setStatusCode(404);
 
         $deconz = (new DeconzApi())->getLight($light->networkId);
+        if (!isset($deconz->state))
+            $deconz = [];
         return response()->json($deconz)->setStatusCode(empty($deconz) ? 504 : 200);
     }
 

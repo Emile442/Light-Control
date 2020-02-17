@@ -100,22 +100,44 @@
                             </div>
                         @endif
                     </div>
-                    <div class="card-footer ">
-                        <hr>
-                        <div class="stats">
-                            <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-category">All Persons List</h5>
-                        <h4 class="card-title"> Employees Stats</h4>
+                        <h4 class="card-title"> Start Timer</h4>
                     </div>
                     <div class="card-body">
+                        <form action="#" id="timer-form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="group">Groups</label>
+                                        <select name="group" id="group" class="form-control">
+                                            @foreach(\App\Group::all() as $group)
+                                                <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="state">State</label>
+                                        <select name="state" id="state" class="form-control">
+                                            <option value="0">Off</option>
+                                            <option value="1">On</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <label for="period">Period (Minutes)</label>
+                                <input type="number" class="form-control" id="period" name="period">
+                            </div>
+
+                            <button type="submit" class="btn btn-round btn-success" id="timer-form-button">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -135,7 +157,7 @@
 
                 timer.attr("data-animation-start-value", 1 - (percent /100))
 
-                let timer = timer.circleProgress({
+                let timerBar = timer.circleProgress({
                     value: 1 - (percent /100),
                     fill: {gradient: ['#0681c4', '#4ac5f8']},
                     size: 200
@@ -144,7 +166,12 @@
                     let minutes= Math.round((diff % 3600000 ) / 60000);
                     let secondes= Math.round((diff % 60000) / 1000);
 
-                    $(this).find('strong').text(('0' + minutes).slice(-2) + ":" + ('0' + secondes).slice(-2));
+                    if (secondes >= 30)
+                        minutes--;
+
+                    let minutesText = minutes <= 0 ? '00' : ('0' + minutes).slice(-2)
+                    let secondesText = secondes <= 0 ? '00' : ('0' + secondes).slice(-2)
+                    $(this).find('strong').text( minutesText + ":" + secondesText);
                     // $(this).find('strong').text(100 - percent);
                 });
 
@@ -159,9 +186,33 @@
                         percent = 100;
                         clearInterval(update)
                     }
-                    timer.circleProgress('value', 1 - (percent /100));
+                    timerBar.circleProgress('value', 1 - (percent /100));
                 }, 500);
             }
+
+            let timer_form = $("#timer-form")
+
+            timer_form.submit(function (e) {
+                e.preventDefault();
+                let group = $("#group").val()
+                let state = $("#state").val()
+                let period = $("#period").val()
+                let text = state ? "On" : "Off"
+                let uri = "/api/v1/group/" + group + "/state/" + state + "/" + period;
+                if (period.length) {
+                    $.get(uri).done(function( data ) {
+                        new Noty({
+                            type: 'success',
+                            theme: 'mint',
+                            layout: 'topRight',
+                            text: "Light " + text + " for " + period + " minutes",
+                            closeWith: ['click', 'button'],
+                            timeout: 3000
+                        }).show();
+                    });
+                }
+
+            });
         });
     </script>
 @endsection
