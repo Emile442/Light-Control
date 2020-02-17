@@ -29,15 +29,15 @@
                                     <th class="text-right">Actions</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="table-lights">
                                 @foreach($lights as $light)
-                                    <tr>
-                                        <td><i class="fa fa-lightbulb-o {{ $light->state ? "text-warning" : "" }} {{ is_null($light->state) ? "text-danger" : "" }}"></i></td>
+                                    <tr class="light-list" id="light-{{ $light->id }}" data-id="{{ $light->id }}">
+                                        <td><i class="fa fa-lightbulb-o light-state" id="light-state-{{ $light->id }}"></i></td>
                                         <td>{{ $light->name }}</td>
                                         <td>{{ $light->group->name }}</td>
                                         <td>{{ $light->networkId }}</td>
                                         <td class="text-right">
-                                            <button type="button" class="btn btn-round {{ $light->state ? "btn-success" : "" }} btn-change-state" data-id="{{ $light->id }}"><span></span>{{ $light->state ? "On" : "Off" }}</button>
+                                            <button type="button" class="btn btn-round btn-change-state" id="light-button-{{ $light->id }}" data-id="{{ $light->id }}"><span><i class="fa fa-spinner fa-spin"></i></span></button>
                                             <a href="{{ route('lights.edit', $light) }}" class="btn btn-round btn-secondary"><i class="fa fa-edit"></i></a>
                                             <a href="{{ route('lights.destroy', $light) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure to want to delete {{ $light->name }} ?"><i class="fa fa-trash"></i></a>
                                         </td>
@@ -94,41 +94,66 @@
 @section('js')
     <script type="application/javascript">
         $(document).ready(function() {
+            $(".light-list").each(function (index) {
+                let id = $(this).attr('data-id')
+
+                $.get("/api/v1/light/" + id, function( data ) {
+                    if (data.state.on === true) {
+                        $("#light-state-" + id).addClass("text-warning")
+                        $("#light-button-" + id).html("<span></span>On").addClass("btn-success")
+                    } else {
+                        $("#light-button-" + id).html("<span></span>On")
+                    }
+                }).fail(function() {
+                    new Noty({
+                        type: 'error',
+                        theme: 'mint',
+                        layout: 'topRight',
+                        text: "Unable to get light: #" + id,
+                        closeWith: ['click', 'button'],
+                        timeout: 3000
+                    }).show();
+                    $("#light-button-" + id).html('<span></span>Unable to connect').addClass("btn-danger")
+                    $("#light-state-" + id).addClass("text-danger")
+                });
+            })
+
             $('.btn-change-state').click(function () {
                 let btn = $(this);
+                let id = btn.attr('data-id')
                 let classSuccess = 'btn-success'
 
                 $.ajax({
-                    url: "/api/v1/light/" + $(this).attr("data-id") + "/state",
+                    url: "/api/v1/light/" + id + "/state",
                     type: 'get',
                     beforeSend: function(){
                         btn.find('span').html('<i class="fa fa-spinner fa-spin"></i>  ')
                     },
                     success: function(response){
-                        if (response.success) {
-                            if (response.state) {
-                                btn.html("On")
-                                btn.addClass(classSuccess)
-                            } else {
-                                btn.html("Off")
-                                btn.removeClass(classSuccess)
-                            }
+                        if (response.state) {
+                            btn.html("<span></span>On")
+                            $("#light-state-" + id).addClass("text-warning")
+                            btn.addClass(classSuccess)
                         } else {
-                            response.errors.forEach(function (item) {
-                                new Noty({
-                                    type: 'error',
-                                    theme: 'mint',
-                                    layout: 'topRight',
-                                    text: item,
-                                    closeWith: ['click', 'button'],
-                                    timeout: 3000
-                                }).show();
-                            })
+                            btn.html("<span></span>On")
+                            $("#light-state-" + id).removeClass("text-warning")
+                            btn.removeClass(classSuccess)
                         }
                     },
                     complete: function(data){
-                        btn.find('span').html("")
+                        btn.find('span').empty()
                     }
+                }).fail(function (response) {
+                    response.responseJSON.errors.forEach(function (item) {
+                        new Noty({
+                            type: 'error',
+                            theme: 'mint',
+                            layout: 'topRight',
+                            text: item,
+                            closeWith: ['click', 'button'],
+                            timeout: 3000
+                        }).show();
+                    })
                 });
 
             });

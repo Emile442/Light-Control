@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\GroupsStateJobs;
 use App\Zigbee\DeconzApi;
 use Carbon\Carbon;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class GroupsController extends Controller
@@ -20,7 +21,7 @@ class GroupsController extends Controller
                 'errors' => [
                     'Group not Found'
                 ]
-            ]);
+            ])->setStatusCode(404);
 
         $r = new DeconzApi();
         $errors = [];
@@ -33,7 +34,7 @@ class GroupsController extends Controller
             'success' => empty($errors) ? true : false,
             'state' => $state,
             'errors' => $errors
-        ]);
+        ])->setStatusCode(empty($errors) ? 200 : 504);
     }
 
     public function setGroupStateForXMinutes($id, $state, $period)
@@ -45,14 +46,14 @@ class GroupsController extends Controller
                 'errors' => [
                     'Group not Found'
                 ]
-            ]);
+            ])->setStatusCode(404);
 
-        $this->dispatch(new GroupsStateJobs($group, $state));
         $this->dispatch((new GroupsStateJobs($group, !$state))->delay(Carbon::now()->addMinutes($period)));
-
+        $this->dispatch((new GroupsStateJobs($group, $state)));
+        $errors = [];
         return response()->json([
-            'success' => true,
-            'errors' => []
-        ]);
+            'success' => empty($errors) ? true : false,
+            'errors' => $errors
+        ])->setStatusCode(empty($errors) ? 200 : 504);
     }
 }
