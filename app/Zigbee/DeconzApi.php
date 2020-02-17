@@ -4,7 +4,13 @@ namespace App\Zigbee;
 
 
 use GuzzleHttp\Client as Client;
+use GuzzleHttp\Promise;
+
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Pool;
+use GuzzleHttp\Psr7\Response;
+use function foo\func;
 
 class DeconzApi {
 
@@ -67,5 +73,35 @@ class DeconzApi {
         );
 
         return ($state);
+    }
+
+    // Todo: WIP
+    public function setLightsState(array $ligthsId, bool $state) {
+        $client = new Client(['http_errors' => false]);
+
+        $rq = [];
+        foreach ($ligthsId as $id) {
+            $rq[] = $client->putAsync(
+                $this->buildUrl("/lights/{$id}/state"),
+                [
+                    'json' => ['on' => $state]
+                ]
+            );
+        }
+
+        $errors = [];
+        $result = Promise\any($rq)->then(
+            function($value){
+                dump($value->getBody()->getContents());
+            },
+            function ($value) use (&$errors) {
+                $errors[] = "Unable to connect the light";
+                // dump($value);
+            }
+        );
+
+        $result->wait();
+
+        return ($errors);
     }
 }

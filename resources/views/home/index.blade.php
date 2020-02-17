@@ -126,42 +126,42 @@
 @section('js')
     <script type="application/javascript">
         $(document).ready(function() {
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
+            let timer = $("#timer")
+
+            if (timer.length) {
+                let start = new Date(timer.data("start") * 1000)
+                let end = new Date(timer.data("end") * 1000)
+                let percent = Math.round((100 - (end -  new Date()) / (end - start) * 100));
+
+                timer.attr("data-animation-start-value", 1 - (percent /100))
+
+                let timer = timer.circleProgress({
+                    value: 1 - (percent /100),
+                    fill: {gradient: ['#0681c4', '#4ac5f8']},
+                    size: 200
+                }).on('circle-animation-progress', function(event, progress, stepValue) {
+                    let diff = end.getTime() - new Date().getTime()
+                    let minutes= Math.round((diff % 3600000 ) / 60000);
+                    let secondes= Math.round((diff % 60000) / 1000);
+
+                    $(this).find('strong').text(('0' + minutes).slice(-2) + ":" + ('0' + secondes).slice(-2));
+                    // $(this).find('strong').text(100 - percent);
+                });
+
+                let update = setInterval(function(){
+
+                    let diff = end.getTime() - new Date().getTime()
+                    let minutes= Math.round((diff % 3600000 ) / 60000);
+                    let secondes= Math.round((diff % 60000) / 1000);
+
+                    percent = Math.round((100 - (end - new Date()) / (end - start) * 100));
+                    if (percent >= 100) {
+                        percent = 100;
+                        clearInterval(update)
+                    }
+                    timer.circleProgress('value', 1 - (percent /100));
+                }, 500);
             }
-
-            let start = new Date($('#timer').data("start") * 1000)
-            let end = new Date($('#timer').data("end") * 1000)
-            let percent = Math.round((100 - (end -  new Date()) / (end - start) * 100));
-
-            $("#timer").attr("data-animation-start-value", 1 - (percent /100))
-
-            let timer = $('#timer').circleProgress({
-                value: 1 - (percent /100),
-                fill: {gradient: ['#0681c4', '#4ac5f8']},
-                size: 200
-            }).on('circle-animation-progress', function(event, progress, stepValue) {
-                let diff = end.getTime() - new Date().getTime()
-                let minutes= Math.round((diff % 3600000 ) / 60000);
-                let secondes= Math.round((diff % 60000) / 1000);
-
-                $(this).find('strong').text(('0' + minutes).slice(-2) + ":" + ('0' + secondes).slice(-2));
-                // $(this).find('strong').text(100 - percent);
-            });
-
-            let update = setInterval(function(){
-
-                let diff = end.getTime() - new Date().getTime()
-                let minutes= Math.round((diff % 3600000 ) / 60000);
-                let secondes= Math.round((diff % 60000) / 1000);
-
-                percent = Math.round((100 - (end - new Date()) / (end - start) * 100));
-                if (percent >= 100) {
-                    percent = 100;
-                    clearInterval(update)
-                }
-                timer.circleProgress('value', 1 - (percent /100));
-            }, 500);
         });
     </script>
 @endsection

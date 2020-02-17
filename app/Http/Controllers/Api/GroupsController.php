@@ -25,6 +25,15 @@ class GroupsController extends Controller
 
         $r = new DeconzApi();
         $errors = [];
+
+//        Todo: WIP
+//        $lights = [];
+//        foreach ($group->lights as $light) {
+//            $lights[] = $light->networkId;
+//        }
+//        dd($r->setLightsState($lights, true));
+
+
         foreach ($group->lights as $light) {
             $e = $r->setLightState($light->networkId, $state);
             if (is_null($e))

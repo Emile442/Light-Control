@@ -96,23 +96,31 @@
                     beforeSend: function(){
                         btn.find('span').html('<i class="fa fa-spinner fa-spin"></i>  ')
                     },
-                    success: function(response){
-
-                    },
                     complete: function(data){
                         btn.find('span').html("")
                     }
                 }).fail(function (response) {
-                    response.responseJSON.errors.forEach(function (item) {
+                    if (response.status === 500) {
                         new Noty({
                             type: 'error',
                             theme: 'mint',
                             layout: 'topRight',
-                            text: item,
+                            text: "Unable to get the bridge",
                             closeWith: ['click', 'button'],
                             timeout: 3000
                         }).show();
-                    })
+                    } else {
+                        response.responseJSON.errors.forEach(function (item) {
+                            new Noty({
+                                type: 'error',
+                                theme: 'mint',
+                                layout: 'topRight',
+                                text: item,
+                                closeWith: ['click', 'button'],
+                                timeout: 3000
+                            }).show();
+                        })
+                    }
                 });
 
             });
