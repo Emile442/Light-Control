@@ -18,12 +18,20 @@ Application Web complète permettant de gérer des ampoules utilisant le protoco
 	# DECONZ_KEY=  
 	# DECONZ_URL=
 	
+	# Install Dependencies
 	composer install
+
+	# Setup Laravel App
 	php artisan key:generate
 	php artisan migrate
-	
+
+	# Generate Assets
 	yarn
 	yarn prod
+
+	# Setup Laravel Task Scheduling
+	# * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+	crontab -e
 ```
 
 ## Commands
@@ -31,7 +39,7 @@ Application Web complète permettant de gérer des ampoules utilisant le protoco
 	# Launch Laravel Queue
 	# OR https://laravel.com/docs/6.x/queues#supervisor-configuration
 	php artisan queue:work
-	
+
 	# Create a user via CLI
 	php artisan setup:user
 
