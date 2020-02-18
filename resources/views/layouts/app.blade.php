@@ -65,7 +65,7 @@
             </div>
             <div class="modal-body">
                 <table class="table table-striped" id="d-table">
-                    @foreach(\App\Group::all() as $group)
+                    @foreach(\App\Group::with("lights")->get() as $group)
                         <tr id="d-group-{{ $group->id }}" data-type="group" data-id="{{ $group->id }}">
                             <td colspan="2">{{ $group->name }}</td>
                             <td><span class="badge badge-success">OK</span></td>

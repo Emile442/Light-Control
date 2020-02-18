@@ -4390,6 +4390,157 @@ module.exports = g;
 
 })();
 
+$(document).ready(function() {
+    $('.timer').each(function(index, value) {
+        let timer = $(this);
+
+        let start = new Date(timer.attr("data-start") * 1000)
+        let end = new Date(timer.attr("data-end") * 1000)
+        let percent = Math.round((100 - (end -  new Date()) / (end - start) * 100));
+
+        let diff = end.getTime() - new Date().getTime()
+        let minutes= Math.round((diff % 3600000 ) / 60000);
+        let secondes= Math.round((diff % 60000) / 1000);
+
+        timer.attr("data-animation-start-value", 1 - (percent /100))
+
+        let timerBar = timer.circleProgress({
+            value: 1 - (percent /100),
+            fill: {gradient: ['#0681c4', '#4ac5f8']},
+            size: 200
+        }).on('circle-animation-progress', function(event, progress, stepValue) {
+            diff = end.getTime() - new Date().getTime()
+            minutes= Math.round((diff % 3600000 ) / 60000);
+            secondes= Math.round((diff % 60000) / 1000);
+            if (secondes >= 30)
+                minutes--;
+            let minutesText = minutes <= 0 ? '00' : ('0' + minutes).slice(-2)
+            let secondesText = secondes <= 0 ? '00' : ('0' + secondes).slice(-2)
+
+            $(this).find('strong').text( minutesText + ":" + secondesText);
+            // $(this).find('strong').text(100 - percent);
+        });
+
+        let update = setInterval(function(){
+            percent = Math.round((100 - (end - new Date()) / (end - start) * 100));
+            if (percent >= 100) {
+                percent = 100;
+                clearInterval(update)
+            }
+            timerBar.circleProgress('value', 1 - (percent /100));
+        }, 500);
+
+    });
+});
+
+$(document).ready(function() {
+
+    /* Load Light Table */
+    $(".light-list").each(function (index) {
+        let id = $(this).attr('data-id')
+
+        $.get("/api/v1/light/" + id, function( data ) {
+            if (data.state.on === true) {
+                $("#light-state-" + id).addClass("text-warning")
+                $("#light-button-" + id).html("<span></span>On").addClass("btn-success")
+            } else {
+                $("#light-button-" + id).html("<span></span>On")
+            }
+        }).fail(function() {
+            new Noty({
+                type: 'error',
+                theme: 'mint',
+                layout: 'topRight',
+                text: "Unable to get light: #" + id,
+                closeWith: ['click', 'button'],
+                timeout: 3000
+            }).show();
+            $("#light-button-" + id).html('<span></span>Unable to connect').addClass("btn-danger")
+            $("#light-state-" + id).addClass("text-danger")
+        });
+    })
+
+
+    /* Light Switch Button */
+    $('.btn-change-state').click(function () {
+        let btn = $(this);
+        let id = btn.attr('data-id')
+        let classSuccess = 'btn-success'
+
+        $.ajax({
+            url: "/api/v1/light/" + id + "/state",
+            type: 'get',
+            beforeSend: function(){
+                btn.find('span').html('<i class="fa fa-spinner fa-spin"></i>  ')
+            },
+            success: function(response){
+                if (response.state) {
+                    btn.html("<span></span>On")
+                    $("#light-state-" + id).addClass("text-warning")
+                    btn.addClass(classSuccess)
+                } else {
+                    btn.html("<span></span>On")
+                    $("#light-state-" + id).removeClass("text-warning")
+                    btn.removeClass(classSuccess)
+                }
+            },
+            complete: function(data){
+                btn.find('span').empty()
+            }
+        }).fail(function (response) {
+            response.responseJSON.errors.forEach(function (item) {
+                new Noty({
+                    type: 'error',
+                    theme: 'mint',
+                    layout: 'topRight',
+                    text: item,
+                    closeWith: ['click', 'button'],
+                    timeout: 3000
+                }).show();
+            })
+        });
+
+    });
+});
+
+$(document).ready(function() {
+    $('.btn-change-state').click(function () {
+        let btn = $(this);
+        $.ajax({
+            url: "/api/v1/group/" + $(this).attr("data-id") + "/state/" + $(this).attr("data-state"),
+            type: 'get',
+            beforeSend: function(){
+                btn.find('span').html('<i class="fa fa-spinner fa-spin"></i>  ')
+            },
+            complete: function(data){
+                btn.find('span').html("")
+            }
+        }).fail(function (response) {
+            if (response.status === 500) {
+                new Noty({
+                    type: 'error',
+                    theme: 'mint',
+                    layout: 'topRight',
+                    text: "Unable to get the bridge",
+                    closeWith: ['click', 'button'],
+                    timeout: 3000
+                }).show();
+            } else {
+                response.responseJSON.errors.forEach(function (item) {
+                    new Noty({
+                        type: 'error',
+                        theme: 'mint',
+                        layout: 'topRight',
+                        text: item,
+                        closeWith: ['click', 'button'],
+                        timeout: 3000
+                    }).show();
+                })
+            }
+        });
+
+    });
+});
 
 function hexToRGB(hex, alpha) {
     var r = parseInt(hex.slice(1, 3), 16),
@@ -4416,102 +4567,6 @@ demo = {
                 display_div.attr('data-class', new_class);
             }
         });
-    },
-
-    initDocChart: function() {
-        chartColor = "#FFFFFF";
-
-        // General configuration for the charts with Line gradientStroke
-        gradientChartOptionsConfiguration = {
-            maintainAspectRatio: false,
-            legend: {
-                display: false
-            },
-            tooltips: {
-                bodySpacing: 4,
-                mode: "nearest",
-                intersect: 0,
-                position: "nearest",
-                xPadding: 10,
-                yPadding: 10,
-                caretPadding: 10
-            },
-            responsive: true,
-            scales: {
-                yAxes: [{
-                    display: 0,
-                    gridLines: 0,
-                    ticks: {
-                        display: false
-                    },
-                    gridLines: {
-                        zeroLineColor: "transparent",
-                        drawTicks: false,
-                        display: false,
-                        drawBorder: false
-                    }
-                }],
-                xAxes: [{
-                    display: 0,
-                    gridLines: 0,
-                    ticks: {
-                        display: false
-                    },
-                    gridLines: {
-                        zeroLineColor: "transparent",
-                        drawTicks: false,
-                        display: false,
-                        drawBorder: false
-                    }
-                }]
-            },
-            layout: {
-                padding: {
-                    left: 0,
-                    right: 0,
-                    top: 15,
-                    bottom: 15
-                }
-            }
-        };
-
-        ctx = document.getElementById('lineChartExample')
-
-        if (ctx) {
-            ctx = ctx.getContext("2d");
-
-            gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-            gradientStroke.addColorStop(0, '#80b6f4');
-            gradientStroke.addColorStop(1, chartColor);
-
-            gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-            gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-            gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
-
-            myChart = new Chart(ctx, {
-                type: 'line',
-                responsive: true,
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                    datasets: [{
-                        label: "Active Users",
-                        borderColor: "#f96332",
-                        pointBorderColor: "#FFF",
-                        pointBackgroundColor: "#f96332",
-                        pointBorderWidth: 2,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 1,
-                        pointRadius: 4,
-                        fill: true,
-                        backgroundColor: gradientFill,
-                        borderWidth: 2,
-                        data: [542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 630]
-                    }]
-                },
-                options: gradientChartOptionsConfiguration
-            });
-        }
-
     },
 
     initDashboardPageCharts: function() {
@@ -4713,161 +4768,6 @@ demo = {
             });
         }
 
-        var cardStatsMiniLineColor = "#fff", cardStatsMiniDotColor = "#fff";
-
-        ctx = document.getElementById('lineChartExample')
-
-        if (ctx) {
-            ctx = ctx.getContext("2d");
-
-            gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-            gradientStroke.addColorStop(0, '#80b6f4');
-            gradientStroke.addColorStop(1, chartColor);
-
-            gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-            gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-            gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
-
-            myChart = new Chart(ctx, {
-                type: 'line',
-                responsive: true,
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                    datasets: [{
-                        label: "Active Users",
-                        borderColor: "#f96332",
-                        pointBorderColor: "#FFF",
-                        pointBackgroundColor: "#f96332",
-                        pointBorderWidth: 2,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 1,
-                        pointRadius: 4,
-                        fill: true,
-                        backgroundColor: gradientFill,
-                        borderWidth: 2,
-                        data: [542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 630]
-                    }]
-                },
-                options: gradientChartOptionsConfiguration
-            });
-        }
-
-
-        ctx = document.getElementById('lineChartExampleWithNumbersAndGrid')
-
-        if (ctx) {
-            ctx = ctx.getContext("2d");
-
-            gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-            gradientStroke.addColorStop(0, '#18ce0f');
-            gradientStroke.addColorStop(1, chartColor);
-
-            gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-            gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-            gradientFill.addColorStop(1, hexToRGB('#18ce0f', 0.4));
-
-            myChart = new Chart(ctx, {
-                type: 'line',
-                responsive: true,
-                data: {
-                    labels: ["12pm,", "3pm", "6pm", "9pm", "12am", "3am", "6am", "9am"],
-                    datasets: [{
-                        label: "Email Stats",
-                        borderColor: "#18ce0f",
-                        pointBorderColor: "#FFF",
-                        pointBackgroundColor: "#18ce0f",
-                        pointBorderWidth: 2,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 1,
-                        pointRadius: 4,
-                        fill: true,
-                        backgroundColor: gradientFill,
-                        borderWidth: 2,
-                        data: [40, 500, 650, 700, 1200, 1250, 1300, 1900]
-                    }]
-                },
-                options: gradientChartOptionsConfigurationWithNumbersAndGrid
-            });
-        }
-
-        var e = document.getElementById("barChartSimpleGradientsNumbers")
-
-        if (e) {
-            e = e.getContext("2d");
-
-            gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-            gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-            gradientFill.addColorStop(1, hexToRGB('#2CA8FF', 0.6));
-
-            var a = {
-                type: "bar",
-                data: {
-                    labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                    datasets: [{
-                        label: "Active Countries",
-                        backgroundColor: gradientFill,
-                        borderColor: "#2CA8FF",
-                        pointBorderColor: "#FFF",
-                        pointBackgroundColor: "#2CA8FF",
-                        pointBorderWidth: 2,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 1,
-                        pointRadius: 4,
-                        fill: true,
-                        borderWidth: 1,
-                        data: [80, 99, 86, 96, 123, 85, 100, 75, 88, 90, 123, 155]
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: false
-                    },
-                    tooltips: {
-                        bodySpacing: 4,
-                        mode: "nearest",
-                        intersect: 0,
-                        position: "nearest",
-                        xPadding: 10,
-                        yPadding: 10,
-                        caretPadding: 10
-                    },
-                    responsive: 1,
-                    scales: {
-                        yAxes: [{
-                            gridLines: 0,
-                            gridLines: {
-                                zeroLineColor: "transparent",
-                                drawBorder: false
-                            }
-                        }],
-                        xAxes: [{
-                            display: 0,
-                            gridLines: 0,
-                            ticks: {
-                                display: false
-                            },
-                            gridLines: {
-                                zeroLineColor: "transparent",
-                                drawTicks: false,
-                                display: false,
-                                drawBorder: false
-                            }
-                        }]
-                    },
-                    layout: {
-                        padding: {
-                            left: 0,
-                            right: 0,
-                            top: 15,
-                            bottom: 15
-                        }
-                    }
-                }
-            };
-
-            var viewsChart = new Chart(e, a);
-        }
     },
 
 };

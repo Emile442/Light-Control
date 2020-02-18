@@ -29,6 +29,9 @@ mix.scripts([
     'node_modules/noty/lib/noty.js',
     'node_modules/jquery-circle-progress/dist/circle-progress.js',
     'resources/js/delete.js',
+    'resources/js/zigbee/cooldown.js',
+    'resources/js/zigbee/lights.js',
+    'resources/js/zigbee/groups.js',
     'resources/js/app.js',
 ], 'public/js/app.js').version();
 

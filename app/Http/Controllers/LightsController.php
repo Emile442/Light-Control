@@ -10,7 +10,7 @@ class LightsController extends Controller
 {
     public function index()
     {
-        $lights = Light::all();
+        $lights = Light::with('group')->get();
 
         return view('lights.index', compact('lights'));
     }
