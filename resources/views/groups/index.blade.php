@@ -29,7 +29,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($groups as $group)
-                                        <tr>
+                                        <tr class="{{ $group->public ? 'table-info' : '' }}">
                                             <td>{{ $group->id }}</td>
                                             <td>{{ $group->name }}</td>
                                             <td>

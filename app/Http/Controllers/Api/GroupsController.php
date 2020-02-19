@@ -29,6 +29,26 @@ class GroupsController extends Controller
 
     }
 
+    public function guestOn($id)
+    {
+        $group = Group::find($id);
+        if (!$group || !$group->public)
+            return response()->json([
+                'success' => false,
+                'errors' => [
+                    'Group not Found'
+                ]
+            ])->setStatusCode(404);
+
+        $group->switchDiffer(true, 30);
+
+        $errors = [];
+        return response()->json([
+            'success' => empty($errors) ? true : false,
+            'errors' => $errors
+        ])->setStatusCode(empty($errors) ? 200 : 504);
+    }
+
     public function setGroupState($id, $state)
     {
         $group = Group::find($id);
@@ -66,14 +86,7 @@ class GroupsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $timer = Timer::where('group_id', $group->id)->first();
-        if ($timer)
-            $timer->job->delete();
-
-        $this->dispatch((new GroupsStateJobs($group, $state)));
-        $job = $this->dispatch((new GroupsStateJobs($group, !$state))->delay(Carbon::now()->addMinutes($period)));
-
-        Timer::create(['group_id' => $group->id, 'job_id' => $job]);
+        $group->switchDiffer($state, $period);
 
         $errors = [];
         return response()->json([

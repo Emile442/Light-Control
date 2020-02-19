@@ -11,8 +11,11 @@
 |
 */
 
+Route::get('/', "HomeController@index")->name('root');
+Route::get('/guest', 'GuestController@guest')->name('guest');
+Route::get('/guest/group/{id}/on', 'GuestController@groupSwitch')->name('guest.group');
+
 Route::group(["middleware" => "auth"], function () {
-    Route::get('/', "HomeController@index")->name('root');
     Route::get('/network', "NetworkController@index")->name('network.index');
 
     Route::resource('groups', 'GroupsController', ['except' => ['new', 'show']]);

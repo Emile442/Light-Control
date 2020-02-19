@@ -16,7 +16,7 @@ class GroupsController extends Controller
 
     public function store(GroupRequest $request)
     {
-        $group = Group::create($request->only('name'));
+        $group = Group::create($request->all());
         return redirect()->route('groups.index')->with('success', "The Group {$group->name} has been created.");
     }
 

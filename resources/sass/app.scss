@@ -42,7 +42,7 @@
 @import "now-ui-dashboard/responsive";
 
 @import "checkbox";
-
+@import "guest";
 
 .card-header-inline {
     display: inline-flex;
@@ -55,11 +55,15 @@
 
 .circle-progress {
     width: 100px;
-    margin: 6px 6px 20px;
+    margin: 6px 6px 10px;
     display: inline-block;
     position: relative;
     text-align: center;
     line-height: 1.2;
+}
+
+.circle-progress.left {
+    left: -20%;
 }
 
 .circle-progress strong {
