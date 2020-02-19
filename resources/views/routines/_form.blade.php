@@ -31,15 +31,6 @@
 @section('js')
     <script type="application/javascript">
         $(document).ready(function() {
-
-            new Picker(document.querySelector('.js-time-picker'), {
-                format: 'HH:mm',
-                headers: true,
-                text: {
-                    title: 'Pick a time',
-                },
-            });
-
             let input = document.getElementById("groups"),
                 tagify = new Tagify(input, {whitelist: $('#groups').val().split(','), enforceWhitelist: true}),
                 controller;

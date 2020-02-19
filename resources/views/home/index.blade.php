@@ -15,18 +15,29 @@
                         <h4 class="card-title">Cooldown</h4>
                     </div>
                     <div class="card-body">
-                        @if($lastJob)
-                            <div class="circle-progress timer" data-animation-start-value="" data-start="{{ $lastJob->created_at->timestamp }}" data-end="{{ $lastJob->available_at }}">
-                                <strong></strong>
-                            </div>
+                        @if($timers->count() != 0)
+                            @foreach($timers as $k => $timer)
+                                <div class="col-md-12">
+                                    <span style="margin-top: 10px;">{{ $timer->group->name }}</span>
+                                    <div class="col-md-8">
+                                        <div class="circle-progress timer" data-animation-start-value="" data-start="{{ $timer->job->created_at->timestamp }}" data-end="{{ $timer->job->available_at }}">
+                                            <strong></strong>
+                                        </div>
+                                    </div>
+                                    @if($timers->count() != $k  + 1)
+                                        <hr>
+                                    @endif
+                                </div>
+                            @endforeach
                         @else
-                            <div class="circle-progress timer" data-animation-start-value="" data-start="{{ \Carbon\Carbon::now()->subSecond()->timestamp }}" data-end="{{ \Carbon\Carbon::now()->timestamp }}">
-                                <strong></strong>
+                            <div class="alert alert-info">
+                                No timer run at this moment.
                             </div>
                         @endif
                     </div>
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
@@ -73,9 +84,6 @@
 @section('js')
     <script type="application/javascript">
         $(document).ready(function() {
-
-
-
             /* Timer Form */
             let timer_form = $("#timer-form")
             timer_form.submit(function (e) {

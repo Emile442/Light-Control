@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Job;
+use App\Timer;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $lastJob = Job::latest()->first();
+        $timers = Timer::with('job')->with('group')->get();
 
-        return view('home.index', compact("lastJob"));
+        return view('home.index', compact("timers"));
     }
 }

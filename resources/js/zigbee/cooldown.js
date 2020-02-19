@@ -15,7 +15,7 @@ $(document).ready(function() {
         let timerBar = timer.circleProgress({
             value: 1 - (percent /100),
             fill: {gradient: ['#0681c4', '#4ac5f8']},
-            size: 200
+            size: 50
         }).on('circle-animation-progress', function(event, progress, stepValue) {
             diff = end.getTime() - new Date().getTime()
             minutes= Math.round((diff % 3600000 ) / 60000);

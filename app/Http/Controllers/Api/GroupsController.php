@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Group;
 use App\Http\Controllers\Controller;
+use App\Job;
 use App\Jobs\GroupsStateJobs;
+use App\Timer;
 use App\Zigbee\DeconzApi;
 use Carbon\Carbon;
 use http\Env\Response;
@@ -64,8 +66,15 @@ class GroupsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $this->dispatch((new GroupsStateJobs($group, !$state))->delay(Carbon::now()->addMinutes($period)));
+        $timer = Timer::where('group_id', $group->id)->first();
+        if ($timer)
+            $timer->job->delete();
+
         $this->dispatch((new GroupsStateJobs($group, $state)));
+        $job = $this->dispatch((new GroupsStateJobs($group, !$state))->delay(Carbon::now()->addMinutes($period)));
+
+        Timer::create(['group_id' => $group->id, 'job_id' => $job]);
+
         $errors = [];
         return response()->json([
             'success' => empty($errors) ? true : false,
