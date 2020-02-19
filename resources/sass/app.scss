@@ -41,6 +41,8 @@
 
 @import "now-ui-dashboard/responsive";
 
+@import "checkbox";
+
 
 .card-header-inline {
     display: inline-flex;
@@ -50,7 +52,6 @@
     position: absolute;
     right: 3%;
 }
-
 
 .circle-progress {
     width: 100px;
@@ -88,4 +89,9 @@
 
 .tagify__tag:first-child {
     margin: 5px 0 5px 15px;
+}
+
+.tagify.tagify--focus {
+    transition: 0s;
+    border-color: $orange;
 }

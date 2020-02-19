@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
@@ -15,12 +17,13 @@ class UsersController extends Controller
         return view('users.index', compact('users'));
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password'))
+            'password' => Hash::make($request->get('password')),
+            'api_token' => Str::random(80)
         ]);
         return redirect(route('users.index'))->with('success', "{$user->name} has been created.");
     }
@@ -30,7 +33,7 @@ class UsersController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         $user = User::find($id);
         $user->update($request->only('name', 'email'));

@@ -18,6 +18,8 @@ Route::group(["middleware" => "auth"], function () {
     Route::resource('groups', 'GroupsController', ['except' => ['new', 'show']]);
     Route::resource('lights', 'LightsController', ['except' => ['new', 'show']]);
     Route::resource('routines', 'RoutinesController', ['except' => ['new', 'show']]);
+
+    Route::resource('users', 'UsersController', ['except' => ['new', 'show']]);
 });
 
 

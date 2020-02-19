@@ -42,6 +42,13 @@
                     <p>Network</p>
                 </a>
             </li>
+
+            <li class="{{ Request::is('users') ? 'active' : '' }} {{ Request::is('users/*') ? 'active' : '' }}">
+                <a href="{{ route('users.index') }}">
+                    <i class="now-ui-icons users_single-02"></i>
+                    <p>Users</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>
