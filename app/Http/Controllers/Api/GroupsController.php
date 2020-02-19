@@ -64,8 +64,8 @@ class GroupsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $this->dispatch((new GroupsStateJobs($group, $state))->delay(Carbon::now()->addMinutes($period)));
-        //$this->dispatch((new GroupsStateJobs($group, $state)));
+        $this->dispatch((new GroupsStateJobs($group, !$state))->delay(Carbon::now()->addMinutes($period)));
+        $this->dispatch((new GroupsStateJobs($group, $state)));
         $errors = [];
         return response()->json([
             'success' => empty($errors) ? true : false,

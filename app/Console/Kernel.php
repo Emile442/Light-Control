@@ -7,6 +7,7 @@ use App\Console\Commands\ZlGroups;
 use App\Console\Commands\ZlLights;
 use App\Console\Commands\ZlNetwork;
 use App\Jobs\GroupsStateJobs;
+use App\Routine;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -34,7 +35,14 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        // $schedule->job(new GroupsStateJobs('all'))->everyFiveMinutes();
+
+        $routines = Routine::with('groups')->get();
+
+        foreach ($routines as $routine) {
+            foreach ($routine->groups as $group) {
+                $schedule->job(new GroupsStateJobs($group, $routine->state))->dailyAt($routine->exec);
+            }
+        }
     }
 
     /**

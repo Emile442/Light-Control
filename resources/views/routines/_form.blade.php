@@ -11,7 +11,7 @@
     </div>
     <div class="form-group">
         <label for="groups" >Groups</label>
-        <input type="text" name="groups" placeholder="Associate Groups" id="groups" autocomplete="off" value="{{ old('groups', $routine->groupsList) }}" data-url="{{ route('api.groups.index') }}" required>
+        <input type="text" class="form-control groups" name="groups" placeholder="Associate Groups" id="groups" autocomplete="off" value="{{ old('groups', $routine->groupsList) }}" data-url="{{ route('api.groups.index') }}" required>
     </div>
     <div class="form-group">
         <label for="state" >Sate</label>
@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
         <label for="exec_at" >Exec At</label>
-        <input type="number" id="exec_at" name="exec_at" class="form-control timepickr" value="{{ old('exec_at', $routine->exec) }}">
+        <input type="text" id="exec_at" name="exec_at" class="form-control js-time-picker" value="{{ old('exec_at', $routine->exec) }}">
     </div>
 
     <button class="btn btn-round btn-primary" type="submit">Submit</button>
@@ -30,39 +30,39 @@
 
 @section('js')
     <script type="application/javascript">
-        $('.timepickr').flatpickr({
-            enableTime: true,
-            noCalendar: true,
-            dateFormat: "H:i",
-            time_24hr: true,
-            allowInput: true
+        $(document).ready(function() {
+
+            new Picker(document.querySelector('.js-time-picker'), {
+                format: 'HH:mm',
+                headers: true,
+                text: {
+                    title: 'Pick a time',
+                },
+            });
+
+            let input = document.getElementById("groups"),
+                tagify = new Tagify(input, {whitelist: $('#groups').val().split(','), enforceWhitelist: true}),
+                controller;
+
+            tagify.on('input', onInput)
+
+            function onInput(e){
+                let value = e.detail.value;
+                tagify.settings.whitelist.length = 0; // reset the whitelist
+
+                controller && controller.abort();
+                controller = new AbortController();
+
+                tagify.loading(true).dropdown.hide.call(tagify)
+
+                fetch('/api/groups?term=' + value, {signal:controller.signal})
+                    .then(RES => RES.json())
+                    .then(function(whitelist){
+                        tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
+                        tagify.loading(false).dropdown.show.call(tagify, value);
+                    })
+            }
         });
-
-        let input = document.getElementById("groups"),
-            tagify = new Tagify(input, {whitelist:[]}),
-            controller; // for aborting the call
-
-        // listen to any keystrokes which modify tagify's input
-        tagify.on('input', onInput)
-
-        function onInput( e ){
-            var value = e.detail.value;
-            tagify.settings.whitelist.length = 0; // reset the whitelist
-
-            controller && controller.abort();
-            controller = new AbortController();
-
-            tagify.loading(true).dropdown.hide.call(tagify)
-
-            fetch('/api/groups?term=' + value, {signal:controller.signal})
-                .then(RES => RES.json())
-                .then(function(whitelist){
-                    tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
-                    tagify.loading(false).dropdown.show.call(tagify, value);
-                })
-        }
-
-
     </script>
 @endsection
 

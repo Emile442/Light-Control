@@ -37,7 +37,7 @@
                                                 <span class="badge badge-secondary">{{ $group->name }}</span>
                                             @endforeach
                                         </td>
-                                        <td>{{ $routine->state }}</td>
+                                        <td><span class="badge badge-{{ $routine->state ? 'success' : 'danger' }}">{{ $routine->state ? 'On' : 'Off' }}</span></td>
                                         <td>{{ $routine->exec }}</td>
                                         <td>
                                             <a href="{{ route('routines.edit', $routine) }}" class="btn btn-round btn-secondary"><i class="fa fa-edit"></i></a>

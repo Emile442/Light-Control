@@ -3,9 +3,8 @@
 @import "~bootstrap4-toggle/css/bootstrap4-toggle.min";
 @import "~noty/lib/themes/mint.css";
 @import "~noty/lib/noty.css";
-@import "~flatpickr/dist/flatpickr.css";
-@import "~flatpickr/dist/themes/airbnb.css";
 @import "~@yaireo/tagify/src/tagify";
+@import "~pickerjs/dist/picker.css";
 
 @import 'now-ui-dashboard/variables';
 @import 'now-ui-dashboard/mixins';
@@ -84,5 +83,9 @@
 }
 
 .groups {
-    padding: 0;
+    padding: 0 !important;
+}
+
+.tagify__tag:first-child {
+    margin: 5px 0 5px 15px;
 }

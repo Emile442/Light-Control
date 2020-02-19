@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\GroupsList;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RoutineRequest extends FormRequest
@@ -26,7 +27,8 @@ class RoutineRequest extends FormRequest
         return [
             "name" => "required|min:3|max:30",
             "state" => "required|boolean",
-            "exec_at" => "required|date_format:H:i"
+            "exec_at" => "required|date_format:H:i",
+            "groups" => ['required', new GroupsList]
         ];
     }
 }
