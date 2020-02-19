@@ -2,45 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LightRequest;
 use App\Light;
-use App\Zigbee\DeconzApi;
-use Illuminate\Http\Request;
 
 class LightsController extends Controller
 {
     public function index()
     {
         $lights = Light::with('group')->get();
-
         return view('lights.index', compact('lights'));
     }
 
-    public function store(Request $request)
+    public function store(LightRequest $request)
     {
-        $light = Light::create($request->only('name', 'networkId', 'group_id'));
+        $light = Light::create($request->all());
         return redirect()->route('lights.index')->with('success', "The Light {$light->name} has been created.");
     }
 
-    public function edit($id)
+    public function edit(Light $light)
     {
-        $light = Light::find($id);
         return view('lights.edit', compact('light'));
     }
 
-    public function update(Request $request, $id)
+    public function update(LightRequest $request, Light $light)
     {
-        $light = Light::find($id);
-        $light->name = $request->get('name');
-        $light->group_id = $request->get('group_id');
-        $light->networkId = $request->get('networkId');
-        $light->save();
+        $light->update($request->all());
         return redirect()->route('lights.index')->with('success', "The Light {$light->name} has been updated.");
     }
 
-    public function destroy($id)
+    public function destroy(Light $light)
     {
-        $light = Light::find($id);
         $light->delete();
-        return redirect()->route('lights.index')->with('success', "The Light has been deleted.");
+        return redirect()->route('lights.index')->with('success', "The Light {$light->name} has been deleted.");
     }
 }

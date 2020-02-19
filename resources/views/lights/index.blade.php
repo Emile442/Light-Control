@@ -37,7 +37,7 @@
                                         <td>{{ $light->group->name }}</td>
                                         <td>{{ $light->networkId }}</td>
                                         <td class="text-right">
-                                            <button type="button" class="btn btn-round btn-change-state" id="light-button-{{ $light->id }}" data-id="{{ $light->id }}"><span><i class="fa fa-spinner fa-spin"></i></span></button>
+                                            <button type="button" class="btn btn-round btn-light-change-state" id="light-button-{{ $light->id }}" data-id="{{ $light->id }}"><span><i class="fa fa-spinner fa-spin"></i></span></button>
                                             <a href="{{ route('lights.edit', $light) }}" class="btn btn-round btn-secondary"><i class="fa fa-edit"></i></a>
                                             <a href="{{ route('lights.destroy', $light) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure to want to delete {{ $light->name }} ?"><i class="fa fa-trash"></i></a>
                                         </td>

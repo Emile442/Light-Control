@@ -12,6 +12,21 @@ use Illuminate\Http\Request;
 
 class GroupsController extends Controller
 {
+    public function index(Request $request)
+    {
+        $term = $request->get('term');
+
+        return Group::select('name')
+            ->where('name', 'LIKE', $term . '%')
+            ->get()
+            ->map(function ($group) {
+                return [
+                    'value' => $group->name
+                ];
+            });
+
+    }
+
     public function setGroupState($id, $state)
     {
         $group = Group::find($id);
@@ -49,8 +64,8 @@ class GroupsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $this->dispatch((new GroupsStateJobs($group, !$state))->delay(Carbon::now()->addMinutes($period)));
-        $this->dispatch((new GroupsStateJobs($group, $state)));
+        $this->dispatch((new GroupsStateJobs($group, $state))->delay(Carbon::now()->addMinutes($period)));
+        //$this->dispatch((new GroupsStateJobs($group, $state)));
         $errors = [];
         return response()->json([
             'success' => empty($errors) ? true : false,

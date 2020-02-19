@@ -63,6 +63,7 @@ class LightsController extends Controller
         $r = (new DeconzApi())->setLightState($light->networkId);
         if (is_null($r))
             $errors[] = "Unable to connect the bridge";
+
         return response()->json([
             'success' => empty($errors) ? true : false,
             'state' => $r,

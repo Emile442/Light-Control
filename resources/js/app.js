@@ -227,3 +227,14 @@ demo = {
     },
 
 };
+
+$('.form-error').each(function () {
+    let modalId = $('#modal-error')
+    if (modalId.length) {
+        modalId = modalId.attr('data-modal');
+        let modal = $('#' + modalId)
+        if (modal.length) {
+            modal.modal('show')
+        }
+    }
+});

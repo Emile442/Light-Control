@@ -28,26 +28,19 @@
                 <nav>
                     <ul>
                         <li>
-                            <a href="https://www.creative-tim.com">
-                                Creative Tim
+                            <a href="{{ route('root') }}">
+                                Dashboard
                             </a>
                         </li>
                         <li>
-                            <a href="http://presentation.creative-tim.com">
-                                About Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://blog.creative-tim.com">
-                                Blog
+                            <a href="{{ route('network.index') }}">
+                                Network
                             </a>
                         </li>
                     </ul>
                 </nav>
                 <div class="copyright" id="copyright">
-                    &copy; <script>
-                        document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
-                    </script>, Designed by <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+                    <i class="fa fa-code"></i> by <a href="mailto:emile.lepetit@epitech.eu" target="_blank">Emile LEPETIT</a> & <a href="mailto:paul.bugeon@epitech.eu" target="_blank">Paul BUGEON</a> with <i class="fa fa-heart"></i>
                 </div>
             </div>
         </footer>
@@ -89,6 +82,8 @@
 </div>
 
 <script src="{{ mix('js/app.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+
 
 @yield('js')
 

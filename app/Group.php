@@ -12,4 +12,9 @@ class Group extends Model
     {
         return $this->hasMany(Light::class);
     }
+
+    public function routines()
+    {
+        return $this->belongsToMany(Routine::class, 'routine_group');
+    }
 }

@@ -25,9 +25,8 @@ class UsersController extends Controller
         return redirect(route('users.index'))->with('success', "{$user->name} has been created.");
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::find($id);
         return view('users.edit', compact('user'));
     }
 
@@ -43,12 +42,10 @@ class UsersController extends Controller
         return redirect(route('users.index'))->with('success', "{$user->name} has been edited.");
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::find($id);
-        $username = $user->name;
         $user->delete();
-        return redirect(route('users.index'))->with('success', "{$username} has been created.");
+        return redirect(route('users.index'))->with('success', "{$user->name} has been created.");
     }
 
 }

@@ -17,6 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('groups', "Api\GroupsController@index")->name('api.groups.index');
+
 Route::group(['prefix' => 'v1', "namespace" => "Api"], function () {
    Route::get('light/{id}', 'LightsController@getLights')->name('api.lights.show');
    Route::get('light/{id}/state/{mode}', 'LightsController@setLightState')->name('api.lights.state');

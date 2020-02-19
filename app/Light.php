@@ -14,9 +14,4 @@ class Light extends Model
         return $this->belongsTo(Group::class);
     }
 
-    public function getStateAttribute()
-    {
-        $light = (new DeconzApi())->getLight($this->networkId);
-        return ($light ? $light->state->on : null);
-    }
 }

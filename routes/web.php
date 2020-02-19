@@ -15,8 +15,9 @@ Route::group(["middleware" => "auth"], function () {
     Route::get('/', "HomeController@index")->name('root');
     Route::get('/network', "NetworkController@index")->name('network.index');
 
-    Route::resource('groups', 'GroupsController');
-    Route::resource('lights', 'LightsController');
+    Route::resource('groups', 'GroupsController', ['except' => ['new', 'show']]);
+    Route::resource('lights', 'LightsController', ['except' => ['new', 'show']]);
+    Route::resource('routines', 'RoutinesController', ['except' => ['new', 'show']]);
 });
 
 

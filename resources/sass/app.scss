@@ -3,6 +3,9 @@
 @import "~bootstrap4-toggle/css/bootstrap4-toggle.min";
 @import "~noty/lib/themes/mint.css";
 @import "~noty/lib/noty.css";
+@import "~flatpickr/dist/flatpickr.css";
+@import "~flatpickr/dist/themes/airbnb.css";
+@import "~@yaireo/tagify/src/tagify";
 
 @import 'now-ui-dashboard/variables';
 @import 'now-ui-dashboard/mixins';
@@ -71,4 +74,15 @@
 
 .navbar-dropdown {
     cursor: pointer;
+}
+
+.bootstrap-tagsinput .badge {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 3px;
+    padding: 5px 8px;
+}
+
+.groups {
+    padding: 0;
 }

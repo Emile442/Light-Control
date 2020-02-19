@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Group;
-use Illuminate\Http\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Http\Requests\GroupRequest;
 
 class GroupsController extends Controller
 {
@@ -15,32 +14,25 @@ class GroupsController extends Controller
         return view('groups.index', compact('groups'));
     }
 
-    public function store(Request $request)
+    public function store(GroupRequest $request)
     {
         $group = Group::create($request->only('name'));
-
         return redirect()->route('groups.index')->with('success', "The Group {$group->name} has been created.");
     }
 
-    public function edit($id)
+    public function edit(Group $group)
     {
-        $group = Group::find($id);
-
         return view('groups.edit', compact('group'));
     }
 
-    public function update(Request $request, $id)
+    public function update(GroupRequest $request, Group $group)
     {
-        $group = Group::find($id);
-        $group->name = $request->get('name');
-        $group->save();
+        $group->update($request->all());
         return redirect()->route('groups.index')->with('success', "The Group {$group->name} has been updated.");
     }
 
-    public function destroy($id)
+    public function destroy(Group $group)
     {
-        $group = Group::find($id);
-
         $group->delete();
         return redirect()->route('groups.index')->with('success', "The Group {$group->name} has been deleted.");
     }

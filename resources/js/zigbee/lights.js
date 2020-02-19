@@ -20,14 +20,14 @@ $(document).ready(function() {
                 closeWith: ['click', 'button'],
                 timeout: 3000
             }).show();
-            $("#light-button-" + id).html('<span></span>Unable to connect').addClass("btn-danger")
+            $("#light-button-" + id).html('<span></span>Unable to connect').addClass("btn-danger").removeClass("btn-light-change-state");
             $("#light-state-" + id).addClass("text-danger")
         });
     })
 
 
     /* Light Switch Button */
-    $('.btn-change-state').click(function () {
+    $('.btn-light-change-state').click(function () {
         let btn = $(this);
         let id = btn.attr('data-id')
         let classSuccess = 'btn-success'

@@ -7,19 +7,9 @@
                     <span aria-hidden="true"><i class="fa fa-close"></i></span>
                 </button>
             </div>
-            <form action="{{ route('groups.store') }}" method="post" id="newGroupsForm">
-                {{ csrf_field() }}
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name" >Name</label>
-                        <input type="text" name="name" id="name" class="form-control" autocomplete="off" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-round btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-round btn-primary">Submit</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                @include('groups._form', ['group' => new \App\Group()])
+            </div>
         </div>
     </div>
 </div>

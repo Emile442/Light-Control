@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.btn-change-state').click(function () {
+    $('.btn-group-change-state').click(function () {
         let btn = $(this);
         $.ajax({
             url: "/api/v1/group/" + $(this).attr("data-id") + "/state/" + $(this).attr("data-state"),

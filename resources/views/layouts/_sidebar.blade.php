@@ -30,6 +30,12 @@
                     <p>Lights</p>
                 </a>
             </li>
+            <li class="{{ Request::is('routines') ? 'active' : '' }} {{ Request::is('routines/*') ? 'active' : '' }}">
+                <a href="{{ route('routines.index') }}">
+                    <i class="now-ui-icons files_paper"></i>
+                    <p>Routines</p>
+                </a>
+            </li>
             <li class="{{ Request::is('network') ? 'active' : '' }}">
                 <a href="{{ route('network.index') }}">
                     <i class="now-ui-icons design_vector"></i>

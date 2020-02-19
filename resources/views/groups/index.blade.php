@@ -39,8 +39,8 @@
                                             </td>
                                             <td class="text-right">
                                                 @if($group->lights->count())
-                                                    <button type="button" class="btn btn-round btn-change-state btn-success" data-id="{{ $group->id }}" data-state="1"><span></span>On</button>
-                                                    <button type="button" class="btn btn-round btn-change-state" data-id="{{ $group->id }}" data-state="0"><span></span>Off</button>
+                                                    <button type="button" class="btn btn-round btn-group-change-state btn-success" data-id="{{ $group->id }}" data-state="1"><span></span>On</button>
+                                                    <button type="button" class="btn btn-round btn-group-change-state" data-id="{{ $group->id }}" data-state="0"><span></span>Off</button>
                                                 @endif
                                                 <a href="{{ route('groups.edit', $group) }}" class="btn btn-round btn-secondary"><i class="fa fa-edit"></i></a>
                                                 <a href="{{ route('groups.destroy', $group) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure to want to delete {{ $group->name }}?"><i class="fa fa-trash"></i></a>

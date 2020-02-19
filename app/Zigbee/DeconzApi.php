@@ -51,7 +51,11 @@ class DeconzApi {
             return (null);
         }
 
-        return(json_decode($rq->getBody()->getContents()));
+        $json = json_decode($rq->getBody()->getContents());
+
+        if (!isset($json->state))
+            return (null);
+        return($json);
     }
 
     public function setLightState(int $lightId, bool $state = null) : ?bool
