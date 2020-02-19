@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @auth
+     <meta name="api-token" content="{{ \Auth::user()->api_token }}">
+    @endauth
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('/img/favicon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('/img/favicon.png') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -92,8 +95,6 @@
         $('#d-button').click(function () {
             let btn = $(this);
             let table = $("#d-table");
-
-            console.log("WIP")
         })
     });
 </script>

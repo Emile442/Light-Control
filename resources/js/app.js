@@ -239,10 +239,12 @@ $('.form-error').each(function () {
     }
 });
 
-new Picker(document.querySelector('.js-time-picker'), {
-    format: 'HH:mm',
-    headers: true,
-    text: {
-        title: 'Pick a time',
-    },
+$('.js-time-picker').each(function () {
+    new Picker(this, {
+        format: 'HH:mm',
+        headers: true,
+        text: {
+            title: 'Pick a time',
+        },
+    });
 });

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class SetupUser extends Command
 {
@@ -70,7 +71,8 @@ class SetupUser extends Command
         $user = User::create([
             'name' => $name,
             'email' => $email,
-            'password' => Hash::make($password)
+            'password' => Hash::make($password),
+            'api_token' => Str::random(80)
         ]);
         $this->line("{$user->name} has been created.");
     }

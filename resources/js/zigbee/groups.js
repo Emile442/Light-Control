@@ -1,8 +1,10 @@
 $(document).ready(function() {
+    let api_token = $('meta[name=api-token]').attr('content')
+
     $('.btn-group-change-state').click(function () {
         let btn = $(this);
         $.ajax({
-            url: "/api/v1/group/" + $(this).attr("data-id") + "/state/" + $(this).attr("data-state"),
+            url: `/api/v1/group/${$(this).attr("data-id")}/state/${$(this).attr("data-state")}?api_token=${api_token}`,
             type: 'get',
             beforeSend: function(){
                 btn.find('span').html('<i class="fa fa-spinner fa-spin"></i>  ')

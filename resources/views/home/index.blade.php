@@ -18,7 +18,7 @@
                         @if($timers->count() != 0)
                             @foreach($timers as $k => $timer)
                                 <div class="col-md-12">
-                                    <span style="margin-top: 10px;">{{ $timer->group->name }}</span>
+                                    <span>{{ $timer->group->name }}</span>
                                     <div class="col-md-8">
                                         <div class="circle-progress timer" data-animation-start-value="" data-start="{{ $timer->job->created_at->timestamp }}" data-end="{{ $timer->job->available_at }}">
                                             <strong></strong>
@@ -85,6 +85,7 @@
     <script type="application/javascript">
         $(document).ready(function() {
             /* Timer Form */
+            let api_token = $('meta[name=api-token]').attr('content')
             let timer_form = $("#timer-form")
             timer_form.submit(function (e) {
                 e.preventDefault();
@@ -92,7 +93,7 @@
                 let state = $("#state").val()
                 let period = $("#period").val()
                 let text = state ? "On" : "Off"
-                let uri = "/api/v1/group/" + group + "/state/" + state + "/" + period;
+                let uri = `/api/v1/group/${group}/state/${state}/${period}?api_token=${api_token}`;
                 if (period.length) {
                     $.get(uri).done(function( data ) {
                         new Noty({
