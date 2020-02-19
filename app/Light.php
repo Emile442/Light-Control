@@ -2,16 +2,15 @@
 
 namespace App;
 
-use App\Zigbee\DeconzApi;
 use Illuminate\Database\Eloquent\Model;
 
 class Light extends Model
 {
-    protected $fillable = ["name", "group_id", "networkId"];
+    protected $fillable = ["name", "networkId"];
 
-    public function group()
+    public function groups()
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsToMany(Group::class, 'group_light');
     }
 
 }

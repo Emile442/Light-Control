@@ -26,7 +26,6 @@ class LightRequest extends FormRequest
         return [
             "name" => "required|min:3|max:30",
             "networkId" => "required|min:1|max:10",
-            "group_id" => "required|integer|exists:App\Group,id"
         ];
     }
 }

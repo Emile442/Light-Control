@@ -24,7 +24,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
-                                    <th>Group Associate</th>
+                                    <th>Groups Associate</th>
                                     <th>networkId</th>
                                     <th class="text-right">Actions</th>
                                 </tr>
@@ -34,7 +34,11 @@
                                     <tr class="light-list" id="light-{{ $light->id }}" data-id="{{ $light->id }}">
                                         <td><i class="fa fa-lightbulb-o light-state" id="light-state-{{ $light->id }}"></i></td>
                                         <td>{{ $light->name }}</td>
-                                        <td>{{ $light->group->name }}</td>
+                                        <td>
+                                            @foreach($light->groups as $group)
+                                                <span class="badge badge-secondary">{{ $group->name }}</span>
+                                            @endforeach
+                                        </td>
                                         <td>{{ $light->networkId }}</td>
                                         <td class="text-right">
                                             <button type="button" class="btn btn-round btn-light-change-state" id="light-button-{{ $light->id }}" data-id="{{ $light->id }}"><span><i class="fa fa-spinner fa-spin"></i></span></button>

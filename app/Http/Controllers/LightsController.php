@@ -9,7 +9,7 @@ class LightsController extends Controller
 {
     public function index()
     {
-        $lights = Light::with('group')->get();
+        $lights = Light::with('groups')->get();
         return view('lights.index', compact('lights'));
     }
 

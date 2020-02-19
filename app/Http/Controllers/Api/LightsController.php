@@ -9,6 +9,21 @@ use Illuminate\Http\Request;
 
 class LightsController extends Controller
 {
+    public function index(Request $request)
+    {
+        $term = $request->get('term');
+
+        return Light::select('name')
+            ->where('name', 'LIKE', $term . '%')
+            ->get()
+            ->map(function ($group) {
+                return [
+                    'value' => $group->name
+                ];
+            });
+
+    }
+
     public function getLights($id)
     {
         $light = Light::find($id);

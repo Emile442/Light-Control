@@ -11,6 +11,11 @@
     </div>
 
     <div class="form-group">
+        <label for="lights" >Lights</label>
+        <input type="text" class="form-control groups" name="lights" placeholder="Associate Lights" id="lights" autocomplete="off" value="{{ old('lights', $group->lightsList) }}" data-url="{{ route('api.lights.index') }}" required>
+    </div>
+
+    <div class="form-group">
         <label for="public">Public</label>
         <select name="public" id="public" class="form-control">
             <option value="0" {{ old('public', $group->public) == 0 ? 'selected' : '' }}>No</option>
@@ -20,3 +25,33 @@
 
     <button class="btn btn-round btn-primary" type="submit">Submit</button>
 </form>
+
+@section('js')
+    <script type="application/javascript">
+        $(document).ready(function() {
+            let input = document.getElementById("lights"),
+                api_token = $('meta[name=api-token]').attr('content'),
+                tagify = new Tagify(input, {whitelist: $('#lights').val().split(','), enforceWhitelist: true}),
+                controller;
+
+            tagify.on('input', onInput)
+
+            function onInput(e){
+                let value = e.detail.value;
+                tagify.settings.whitelist.length = 0; // reset the whitelist
+
+                controller && controller.abort();
+                controller = new AbortController();
+
+                tagify.loading(true).dropdown.hide.call(tagify)
+
+                fetch(`/api/v1/lights?api_token=${api_token}&term=${value}`, {signal:controller.signal})
+                    .then(RES => RES.json())
+                    .then(function(whitelist){
+                        tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
+                        tagify.loading(false).dropdown.show.call(tagify, value);
+                    })
+            }
+        });
+    </script>
+@endsection

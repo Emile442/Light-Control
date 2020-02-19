@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Concern\Lightable;
 use App\Concern\Switchable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -9,13 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
     use Switchable;
+    use Lightable;
 
     protected $fillable = ['name', 'public'];
-
-    public function lights()
-    {
-        return $this->hasMany(Light::class);
-    }
 
     public function routines()
     {

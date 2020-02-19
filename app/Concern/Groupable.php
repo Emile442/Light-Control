@@ -3,7 +3,6 @@
 namespace App\Concern;
 
 use App\Group;
-use Illuminate\Support\Str;
 
 trait Groupable
 {

@@ -32,6 +32,7 @@
     <script type="application/javascript">
         $(document).ready(function() {
             let input = document.getElementById("groups"),
+                api_token = $('meta[name=api-token]').attr('content'),
                 tagify = new Tagify(input, {whitelist: $('#groups').val().split(','), enforceWhitelist: true}),
                 controller;
 
@@ -46,7 +47,7 @@
 
                 tagify.loading(true).dropdown.hide.call(tagify)
 
-                fetch('/api/groups?term=' + value, {signal:controller.signal})
+                fetch(`/api/v1/groups?api_token=${api_token}&term=${value}`, {signal:controller.signal})
                     .then(RES => RES.json())
                     .then(function(whitelist){
                         tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
