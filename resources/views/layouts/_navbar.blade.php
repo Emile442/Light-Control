@@ -18,14 +18,6 @@
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
             <ul class="navbar-nav">
                 @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#networkStatus">
-                            <i class="now-ui-icons media-2_sound-wave"></i>
-                            <p>
-                                <span class="d-lg-none d-md-block">Diagnostic</span>
-                            </p>
-                        </a>
-                    </li>
                     <li class="nav-item dropdown navbar-dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="now-ui-icons users_single-02"></i>

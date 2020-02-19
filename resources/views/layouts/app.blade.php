@@ -50,54 +50,10 @@
     </div>
 </div>
 
-<div class="modal fade" id="networkStatus" tabindex="-1" role="dialog" aria-labelledby="networkStatusModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Network Diagnostic</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped" id="d-table">
-                    @foreach(\App\Group::with("lights")->get() as $group)
-                        <tr id="d-group-{{ $group->id }}" data-type="group" data-id="{{ $group->id }}">
-                            <td colspan="2">{{ $group->name }}</td>
-                            <td><span class="badge badge-success">OK</span></td>
-                        </tr>
-                        @foreach($group->lights as $light)
-                            <tr id="d-light-{{ $light->id }}" data-type="light" data-id="{{ $light->id }}" data-group-id="{{ $group->id }}">
-                                <td></td>
-                                <td>{{ $light->name }}</td>
-                                <td><span class="badge badge-success">OK</span></td>
-                            </tr>
-                        @endforeach
-                    @endforeach
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-round btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-round btn-primary" id="d-button">Refresh</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script src="{{ mix('js/app.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
-
 @yield('js')
-
-<script type="application/javascript">
-    $(document).ready(function () {
-        $('#d-button').click(function () {
-            let btn = $(this);
-            let table = $("#d-table");
-        })
-    });
-</script>
 
 <script>
     $(document).ready(function() {
