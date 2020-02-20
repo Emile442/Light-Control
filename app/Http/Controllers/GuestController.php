@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class GuestController extends Controller
 {
-
     public function guest()
     {
         $groups = Group::with('timers')->where('public', true)->orderBy('name', 'asc')->get();
@@ -24,7 +23,7 @@ class GuestController extends Controller
             abort(404);
 
         if (!$group->canSwitch)
-            return redirect(route('guest'))->with('error', "Impossible réessayer 10min avant la fin du compte à rebourd");
+            return redirect(route('guest'))->with('error', 'Impossible réessayer 10min avant la fin du compte à rebourd');
 
         $group->switchDiffer(true, 30);
 

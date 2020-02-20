@@ -23,7 +23,7 @@ trait Lightable
         $this->lights()->sync($persisted_lights);
     }
 
-    public function getlightsListAttribute(){
+    public function getlightsListAttribute() {
         return $this->lights->pluck('name')->implode(',');
     }
 }

@@ -8,6 +8,8 @@ use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenPrivateMethods;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits;
 use NunoMaduro\PhpInsights\Domain\Metrics\Architecture\Classes;
+use ObjectCalisthenics\Sniffs\Classes\ForbiddenPublicPropertySniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\UselessFunctionDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff;
@@ -50,7 +52,7 @@ return [
     |
     */
 
-    'ide' => ' myide://open?url=file://%f&line=%l',
+    'ide' => "vscode",
     /*
     |--------------------------------------------------------------------------
     | Configuration
@@ -83,12 +85,40 @@ return [
         PropertyTypeHintSniff::class,
         ReturnTypeHintSniff::class,
         UselessFunctionDocCommentSniff::class,
+        UselessOverridingMethodSniff::class,
+        ForbiddenPublicPropertySniff::class,
+
+        /* Custom */
+        SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff::class,
+        PhpCsFixer\Fixer\Basic\BracesFixer::class,
+        SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff::class,
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff::class,
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterNotSniff::class,
+        SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff::class,
+        SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff::class,
+        SlevomatCodingStandard\Sniffs\Operators\DisallowEqualOperatorsSniff::class,
+        SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEmptySniff::class,
+        PHP_CodeSniffer\Standards\Generic\Sniffs\ControlStructures\InlineControlStructureSniff::class,
+        NunoMaduro\PhpInsights\Domain\Sniffs\ForbiddenSetterSniff::class,
+
     ],
 
     'config' => [
         ForbiddenPrivateMethods::class => [
             'title' => 'The usage of private methods is not idiomatic in Laravel.',
         ],
+
+        /* Custom */
+        \ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff::class => [
+            'maxLength' => 35,
+        ],
+        \NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class => [
+            'maxComplexity' => 15,
+        ],
+        \ObjectCalisthenics\Sniffs\NamingConventions\ElementNameMinimalLengthSniff::class => [
+            'minLength' => 3,
+            'allowedShortNames' => ['i', 'id', 'to', 'up', 'k', 'rq', 'e'],
+        ]
     ],
 
 ];

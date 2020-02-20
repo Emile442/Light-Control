@@ -38,7 +38,7 @@ class GroupsController extends Controller
         return redirect()->route('groups.index')->with('success', "The Group {$group->name} has been deleted.");
     }
 
-    private function parseTagify(string $str) : string
+    private function parseTagify(string $str): string
     {
         $tmp = [];
         foreach (json_decode($str) as $item)

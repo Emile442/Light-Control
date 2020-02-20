@@ -24,8 +24,8 @@ class LightRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => "required|min:3|max:30",
-            "networkId" => "required|min:1|max:10",
+            'name' => 'required|min:3|max:30',
+            'networkId' => 'required|min:1|max:10',
         ];
     }
 }

@@ -33,30 +33,6 @@ class SetupUser extends Command
         parent::__construct();
     }
 
-    private function notNullAsk(string $ask, bool $secret = false)
-    {
-        if ($secret)
-            $name = $this->secret($ask);
-        else
-            $name = $this->ask($ask);
-        if ($name != "") {
-            return ($name);
-        }
-        return ($this->notNullAsk($ask));
-    }
-
-    private function askPassword() : string
-    {
-        $password = $this->notNullAsk("Password", true);
-        $passwordConfim = $this->notNullAsk("Password Confirmation", true);
-
-        if ($password != $passwordConfim) {
-            $this->line("Password missmatch");
-            return ($this->askPassword());
-        }
-        return ($password);
-    }
-
     /**
      * Execute the console command.
      *
@@ -64,8 +40,8 @@ class SetupUser extends Command
      */
     public function handle()
     {
-        $name = $this->notNullAsk("Name");
-        $email = $this->notNullAsk("email");
+        $name = $this->notNullAsk('Name');
+        $email = $this->notNullAsk('email');
         $password = $this->askPassword();
 
         $user = User::create([
@@ -75,5 +51,28 @@ class SetupUser extends Command
             'api_token' => Str::random(80)
         ]);
         $this->line("{$user->name} has been created.");
+    }
+
+    private function notNullAsk(string $ask, bool $secret = false)
+    {
+        if ($secret)
+            $name = $this->secret($ask);
+        else
+            $name = $this->ask($ask);
+        if ($name != '')
+            return $name;
+        return $this->notNullAsk($ask);
+    }
+
+    private function askPassword(): string
+    {
+        $password = $this->notNullAsk('Password', true);
+        $passwordConfim = $this->notNullAsk('Password Confirmation', true);
+
+        if ($password != $passwordConfim) {
+            $this->line('Password missmatch');
+            return $this->askPassword();
+        }
+        return $password;
     }
 }

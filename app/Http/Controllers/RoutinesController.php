@@ -11,7 +11,7 @@ class RoutinesController extends Controller
     {
         $routines = Routine::all();
 
-        return view('routines.index', compact("routines"));
+        return view('routines.index', compact('routines'));
     }
 
     public function store(RoutineRequest $request)
@@ -23,7 +23,7 @@ class RoutinesController extends Controller
 
     public function edit(Routine $routine)
     {
-        return view('routines.edit', compact("routine"));
+        return view('routines.edit', compact('routine'));
     }
 
     public function update(RoutineRequest $request, Routine $routine)
@@ -31,17 +31,16 @@ class RoutinesController extends Controller
         $routine->update($request->all());
         $routine->saveGroups($this->parseTagify($request->get('groups')));
         return redirect()->route('routines.index')->with('success', "The Routine {$routine->name} has been updated.");
-
     }
 
     public function destroy($id)
     {
         $routine = Routine::findOrFail($id);
         $routine->delete();
-        return redirect()->route('routines.index')->with('success', "The Routine has been deleted.");
+        return redirect()->route('routines.index')->with('success', 'The Routine has been deleted.');
     }
 
-    private function parseTagify(string $str) : string
+    private function parseTagify(string $str): string
     {
         $tmp = [];
         foreach (json_decode($str) as $item)

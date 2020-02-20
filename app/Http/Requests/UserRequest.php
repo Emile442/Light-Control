@@ -25,16 +25,16 @@ class UserRequest extends FormRequest
     {
         if($this->method() == 'POST') {
             return [
-                "name" => "required|min:3",
-                "email" => "required|email",
-                "password" => "required|same:password_confirm"
-            ];
-        } else {
-            return [
-                "name" => "required|min:3",
-                "email" => "required|email",
-                "password" => "same:password_confirm"
+                'name' => 'required|min:3',
+                'email' => 'required|email',
+                'password' => 'required|same:password_confirm'
             ];
         }
+
+        return [
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'password' => 'same:password_confirm'
+        ];
     }
 }

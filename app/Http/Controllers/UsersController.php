@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
-
     public function index()
     {
         $users = User::all();
@@ -50,5 +49,4 @@ class UsersController extends Controller
         $user->delete();
         return redirect(route('users.index'))->with('success', "{$user->name} has been created.");
     }
-
 }

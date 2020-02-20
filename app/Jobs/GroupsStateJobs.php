@@ -13,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
 class GroupsStateJobs implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     /**
      * @var Group
      */
@@ -30,7 +31,6 @@ class GroupsStateJobs implements ShouldQueue
      */
     public function __construct(Group $group, bool $state)
     {
-        //
         $this->group = $group;
         $this->state = $state;
     }

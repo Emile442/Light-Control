@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "hub/epi-lights",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": [
@@ -21,6 +21,7 @@
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
+        "nunomaduro/phpinsights": "^1.13",
         "phpunit/phpunit": "^8.0"
     },
     "config": {

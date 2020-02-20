@@ -23,7 +23,7 @@ trait Groupable
         $this->groups()->sync($persisted_groups);
     }
 
-    public function getGroupsListAttribute(){
+    public function getGroupsListAttribute() {
         return $this->groups->pluck('name')->implode(',');
     }
 }

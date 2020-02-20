@@ -13,7 +13,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        // Your code here
     ];
 
     /**
@@ -30,6 +30,7 @@ class Handler extends ExceptionHandler
      * Report or log an exception.
      *
      * @param  \Exception  $exception
+     *
      * @return void
      *
      * @throws \Exception
@@ -44,6 +45,7 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Exception

@@ -11,6 +11,6 @@ class HomeController extends Controller
         if (!\Auth::user())
             return redirect(route('guest'));
         $timers = Timer::with('job')->with('group')->get();
-        return view('home.index', compact("timers"));
+        return view('home.index', compact('timers'));
     }
 }

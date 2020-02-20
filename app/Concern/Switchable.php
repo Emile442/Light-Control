@@ -8,8 +8,8 @@ use App\Jobs\GroupsStateJobs;
 use App\Timer;
 use Carbon\Carbon;
 
-trait Switchable {
-
+trait Switchable
+{
     public function switchDiffer($state, $period)
     {
         $group = Group::find($this->id);

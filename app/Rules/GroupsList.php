@@ -14,7 +14,7 @@ class GroupsList implements Rule
      */
     public function __construct()
     {
-        //
+        // Your code here
     }
 
     /**
@@ -22,6 +22,7 @@ class GroupsList implements Rule
      *
      * @param  string  $attribute
      * @param  mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
@@ -42,7 +43,7 @@ class GroupsList implements Rule
         return ':attribute is invalid, it must be an existing group';
     }
 
-    private function parseTagify(string $str) : array
+    private function parseTagify(string $str): array
     {
         $tmp = [];
         foreach (json_decode($str) as $item)

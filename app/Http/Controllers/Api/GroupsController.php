@@ -26,7 +26,6 @@ class GroupsController extends Controller
                     'value' => $group->name
                 ];
             });
-
     }
 
     public function guestOn($id)
@@ -60,12 +59,12 @@ class GroupsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $r = new DeconzApi();
+        $rq = new DeconzApi();
         $lights = [];
         foreach ($group->lights as $light) {
             $lights[] = $light->networkId;
         }
-        $errors = $r->setLightsState($lights, $state);
+        $errors = $rq->setLightsState($lights, $state);
 
         return response()->json([
             'success' => empty($errors) ? true : false,

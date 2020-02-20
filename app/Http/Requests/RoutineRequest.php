@@ -25,10 +25,10 @@ class RoutineRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => "required|min:3|max:30",
-            "state" => "required|boolean",
-            "exec_at" => "required|date_format:H:i",
-            "groups" => ['required', new GroupsList]
+            'name' => 'required|min:3|max:30',
+            'state' => 'required|boolean',
+            'exec_at' => 'required|date_format:H:i',
+            'groups' => ['required', new GroupsList()]
         ];
     }
 }

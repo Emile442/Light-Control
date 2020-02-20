@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Light extends Model
 {
-    protected $fillable = ["name", "networkId"];
+    protected $fillable = ['name', 'networkId'];
 
     public function groups()
     {

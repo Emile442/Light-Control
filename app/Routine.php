@@ -15,8 +15,8 @@ class Routine extends Model
     public function getExecAttribute()
     {
         if (!$this->id)
-            return ('');
-        return (Carbon::createFromFormat('H:i:s', $this->exec_at)->format('H:i'));
+            return '';
+        return Carbon::createFromFormat('H:i:s', $this->exec_at)->format('H:i');
     }
 
 }

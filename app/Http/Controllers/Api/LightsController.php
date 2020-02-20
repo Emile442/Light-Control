@@ -21,7 +21,6 @@ class LightsController extends Controller
                     'value' => $group->name
                 ];
             });
-
     }
 
     public function getLights($id)
@@ -53,9 +52,9 @@ class LightsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $r = (new DeconzApi())->setLightState($light->networkId, $state);
-        if (is_null($r))
-            $errors[] = "Unable to connect the bridge";
+        $rq = (new DeconzApi())->setLightState($light->networkId, $state);
+        if (is_null($rq))
+            $errors[] = 'Unable to connect the bridge';
         return response()->json([
             'success' => empty($errors) ? true : false,
             'state' => $state,
@@ -75,13 +74,13 @@ class LightsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $r = (new DeconzApi())->setLightState($light->networkId);
-        if (is_null($r))
-            $errors[] = "Unable to connect the bridge";
+        $rq = (new DeconzApi())->setLightState($light->networkId);
+        if (is_null($rq))
+            $errors[] = 'Unable to connect the bridge';
 
         return response()->json([
             'success' => empty($errors) ? true : false,
-            'state' => $r,
+            'state' => $rq,
             'errors' => $errors
         ])->setStatusCode(empty($errors) ? 200 : 504);
     }
