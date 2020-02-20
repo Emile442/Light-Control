@@ -41,7 +41,7 @@
                                         <td>{{ $routine->exec }}</td>
                                         <td>
                                             <a href="{{ route('routines.edit', $routine) }}" class="btn btn-round btn-secondary"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('routines.destroy', $routine) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure to want to delete {{ $routine->name }} ?"><i class="fa fa-trash"></i></a>
+                                            <a href="{{ route('routines.destroy', $routine) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure you want to delete {{ $routine->name }} ?"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

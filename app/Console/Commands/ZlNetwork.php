@@ -59,7 +59,7 @@ class ZlNetwork extends Command
 
     private function changeLightState()
     {
-        $id = $this->ask("Which light do you to change ?");
+        $id = $this->ask("Which light do you want to change ?");
         $state = $this->choice("State", ['on', 'off']);
 
         $deconz = (new DeconzApi())->setLightState($id, $state == "on" ? true : false);

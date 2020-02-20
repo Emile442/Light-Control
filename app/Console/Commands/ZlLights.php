@@ -47,15 +47,15 @@ class ZlLights extends Command
 
     private function addLight()
     {
-        $name = $this->notNullAsk("Quel est le nom de la lumière ?");
+        $name = $this->notNullAsk("What is the name of the light ?");
 
         $this->displayGroup();
-        $groupId = $this->notNullAsk("Quel est le groupe de la lumière ?");
+        $groupId = $this->notNullAsk("To which group does the light belongs ?");
 
-        $networkId = $this->notNullAsk("Quel est l'ID de la lumière ?");
+        $networkId = $this->notNullAsk("What is the ID of the light ?");
 
         \App\Light::create(["name" => $name, "group_id" => $groupId, "networkId" => $networkId]);
-        $this->line("La lumière $name à bien été ajouté");
+        $this->line("Light $name added");
     }
 
     private function displayLight()
@@ -67,11 +67,11 @@ class ZlLights extends Command
     private function removeLight()
     {
         $this->displayLight();
-        $id = $this->notNullAsk("Quel groupe voulez-vous supprimer ?");
+        $id = $this->notNullAsk("Which light you want to delete ?");
         $light = \App\Light::find($id);
         if (is_null($light))
             $this->removeLight();
-        if ($this->confirm("Etes-vous sur de vouloir supprimer la lumière '" . $light->name . "'"))
+        if ($this->confirm("Confirm delete '" . $light->name . "'"))
             $light->delete();
     }
 
@@ -82,15 +82,15 @@ class ZlLights extends Command
      */
     public function handle()
     {
-        $mode = $this->choice('What do you to do ?', [
+        $mode = $this->choice('What do you want to do ?', [
             'Add Light',
-            'Del Light',
+            'Delete Light',
             'List Lights',
         ]);
 
         if ($mode == 'Add Light')
             $this->addLight();
-        elseif ($mode == "Del Light")
+        elseif ($mode == "Delete Light")
             $this->removeLight();
         elseif ($mode == "List Lights")
             $this->displayLight();

@@ -41,9 +41,9 @@ class ZlGroups extends Command
 
     private function addGroup()
     {
-        $name = $this->notNullAsk("Quel est le nom du Groupe ?");
+        $name = $this->notNullAsk("What is the name of the group ?");
         \App\Group::create(["name" => $name]);
-        $this->line("Le groupe $name à bien été ajouté");
+        $this->line("Group $name added");
     }
 
     public function displayGroup()
@@ -55,11 +55,11 @@ class ZlGroups extends Command
     private function removeGroup()
     {
         $this->displayGroup();
-        $id = $this->notNullAsk("Quel groupe voulez-vous supprimer ?");
+        $id = $this->notNullAsk("Which group you want to delete ?");
         $group = \App\Group::find($id);
         if (is_null($group))
             $this->removeGroup();
-        if ($this->confirm("Etes-vous sur de vouloir supprimer le groupe '" . $group->name . "'"))
+        if ($this->confirm("Comfirm delete '" . $group->name . "'"))
             $group->delete();
     }
 
@@ -70,13 +70,13 @@ class ZlGroups extends Command
      */
     public function handle()
     {
-        $mode = $this->choice('Que voulez vous faire ?', ['Ajouter un groupe', 'Supprimer un groupe', 'Lister les groupes']);
+        $mode = $this->choice('What do you want to do ?', ['Add group', 'Delete group', 'List groups']);
 
-        if ($mode == 'Ajouter un groupe')
+        if ($mode == 'Add group')
             $this->addGroup();
-        elseif ($mode == "Supprimer un groupe")
+        elseif ($mode == "Delete group")
             $this->removeGroup();
-        elseif ($mode == "Lister les groupes")
+        elseif ($mode == "List groups")
             $this->displayGroup();
     }
 }

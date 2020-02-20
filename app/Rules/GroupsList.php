@@ -39,7 +39,7 @@ class GroupsList implements Rule
      */
     public function message()
     {
-        return ':attribute is invalid, it must be an exist group';
+        return ':attribute is invalid, it must be an existing group';
     }
 
     private function parseTagify(string $str) : array

@@ -31,7 +31,7 @@
                             @endforeach
                         @else
                             <div class="alert alert-info">
-                                No timer run at this moment.
+                                No timer is running at the moment.
                             </div>
                         @endif
                     </div>
