@@ -65,7 +65,6 @@ class GroupsController extends Controller
         foreach ($group->lights as $light) {
             $lights[] = $light->networkId;
         }
-
         $errors = $r->setLightsState($lights, $state);
 
         return response()->json([

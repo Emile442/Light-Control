@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
-    use Switchable;
-    use Lightable;
+    use Switchable, Lightable;
 
     protected $fillable = ['name', 'public'];
 
@@ -24,19 +23,4 @@ class Group extends Model
         return $this->hasMany(Timer::class);
     }
 
-    public function getCanSwitchAttribute()
-    {
-        $timer = $this->timers->first();
-
-        if(!$timer)
-            return true;
-
-        $now = Carbon::now()->format('H');
-        if (!($now > 20 && $now < 8))
-            return false;
-
-        if (Carbon::now()->addMinutes(10)->greaterThan(Carbon::createFromTimestamp($timer->job->available_at)))
-            return true;
-        return false;
-    }
 }

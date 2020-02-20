@@ -26,4 +26,19 @@ trait Switchable {
         Timer::create(['group_id' => $this->id, 'job_id' => $job->id]);
     }
 
+    public function getCanSwitchAttribute()
+    {
+        $now = Carbon::now()->format('H');
+        // $now = 22;
+        if (($now >= 8) && ($now < 20))
+            return false;
+
+        $timer = $this->timers->first();
+        if(!$timer)
+            return true;
+
+        if (Carbon::now()->addMinutes(10)->greaterThan(Carbon::createFromTimestamp($timer->job->available_at)))
+            return true;
+        return false;
+    }
 }
