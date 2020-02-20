@@ -2,7 +2,6 @@ includes:
     - ./vendor/nunomaduro/larastan/extension.neon
 
 parameters:
-
     paths:
         - app
 
@@ -14,5 +13,7 @@ parameters:
 
     excludes_analyse:
         - ./*/*/FileToBeExcluded.php
+        - *_table.php
+        - *_view.php
 
     checkMissingIterableValueType: false
