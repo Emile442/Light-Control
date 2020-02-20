@@ -5,12 +5,7 @@ namespace App\Zigbee;
 
 use GuzzleHttp\Client as Client;
 use GuzzleHttp\Promise;
-
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Pool;
-use GuzzleHttp\Psr7\Response;
-use function foo\func;
 
 class DeconzApi {
 

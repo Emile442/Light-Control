@@ -2,7 +2,8 @@
 
 namespace App\Console;
 
-use App\Console\Commands\setupUser;
+use App\Console\Commands\CodeAnalyse;
+use App\Console\Commands\SetupUser;
 use App\Console\Commands\ZlGroups;
 use App\Console\Commands\ZlLights;
 use App\Console\Commands\ZlNetwork;
@@ -22,7 +23,8 @@ class Kernel extends ConsoleKernel
         ZlGroups::class,
         ZlLights::class,
         ZlNetwork::class,
-        SetupUser::class
+        SetupUser::class,
+        CodeAnalyse::class
     ];
 
     /**

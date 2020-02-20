@@ -1,0 +1,14 @@
+stages:
+  - tests
+
+cache:
+  key: $CI_BUILD_REF_NAME
+  paths:
+    - vendor
+
+tests:
+  stage: analyse
+  image: lorisleiva/laravel-docker:7.3
+  script:
+    - composer install --no-ansi --no-interaction --no-progress
+    - ./vendor/bin/phpstan analyse
