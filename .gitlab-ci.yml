@@ -11,4 +11,4 @@ analyse:
   image: lorisleiva/laravel-docker:7.3
   script:
     - composer install --no-ansi --no-interaction --no-progress
-    - ./vendor/bin/phpstan analyse
+    - ./vendor/bin/phpstan analyse --no-progress
