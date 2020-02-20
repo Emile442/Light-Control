@@ -6,8 +6,8 @@ cache:
   paths:
     - vendor
 
-tests:
-  stage: analyse
+analyse:
+  stage: tests
   image: lorisleiva/laravel-docker:7.3
   script:
     - composer install --no-ansi --no-interaction --no-progress
