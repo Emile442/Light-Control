@@ -6,15 +6,9 @@ cache:
   paths:
     - vendor
 
-analyse:
+insights:
   stage: tests
   image: lorisleiva/laravel-docker:7.3
   script:
     - composer install --no-ansi --no-interaction --no-progress
-    - ./vendor/bin/phpstan analyse --no-progress -vvv > phpstan_results.txt
-  artifacts:
-    when: always
-    expire_in: 1 month
-    paths:
-      - phpstan_results.txt
-
+    - php artisan insights --no-interaction --min-quality=80 --min-complexity=90 --min-architecture=75 --min-style=95
