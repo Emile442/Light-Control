@@ -37,6 +37,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
+        $schedule->command('telescope:prune')->daily();
+
         $routines = Routine::with('groups')->get();
 
         foreach ($routines as $routine) {
