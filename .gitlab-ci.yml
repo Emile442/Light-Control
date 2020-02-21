@@ -45,7 +45,7 @@ test:
     - configure-laravel
     - start-nginx-ci-project
     - ./vendor/phpunit/phpunit/phpunit --coverage-text --colors=never --stderr
-    - cp phpunit.dusk.xml phpunit.xml
+    - cp .phpunit.dusk.xml phpunit.xml
     - php artisan dusk --colors --debug
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   artifacts:

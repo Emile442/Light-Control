@@ -33,7 +33,7 @@ trait Switchable
             return false;
         $now = Carbon::now()->format('H');
         // $now = 22;
-        if (($now >= 8) && ($now < 20))
+        if (($now >= env('DAY_HOUR', 8)) && ($now < env('NIGHT_HOUR', 20)))
             return false;
 
         $timer = $this->timers->first();

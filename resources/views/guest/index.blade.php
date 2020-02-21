@@ -31,7 +31,7 @@
                                    </div>
                                    <div class="col-md-4">
                                        <form action="{{ route('guest.group', $group) }}" method="get">
-                                           <button class="btn btn-warning btn-lg" type="submit" {{ $group->canSwitch ? '' : 'disabled' }}>Allumer</button>
+                                           <button class="btn btn-warning btn-lg" type="submit" {{ $group->canSwitch ? '' : 'disabled' }} dusk="on-light">Allumer</button>
                                        </form>
                                    </div>
                                </div>
