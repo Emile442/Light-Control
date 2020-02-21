@@ -45,6 +45,7 @@ test:
   image: chilio/laravel-dusk-ci:stable
   script:
     - cp .env.testing .env
+    - cp phpunit.xml.ci phpunit.xml
     - configure-laravel
     - start-nginx-ci-project
     - ./vendor/phpunit/phpunit/phpunit -v --coverage-text --colors --stderr
