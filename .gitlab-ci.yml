@@ -43,10 +43,11 @@ test:
   script:
     - cp .env.testing .env
     - configure-laravel
+    - npm run dev
     - start-nginx-ci-project
     - ./vendor/phpunit/phpunit/phpunit --coverage-text --colors=never --stderr
     - cp .phpunit.dusk.xml phpunit.xml
-    - php artisan dusk --colors --debug
+    - php artisan dusk --colors
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   artifacts:
     paths:

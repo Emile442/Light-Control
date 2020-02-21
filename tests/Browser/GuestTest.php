@@ -48,7 +48,7 @@ class GuestTest extends DuskTestCase
             'public' => true
         ]);
 
-        $this->browse(function ($browser) use ($user, $group) {
+        $this->browse(function ($browser) use ($user) {
             $now = Carbon::now()->format('H');
             if (($now >= env('DAY_HOUR')) && ($now < env('NIGHT_HOUR')))
                 $browser->loginAs($user)
