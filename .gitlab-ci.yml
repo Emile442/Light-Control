@@ -45,10 +45,10 @@ test:
   image: chilio/laravel-dusk-ci:stable
   script:
     - cp .env.testing .env
-    - cp phpunit.xml.ci phpunit.xml
     - configure-laravel
     - start-nginx-ci-project
     - ./vendor/phpunit/phpunit/phpunit --coverage-text --colors=never --stderr
+    - cp phpunit.dusk.xml phpunit.xml
     - php artisan dusk --colors --debug
 
   artifacts:
