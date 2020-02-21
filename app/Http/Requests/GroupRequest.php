@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\LightsList;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GroupRequest extends FormRequest
@@ -25,7 +26,8 @@ class GroupRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:30',
-            'public' => 'required|boolean'
+            'public' => 'required|boolean',
+            'lights' => ['required', new LightsList()]
         ];
     }
 }

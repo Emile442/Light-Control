@@ -3,9 +3,10 @@
 namespace App\Rules;
 
 use App\Group;
+use App\Light;
 use Illuminate\Contracts\Validation\Rule;
 
-class GroupsList implements Rule
+class LightsList implements Rule
 {
     /**
      * Create a new rule instance.
@@ -28,9 +29,9 @@ class GroupsList implements Rule
     public function passes($attribute, $value)
     {
         $array = $this->parseTagify($value);
-        $groupsCount = Group::whereIn('name', $array)->count();
+        $lightsCount = Light::whereIn('name', $array)->count();
 
-        return count($array) == $groupsCount;
+        return count($array) == $lightsCount;
     }
 
     /**
@@ -40,7 +41,7 @@ class GroupsList implements Rule
      */
     public function message()
     {
-        return ':attribute is invalid, it must be an existing group';
+        return ':attribute is invalid, it must be an existing light';
     }
 
     private function parseTagify(string $str): array
