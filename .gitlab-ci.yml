@@ -57,7 +57,7 @@ test:
     when: always
 
 insights:
-  stage: tests
+  stage: test
   image: lorisleiva/laravel-docker:7.3
   cache:
     key: ${CI_BUILD_REF_NAME}
