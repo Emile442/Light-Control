@@ -48,7 +48,7 @@ test:
     - cp phpunit.xml.ci phpunit.xml
     - configure-laravel
     - start-nginx-ci-project
-    - ./vendor/phpunit/phpunit/phpunit -v --coverage-text --colors --stderr
+    - ./vendor/phpunit/phpunit/phpunit --coverage-text --colors=never --stderr
     - php artisan dusk --colors --debug
 
   artifacts:
