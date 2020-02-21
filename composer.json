@@ -14,7 +14,8 @@
         "laravel/framework": "^6.2",
         "laravel/telescope": "^3.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^1.2"
+        "laravel/ui": "^1.2",
+        "thenetworg/oauth2-azure": "^1.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

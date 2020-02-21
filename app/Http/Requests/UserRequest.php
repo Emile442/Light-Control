@@ -23,18 +23,16 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        if($this->method() == 'POST') {
-            return [
-                'name' => 'required|min:3',
-                'email' => 'required|email',
-                'password' => 'required|same:password_confirm'
-            ];
-        }
-
-        return [
+        $rules = [
             'name' => 'required|min:3',
-            'email' => 'required|email',
-            'password' => 'same:password_confirm'
+            'email' => 'required|regex:/^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(epitech)\.eu$/',
+            'password' => 'same:password_confirm',
+            'suspend' => 'required|boolean',
+            'admin' => 'required|boolean',
         ];
+
+        if($this->method() == 'POST')
+            $rules['password'] = 'required|same:password_confirm';
+        return $rules;
     }
 }

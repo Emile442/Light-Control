@@ -20,11 +20,12 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.12.1",
         "@yaireo/tagify": "^3.4.0",
         "bootstrap": "4.4.1",
         "bootstrap4-toggle": "^3.6.1",
-        "font-awesome": "^4.7.0",
         "jquery-circle-progress": "^1.2.2",
+        "jquery-typeahead": "^2.11.0",
         "noty": "^3.2.0-beta",
         "pickerjs": "^1.2.1"
     }

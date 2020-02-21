@@ -116,7 +116,7 @@ return [
             'maxComplexity' => 15,
         ],
         \ObjectCalisthenics\Sniffs\NamingConventions\ElementNameMinimalLengthSniff::class => [
-            'minLength' => 3,
+            'minLength' => 2,
             'allowedShortNames' => ['i', 'id', 'to', 'up', 'k', 'rq', 'e'],
         ]
     ],

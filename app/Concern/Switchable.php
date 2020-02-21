@@ -7,6 +7,7 @@ use App\Job;
 use App\Jobs\GroupsStateJobs;
 use App\Timer;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 trait Switchable
 {
@@ -28,6 +29,8 @@ trait Switchable
 
     public function getCanSwitchAttribute()
     {
+        if (Auth::user()->suspend)
+            return false;
         $now = Carbon::now()->format('H');
         // $now = 22;
         if (($now >= 8) && ($now < 20))

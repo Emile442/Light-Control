@@ -48,8 +48,13 @@
                        <div class="mt-3">
                            <div class="">
                                <span class="text-muted">
-                                    <i class="fa fa-code"></i> by <a href="mailto:emile.lepetit@epitech.eu" target="_blank" class="text-muted">Emile LEPETIT</a> & <a href="mailto:paul.bugeon@epitech.eu" target="_blank" class="text-muted">Paul BUGEON</a> with <i class="fa fa-heart"></i>
-                               | <a href="{{ route("login") }}" class="text-muted">Login</a>
+                                    <i class="fas fa-code"></i> by <a href="mailto:emile.lepetit@epitech.eu" target="_blank" class="text-muted">Emile LEPETIT</a> & <a href="mailto:paul.bugeon@epitech.eu" target="_blank" class="text-muted">Paul BUGEON</a> with <i class="fas fa-heart"></i>
+                               | 
+                                   @auth
+                                       <a href="{{ route('logout') }}" class="text-muted" data-method="post">Se déconnecter</a>
+                                   @elseauth
+                                       <a href="{{ route("login") }}" class="text-muted">Se connecter</a>
+                                   @endauth
                                </span>
                            </div>
                        </div>

@@ -12,7 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix.copyDirectory('resources/fonts', 'public/fonts');
-mix.copyDirectory('node_modules/font-awesome/fonts', 'public/fonts');
+mix.copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts');
 mix.sass('resources/sass/app.scss', 'public/css').version();
 
 mix.webpackConfig({ devtool: 'source-map' })
@@ -31,6 +31,8 @@ mix.scripts([
     'node_modules/@yaireo/tagify/dist/tagify.min.js',
     'node_modules/@yaireo/tagify/dist/jQuery.tagify.min.js',
     'node_modules/pickerjs/dist/picker.js',
+    'node_modules/@fortawesome/fontawesome-free/js/all.js',
+    'node_modules/jquery-typeahead/dist/jquery.typeahead.min.js',
     'resources/js/delete.js',
     'resources/js/zigbee/cooldown.js',
     'resources/js/zigbee/lights.js',

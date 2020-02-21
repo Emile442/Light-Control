@@ -249,4 +249,44 @@ $('.js-time-picker').each(function () {
     });
 });
 
+$.typeahead({
+    input: '.users_search',
+    minLength: 1,
+    order: "asc",
+    offset: true,
+    hint: true,
+    dynamic: true,
+    emptyTemplate: "No results for {{query}}",
+    searchOnFocus: true,
+    debug: true,
+    templateValue: "{{value}}",
+    display: ["value"],
+    href: "/users/{{id}}/edit",
+    source: {
+        ajax: {
+            type: "GET",
+            url: `/api/v1/users/search`,
+            data: {
+                term: '{{query}}',
+                api_token: $('meta[name=api-token]').attr('content')
+            },
+            callback: {
+                done: function (data, textStatus, jqXHR) {
+                    return data;
+                },
+                fail: function (jqXHR, textStatus, errorThrown) {},
+                always :function (data, textStatus, jqXHR) {},
+                then: function (jqXHR, textStatus) {}
+            }
+        }
+    },
+    callback: {
+        onClickAfter: function (node, a, item, event) {
+            event.preventDefault();
 
+            window.location.replace(item.href);
+
+            $('#result-container').text('');
+        },
+    }
+});

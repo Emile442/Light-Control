@@ -43,7 +43,7 @@
                     </ul>
                 </nav>
                 <div class="copyright" id="copyright">
-                    <i class="fa fa-code"></i> by <a href="mailto:emile.lepetit@epitech.eu" target="_blank">Emile LEPETIT</a> & <a href="mailto:paul.bugeon@epitech.eu" target="_blank">Paul BUGEON</a> with <i class="fa fa-heart"></i>
+                    <i class="fas fa-code"></i> by <a href="mailto:emile.lepetit@epitech.eu" target="_blank">Emile LEPETIT</a> & <a href="mailto:paul.bugeon@epitech.eu" target="_blank">Paul BUGEON</a> with <i class="fas fa-heart"></i>
                 </div>
             </div>
         </footer>

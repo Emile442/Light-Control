@@ -11,11 +11,13 @@
 |
 */
 
-Route::get('/', 'HomeController@index')->name('root');
-Route::get('/guest', 'GuestController@guest')->name('guest');
-Route::get('/guest/group/{id}/on', 'GuestController@groupSwitch')->name('guest.group');
-
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/guest', 'GuestController@guest')->name('guest');
+    Route::get('/guest/group/{id}/on', 'GuestController@groupSwitch')->name('guest.group');
+});
+
+Route::group(['middleware' => ['auth', 'admin', 'notSuspend']], function () {
+    Route::get('/', 'HomeController@index')->name('root');
     Route::get('/network', 'NetworkController@index')->name('network.index');
 
     Route::resource('groups', 'GroupsController', ['except' => ['new', 'show']]);
@@ -25,4 +27,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UsersController', ['except' => ['new', 'show']]);
 });
 
-Auth::routes(['register' => false]);
+Route::group(['namespace' => 'Auth'], function () {
+    Route::get('/oauth2/azure/redirect', 'OAuthController@azureRedirect')->name('auth.azure.redirect');
+    Route::get('/oauth2/azure/callback', 'OAuthController@azureCallback')->name('auth.azure.callback');
+});
+
+Auth::routes(['register' => false, 'reset' => false]);

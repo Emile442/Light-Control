@@ -1,10 +1,11 @@
 @import "~bootstrap/scss/bootstrap";
-@import "~font-awesome/scss/font-awesome";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~bootstrap4-toggle/css/bootstrap4-toggle.min";
 @import "~noty/lib/themes/mint.css";
 @import "~noty/lib/noty.css";
 @import "~@yaireo/tagify/src/tagify";
 @import "~pickerjs/dist/picker.css";
+@import "~jquery-typeahead/dist/jquery.typeahead.min.css";
 
 @import 'now-ui-dashboard/variables';
 @import 'now-ui-dashboard/mixins';
@@ -98,4 +99,29 @@
 .tagify.tagify--focus {
     transition: 0s;
     border-color: $orange;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: $orange;
+    border-color: $orange;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: $orange;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+.page-link:hover {
+    z-index: 2;
+    color: $orange;
+    text-decoration: none;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
 }

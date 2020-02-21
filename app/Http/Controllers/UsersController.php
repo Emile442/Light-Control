@@ -12,7 +12,7 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(15);
         return view('users.index', compact('users'));
     }
 
@@ -22,7 +22,9 @@ class UsersController extends Controller
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'api_token' => Str::random(80)
+            'api_token' => Str::random(80),
+            'admin' => $request->get('admin'),
+            'suspend' => $request->get('suspend')
         ]);
         return redirect(route('users.index'))->with('success', "{$user->name} has been created.");
     }
@@ -32,16 +34,11 @@ class UsersController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, User $user)
     {
-        $user = User::find($id);
-        $user->update($request->only('name', 'email'));
-        if (!empty($request->input('password'))) {
-            $user->password = Hash::make($request->get('password'));
-            $user->save();
-        }
+        $user->update($request->only('name', 'email', 'suspend', 'admin'));
 
-        return redirect(route('users.index'))->with('success', "{$user->name} has been edited.");
+        return redirect(route('users.edit', $user))->with('success', "{$user->name} has been edited.");
     }
 
     public function destroy(User $user)

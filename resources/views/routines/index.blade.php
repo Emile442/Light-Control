@@ -12,7 +12,7 @@
                     <div class="card-header card-header-inline">
                         <h5 class="card-title">Routines</h5>
                         <button type="button" class="btn btn-round btn-primary card-header-button-inline" data-toggle="modal" data-target="#routinesAdd">
-                            <i class="fa fa-plus"></i>
+                            <i class="fas fa-plus"></i>
                         </button>
                     </div>
                     <div class="card-body ">
@@ -40,8 +40,8 @@
                                         <td><span class="badge badge-{{ $routine->state ? 'success' : 'danger' }}">{{ $routine->state ? 'On' : 'Off' }}</span></td>
                                         <td>{{ $routine->exec }}</td>
                                         <td>
-                                            <a href="{{ route('routines.edit', $routine) }}" class="btn btn-round btn-secondary"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('routines.destroy', $routine) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure you want to delete {{ $routine->name }} ?"><i class="fa fa-trash"></i></a>
+                                            <a href="{{ route('routines.edit', $routine) }}" class="btn btn-round btn-secondary"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('routines.destroy', $routine) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure you want to delete {{ $routine->name }} ?"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
