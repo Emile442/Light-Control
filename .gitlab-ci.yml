@@ -42,7 +42,7 @@ test:
     - name: mysql:5.7
       alias: mysql-test
 
-  image: chilio/laravel-dusk-ci:latest
+  image: chilio/laravel-dusk-ci:stable
   script:
     - cp .env.testing .env
     - configure-laravel
