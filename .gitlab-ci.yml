@@ -45,11 +45,9 @@ test:
   image: chilio/laravel-dusk-ci:latest
   script:
     - cp .env.testing .env
-    - php artisan key:generate
     - configure-laravel
     - start-nginx-ci-project
     - ./vendor/phpunit/phpunit/phpunit -v --coverage-text --colors --stderr
-    # - phpunit -v --coverage-text --colors --stderr # if you want to use preinstalled phpunit
     - php artisan dusk --colors --debug
 
   artifacts:
