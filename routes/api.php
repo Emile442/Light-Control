@@ -13,11 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-// Public API
-Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
-    Route::get('v1/group/{id}/on', 'GroupsController@guestOn')->name('api.guest.group');
-});
-
 // Auth API
 Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['auth:api', 'admin', 'notSuspend']], function () {
     Route::get('groups', 'GroupsController@index')->name('api.groups.index');
