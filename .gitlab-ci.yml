@@ -16,7 +16,6 @@ build:
   services:
     - name: mysql:5.7
       alias: mysql-test
-
   image: chilio/laravel-dusk-ci:stable
   script:
     - versions
@@ -37,11 +36,9 @@ test:
       - vendor
       - node_modules
     policy: pull
-
   services:
     - name: mysql:5.7
       alias: mysql-test
-
   image: chilio/laravel-dusk-ci:stable
   script:
     - cp .env.testing .env
@@ -50,7 +47,7 @@ test:
     - ./vendor/phpunit/phpunit/phpunit --coverage-text --colors=never --stderr
     - cp phpunit.dusk.xml phpunit.xml
     - php artisan dusk --colors --debug
-
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   artifacts:
     paths:
       - ./storage/logs
@@ -58,3 +55,15 @@ test:
       - ./tests/Browser/console
     expire_in: 7 days
     when: always
+
+insights:
+  stage: tests
+  image: lorisleiva/laravel-docker:7.3
+  cache:
+    key: ${CI_BUILD_REF_NAME}
+    paths:
+      - vendor
+      - node_modules
+    policy: pull
+  script:
+    - php artisan insights --no-interaction --min-quality=80 --min-complexity=75 --min-architecture=90 --min-style=95
