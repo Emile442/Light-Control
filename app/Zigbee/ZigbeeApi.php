@@ -6,15 +6,15 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Promise;
 
-class DeconzApi
+class ZigbeeApi
 {
     private $apiKey;
     private $baseUrl;
 
     public function __construct()
     {
-        $this->baseUrl = env('DECONZ_URL');
-        $this->apiKey = env('DECONZ_KEY');
+        $this->baseUrl = env('ZIGBEE_URL');
+        $this->apiKey = env('ZIGBEE_KEY');
     }
 
     public function getLights()

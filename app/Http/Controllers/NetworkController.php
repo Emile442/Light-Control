@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Zigbee\DeconzApi;
+use App\Zigbee\ZigbeeApi;
 use Illuminate\Http\Request;
 
 class NetworkController extends Controller
 {
     public function index()
     {
-        $deconzLights = (new DeconzApi())->getLights();
+        $deconzLights = (new ZigbeeApi())->getLights();
 
         return view('network.index', compact('deconzLights'));
     }

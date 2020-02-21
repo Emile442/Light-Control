@@ -32,7 +32,7 @@
                                 <tbody id="table-lights">
                                 @foreach($lights as $light)
                                     <tr class="light-list" id="light-{{ $light->id }}" data-id="{{ $light->id }}">
-                                        <td><i class="fas fa-lightbulb-o light-state" id="light-state-{{ $light->id }}"></i></td>
+                                        <td><i class="far fa-lightbulb light-state" id="light-state-{{ $light->id }}"></i></td>
                                         <td>{{ $light->name }}</td>
                                         <td>
                                             @foreach($light->groups as $group)

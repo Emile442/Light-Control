@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Light;
-use App\Zigbee\DeconzApi;
+use App\Zigbee\ZigbeeApi;
 use Illuminate\Http\Request;
 
 class LightsController extends Controller
@@ -34,7 +34,7 @@ class LightsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $deconz = (new DeconzApi())->getLight($light->networkId);
+        $deconz = (new ZigbeeApi())->getLight($light->networkId);
         if (!isset($deconz->state))
             $deconz = [];
         return response()->json($deconz)->setStatusCode(empty($deconz) ? 504 : 200);
@@ -52,7 +52,7 @@ class LightsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $rq = (new DeconzApi())->setLightState($light->networkId, $state);
+        $rq = (new ZigbeeApi())->setLightState($light->networkId, $state);
         if (is_null($rq))
             $errors[] = 'Unable to connect the bridge';
         return response()->json([
@@ -74,7 +74,7 @@ class LightsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $rq = (new DeconzApi())->setLightState($light->networkId);
+        $rq = (new ZigbeeApi())->setLightState($light->networkId);
         if (is_null($rq))
             $errors[] = 'Unable to connect the bridge';
 

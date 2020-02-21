@@ -4,12 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Group;
 use App\Http\Controllers\Controller;
-use App\Job;
-use App\Jobs\GroupsStateJobs;
-use App\Timer;
-use App\Zigbee\DeconzApi;
-use Carbon\Carbon;
-use http\Env\Response;
+use App\Zigbee\ZigbeeApi;
 use Illuminate\Http\Request;
 
 class GroupsController extends Controller
@@ -39,7 +34,7 @@ class GroupsController extends Controller
                 ]
             ])->setStatusCode(404);
 
-        $rq = new DeconzApi();
+        $rq = new ZigbeeApi();
         $lights = [];
         foreach ($group->lights as $light) {
             $lights[] = $light->networkId;

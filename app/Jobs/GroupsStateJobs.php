@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Group;
-use App\Zigbee\DeconzApi;
+use App\Zigbee\ZigbeeApi;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -42,7 +42,7 @@ class GroupsStateJobs implements ShouldQueue
      */
     public function handle()
     {
-        $deconz = new DeconzApi();
+        $deconz = new ZigbeeApi();
 
         $lights = [];
         foreach ($this->group->lights as $light)
