@@ -47,7 +47,7 @@ unit_tests:
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
 
 browser_tests:
-  stage: code_style
+  stage: tests
   cache:
     key: ${CI_BUILD_REF_NAME}
     paths:
@@ -74,7 +74,7 @@ browser_tests:
     when: always
 
 insights:
-  stage: test
+  stage: code_style
   image: lorisleiva/laravel-docker:7.3
   cache:
     key: ${CI_BUILD_REF_NAME}
