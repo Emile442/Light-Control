@@ -39,8 +39,8 @@
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>
-                                                <a href="{{ route('users.edit', $user) }}" class="btn btn-round btn-secondary"><i class="fas fa-edit"></i></a>
-                                                <a href="{{ route('users.destroy', $user) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure to want to delete {{ $user->name }} ?"><i class="fas fa-trash"></i></a>
+                                                <a href="{{ route('users.edit', $user) }}" class="btn btn-round btn-secondary" dusk="edit-{{ $user->id }}"><i class="fas fa-edit"></i></a>
+                                                <a href="{{ route('users.destroy', $user) }}" class="btn btn-round btn-danger" dusk="delete-{{ $user->id }}" data-method="delete" data-confirm="Are you sure to want to delete {{ $user->name }} ?"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

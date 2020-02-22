@@ -11,6 +11,10 @@ class LoginTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
+    /**
+     * @group Auth
+     * @throws \Throwable
+     */
     public function testLoginPage()
     {
         $this->browse(function (Browser $browser) {
@@ -19,6 +23,10 @@ class LoginTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group Auth
+     * @throws \Throwable
+     */
     public function testLoginRedirectAlreadyAuth()
     {
         $user = factory(User::class)->create();

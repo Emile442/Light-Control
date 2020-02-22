@@ -14,6 +14,10 @@ class GuestTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
+    /**
+     * @group Guest
+     * @throws \Throwable
+     */
     public function testGuestIndexBlank()
     {
         $user = factory(User::class)->create();
@@ -25,6 +29,10 @@ class GuestTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group Guest
+     * @throws \Throwable
+     */
     public function testGuestIndex()
     {
         $user = factory(User::class)->create();
@@ -41,6 +49,10 @@ class GuestTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group Guest
+     * @throws \Throwable
+     */
     public function testGuestLaunchTimer()
     {
         $user = factory(User::class)->create();

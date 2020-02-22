@@ -19,6 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => ['auth', 'admin', 'notSuspend']], function () {
     Route::get('/', 'HomeController@index')->name('root');
     Route::get('/network', 'NetworkController@index')->name('network.index');
+    Route::post('/network', 'NetworkController@import')->name('network.import');
 
     Route::resource('groups', 'GroupsController', ['except' => ['new', 'show']]);
     Route::resource('lights', 'LightsController', ['except' => ['new', 'show']]);

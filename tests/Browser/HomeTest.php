@@ -9,6 +9,10 @@ use Throwable;
 
 class HomeTest extends DuskTestCase
 {
+    /**
+     * @group Home
+     * @throws Throwable
+     */
     public function testHomeRedirect()
     {
         $this->browse(function (Browser $browser) {

@@ -11,12 +11,17 @@
                 <div class="card ">
                     <div class="card-header card-header-inline">
                         <h5 class="card-title">All groups</h5>
-                        <button type="button" class="btn btn-round btn-primary card-header-button-inline" data-toggle="modal" data-target="#groupsAdd">
+                        <button type="button" class="btn btn-round btn-primary card-header-button-inline" dusk="add" data-toggle="modal" data-target="#groupsAdd">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
                     <div class="card-body ">
                         @include('layouts._flash')
+                        @if($groups->count() == 0)
+                            <div class="alert alert-info">
+                                <span><b> Info - </b> No Groups registered</span>
+                            </div>
+                        @endif
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class=" text-primary">
@@ -39,11 +44,11 @@
                                             </td>
                                             <td class="text-right">
                                                 @if($group->lights->count())
-                                                    <button type="button" class="btn btn-round btn-group-change-state btn-success" data-id="{{ $group->id }}" data-state="1"><span></span>On</button>
-                                                    <button type="button" class="btn btn-round btn-group-change-state" data-id="{{ $group->id }}" data-state="0"><span></span>Off</button>
+                                                    <button type="button" class="btn btn-round btn-group-change-state btn-success" dusk="on-{{ $group->id }}" data-id="{{ $group->id }}" data-state="1"><span></span>On</button>
+                                                    <button type="button" class="btn btn-round btn-group-change-state" dusk="off-{{ $group->id }}" data-id="{{ $group->id }}" data-state="0"><span></span>Off</button>
                                                 @endif
                                                 <a href="{{ route('groups.edit', $group) }}" class="btn btn-round btn-secondary"><i class="fas fa-edit"></i></a>
-                                                <a href="{{ route('groups.destroy', $group) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure you want to delete {{ $group->name }}?"><i class="fas fa-trash"></i></a>
+                                                <a href="{{ route('groups.destroy', $group) }}" class="btn btn-round btn-danger" dusk="delete-{{ $group->id }}" data-method="delete" data-confirm="Are you sure you want to delete {{ $group->name }} ?"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

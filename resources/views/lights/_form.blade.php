@@ -14,5 +14,5 @@
         <input type="number" class="form-control" name="networkId" id="networkId" value="{{ old('networkId', $light->networkId) }}" autocomplete="off" required>
     </div>
 
-    <button class="btn btn-round btn-primary" type="submit">Submit</button>
+    <button class="btn btn-round btn-primary" type="submit" id="lightSubmit">Submit</button>
 </form>
