@@ -28,7 +28,24 @@ build:
       - vendor
       - node_modules
 
-test:
+unit_tests:
+  stage: test
+  cache:
+    key: ${CI_BUILD_REF_NAME}
+    paths:
+      - vendor
+    policy: pull
+  services:
+    - name: mysql:5.7
+      alias: mysql-test
+  image: chilio/laravel-dusk-ci:stable
+  script:
+    - cp .env.testing .env
+    - configure-laravel
+    - ./vendor/phpunit/phpunit/phpunit --coverage-text --colors=never --stderr
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+
+browser_tests:
   stage: test
   cache:
     key: ${CI_BUILD_REF_NAME}
@@ -45,10 +62,8 @@ test:
     - configure-laravel
     - npm run dev
     - start-nginx-ci-project
-    - ./vendor/phpunit/phpunit/phpunit --coverage-text --colors=never --stderr
     - cp .phpunit.dusk.xml phpunit.xml
-    - php artisan dusk --colors
-  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+    - php artisan dusk 2> /dev/null
   artifacts:
     paths:
       - ./storage/logs
