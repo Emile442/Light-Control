@@ -92,4 +92,17 @@ class MiddlewareTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group Middleware
+     * @throws \Throwable
+     */
+    public function testMiddlewareGuest()
+    {
+        $this->browse(function ($browser) {
+            $browser->visit('/')
+                ->assertSee('Connexion')
+                ->assertRouteIs('login');
+        });
+    }
+
 }
