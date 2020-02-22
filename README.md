@@ -1,8 +1,6 @@
 # Epi Lights
 
 [![pipeline status](https://git.emile-lepetit.fr/epitech/tek-2/hub/zigbee-lights/badges/master/pipeline.svg)](https://git.emile-lepetit.fr/epitech/tek-2/hub/zigbee-lights/commits/master)
-![Laravel Version 6.2.X](https://img.shields.io/badge/Version-6.2.X-success?style=flat&logo=laravel)
-![Zigbee](https://img.shields.io/badge/Zigbee-1.0-blue?style=flat) 
 
 Application Web complète permettant de gérer des ampoules utilisant le protocole [Zigbee](https://fr.wikipedia.org/wiki/ZigBee)
 
