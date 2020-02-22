@@ -1,6 +1,7 @@
 stages:
   - build
-  - test
+  - tests
+  - code_style
 
 # Variables
 variables:
@@ -29,7 +30,7 @@ build:
       - node_modules
 
 unit_tests:
-  stage: test
+  stage: tests
   cache:
     key: ${CI_BUILD_REF_NAME}
     paths:
@@ -46,7 +47,7 @@ unit_tests:
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
 
 browser_tests:
-  stage: test
+  stage: code_style
   cache:
     key: ${CI_BUILD_REF_NAME}
     paths:
@@ -63,7 +64,7 @@ browser_tests:
     - npm run dev
     - start-nginx-ci-project
     - cp .phpunit.dusk.xml phpunit.xml
-    - php artisan dusk 2> /dev/null
+    - php artisan dusk
   artifacts:
     paths:
       - ./storage/logs
