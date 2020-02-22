@@ -25,7 +25,6 @@ $(document).ready(function() {
         });
     })
 
-
     /* Light Switch Button */
     $('.btn-light-change-state').click(function () {
         let btn = $(this);

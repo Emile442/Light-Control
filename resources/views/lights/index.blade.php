@@ -12,12 +12,17 @@
                 <div class="card ">
                     <div class="card-header card-header-inline">
                         <h5 class="card-title">All lights</h5>
-                        <button type="button" class="btn btn-round btn-primary card-header-button-inline" data-toggle="modal" data-target="#lightsAdd">
+                        <button type="button" dusk="add" class="btn btn-round btn-primary card-header-button-inline" data-toggle="modal" data-target="#lightsAdd">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
                     <div class="card-body ">
                         @include('layouts._flash')
+                        @if($lights->count() == 0)
+                            <div class="alert alert-info">
+                                <span><b> Info - </b> No Lights registered</span>
+                            </div>
+                        @endif
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class=" text-primary">
@@ -42,8 +47,8 @@
                                         <td>{{ $light->networkId }}</td>
                                         <td class="text-right">
                                             <button type="button" class="btn btn-round btn-light-change-state" id="light-button-{{ $light->id }}" data-id="{{ $light->id }}"><span><i class="fas fa-spinner fa-spin"></i></span></button>
-                                            <a href="{{ route('lights.edit', $light) }}" class="btn btn-round btn-secondary"><i class="fas fa-edit"></i></a>
-                                            <a href="{{ route('lights.destroy', $light) }}" class="btn btn-round btn-danger" data-method="delete" data-confirm="Are you sure you want to delete {{ $light->name }} ?"><i class="fas fa-trash"></i></a>
+                                            <a href="{{ route('lights.edit', $light) }}" class="btn btn-round btn-secondary" dusk="edit-{{ $light->id }}"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('lights.destroy', $light) }}" class="btn btn-round btn-danger" dusk="delete-{{ $light->id }}" data-method="delete" data-confirm="Are you sure you want to delete {{ $light->name }} ?"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

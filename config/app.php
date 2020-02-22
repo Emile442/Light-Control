@@ -165,7 +165,6 @@ return [
         /*
          * Package Service Providers...
          */
-        // NunoMaduro\Larastan\
 
         /*
          * Application Service Providers...

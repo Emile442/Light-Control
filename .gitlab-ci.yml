@@ -1,14 +1,87 @@
 stages:
+  - build
   - tests
+  - code_style
 
-cache:
-  key: $CI_BUILD_REF_NAME
-  paths:
-    - vendor
+# Variables
+variables:
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_USER: homestead
+  MYSQL_PASSWORD: secret
+  MYSQL_DATABASE: homestead
+  DB_HOST: mysql-test
+  DB_CONNECTION: mysql
+
+build:
+  stage: build
+  services:
+    - name: mysql:5.7
+      alias: mysql-test
+  image: chilio/laravel-dusk-ci:stable
+  script:
+    - versions
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - npm install
+    - npm run dev
+  cache:
+    key: ${CI_BUILD_REF_NAME}
+    paths:
+      - vendor
+      - node_modules
+
+unit_tests:
+  stage: tests
+  cache:
+    key: ${CI_BUILD_REF_NAME}
+    paths:
+      - vendor
+    policy: pull
+  services:
+    - name: mysql:5.7
+      alias: mysql-test
+  image: chilio/laravel-dusk-ci:stable
+  script:
+    - cp .env.testing .env
+    - configure-laravel
+    - ./vendor/phpunit/phpunit/phpunit --coverage-text --colors=never --stderr
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+
+browser_tests:
+  stage: tests
+  cache:
+    key: ${CI_BUILD_REF_NAME}
+    paths:
+      - vendor
+      - node_modules
+    policy: pull
+  services:
+    - name: mysql:5.7
+      alias: mysql-test
+  image: chilio/laravel-dusk-ci:stable
+  script:
+    - cp .env.testing .env
+    - configure-laravel
+    - npm run dev
+    - start-nginx-ci-project
+    - cp .phpunit.dusk.xml phpunit.xml
+    - php artisan dusk
+  artifacts:
+    paths:
+      - ./storage/logs
+      - ./tests/Browser/screenshots
+      - ./tests/Browser/console
+    expire_in: 7 days
+    when: always
 
 insights:
-  stage: tests
+  stage: code_style
   image: lorisleiva/laravel-docker:7.3
+  cache:
+    key: ${CI_BUILD_REF_NAME}
+    paths:
+      - vendor
+      - node_modules
+    policy: pull
   script:
-    - composer install --no-ansi --no-interaction --no-progress
+    - cp .env.testing .env
     - php artisan insights --no-interaction --min-quality=80 --min-complexity=75 --min-architecture=90 --min-style=95
