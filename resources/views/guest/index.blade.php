@@ -10,6 +10,11 @@
                <div class="card">
                    <div class="card-body">
                        <h1 class="guest__title">{{ env('APP_NAME') }}</h1>
+                       @if(\Auth::user()->suspend)
+                           <div class="alert alert-danger">
+                               Votre compte a été suspendu, merci de prendre avec l'ADM
+                           </div>
+                       @endif
                        <div class="alert alert-info">
                            Cette interface est disponible de {{ env('NIGHT_HOUR', 20) }}h à {{ env('DAY_HOUR', 8) }}h.
                        </div>
@@ -31,7 +36,7 @@
                                    </div>
                                    <div class="col-md-4">
                                        <form action="{{ route('guest.group', $group) }}" method="get">
-                                           <button class="btn btn-warning btn-lg" type="submit" {{ $group->canSwitch ? '' : 'disabled' }} dusk="on-light">Allumer</button>
+                                           <button class="btn btn-warning btn-lg" type="submit" {{ $group->canSwitch ? '' : 'disabled' }} dusk="on-light">{{ $group->canSwitch ? 'Allumer' : 'Indisponible' }}</button>
                                        </form>
                                    </div>
                                </div>

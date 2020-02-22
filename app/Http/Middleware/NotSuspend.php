@@ -18,7 +18,7 @@ class NotSuspend
     public function handle($request, Closure $next)
     {
         if (Auth::user()->suspend)
-            return redirect()->route('guest')->with('error', 'Votre compte a été suspendu, merci de prendre avec l\'ADM');
+            return redirect()->route('guest');
         return $next($request);
     }
 }
