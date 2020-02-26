@@ -265,7 +265,7 @@ $.typeahead({
     source: {
         ajax: {
             type: "GET",
-            url: `/api/v1/users/search`,
+            url: `/api/v1/users`,
             data: {
                 term: '{{query}}',
                 api_token: $('meta[name=api-token]').attr('content')

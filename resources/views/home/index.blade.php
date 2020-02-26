@@ -93,7 +93,7 @@
                 let state = $("#state").val()
                 let period = $("#period").val()
                 let text = state ? "On" : "Off"
-                let uri = `/api/v1/group/${group}/state/${state}/${period}?api_token=${api_token}`;
+                let uri = `/api/v1/groups/${group}/state/${state}/${period}?api_token=${api_token}`;
                 if (period.length) {
                     $.get(uri).done(function( data ) {
                         new Noty({

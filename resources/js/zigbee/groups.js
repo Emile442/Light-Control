@@ -4,7 +4,7 @@ $(document).ready(function() {
     $('.btn-group-change-state').click(function () {
         let btn = $(this);
         $.ajax({
-            url: `/api/v1/group/${$(this).attr("data-id")}/state/${$(this).attr("data-state")}?api_token=${api_token}`,
+            url: `/api/v1/groups/${$(this).attr("data-id")}/state/${$(this).attr("data-state")}?api_token=${api_token}`,
             type: 'get',
             beforeSend: function(){
                 btn.find('span').html('<i class="fa fa-spinner fa-spin"></i>  ')

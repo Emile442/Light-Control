@@ -4,7 +4,7 @@ $(document).ready(function() {
     $(".light-list").each(function (index) {
         let id = $(this).attr('data-id')
 
-        $.get(`/api/v1/light/${id}?api_token=${api_token}`, function(data ) {
+        $.get(`/api/v1/lights/${id}?api_token=${api_token}`, function(data ) {
             if (data.state.on === true) {
                 $("#light-state-" + id).addClass("text-warning")
                 $("#light-button-" + id).html("<span></span>On").addClass("btn-success")
@@ -32,7 +32,7 @@ $(document).ready(function() {
         let classSuccess = 'btn-success'
 
         $.ajax({
-            url: `/api/v1/light/${id}/state?api_token=${api_token}`,
+            url: `/api/v1/lights/${id}/state?api_token=${api_token}`,
             type: 'get',
             beforeSend: function(){
                 btn.find('span').html('<i class="fa fa-spinner fa-spin"></i>  ')
