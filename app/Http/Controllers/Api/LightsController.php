@@ -9,7 +9,18 @@ use Illuminate\Http\Request;
 
 class LightsController extends Controller
 {
-    public function index(Request $request)
+    public function index() {
+        $lights = Light::with('groups')->get()->toArray();
+        return response()->json($lights);
+    }
+
+    public function delete($id) {
+        $light = Light::find($id);
+        $light->delete();
+        return response()->json(['ok']);
+    }
+
+    public function search(Request $request)
     {
         $term = $request->get('term');
 

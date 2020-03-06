@@ -1,3 +1,27 @@
+require('./bootstrap');
+require('./plugins/perfect-scrollbar.jquery.min');
+require('bootstrap-notify');
+require('./delete');
+require('./now-ui-dashboard');
+require('jquery-typeahead');
+
+window.Noty = require('noty');
+window.Vue = require('vue');
+window.Chart = require('chart.js');
+window.timer = require('jquery-circle-progress');
+window.Tagify = require('@yaireo/tagify');
+window.Picker = require('pickerjs');
+
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
+Vue.component('lights-table', require('./components/LightsTable').default);
+
+const app = new Vue({
+    el: '#app',
+});
+
+
 function hexToRGB(hex, alpha) {
     var r = parseInt(hex.slice(1, 3), 16),
         g = parseInt(hex.slice(3, 5), 16),

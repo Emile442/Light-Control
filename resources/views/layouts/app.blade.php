@@ -20,7 +20,7 @@
 </head>
 
 <body class="">
-<div class="wrapper ">
+<div class="wrapper" id="app">
     @include('layouts._sidebar')
 
     <div class="main-panel" id="main-panel">
