@@ -21,6 +21,7 @@ $(document).ready(function() {
                 timeout: 3000
             }).show();
             $("#light-button-" + id).html('<span></span>Unable to connect').addClass("btn-danger").removeClass("btn-light-change-state");
+            $("#light-button-" + id).prop('disabled', true);
             $("#light-state-" + id).addClass("text-danger")
         });
     })

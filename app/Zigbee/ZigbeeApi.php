@@ -4,6 +4,7 @@ namespace App\Zigbee;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Promise;
 
 class ZigbeeApi
@@ -25,6 +26,8 @@ class ZigbeeApi
             $rq = $client->get($this->buildUrl('/lights'));
         } catch (ClientException $e) {
             return null;
+        }  catch (ConnectException $e) {
+            return null;
         }
 
         return json_decode($rq->getBody()->getContents());
@@ -37,6 +40,8 @@ class ZigbeeApi
         try {
             $rq = $client->get($this->buildUrl("/lights/{$lightId}"));
         } catch (ClientException $e) {
+            return null;
+        } catch (ConnectException $e) {
             return null;
         }
 
