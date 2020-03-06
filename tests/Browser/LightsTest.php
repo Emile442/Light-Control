@@ -91,8 +91,6 @@ class LightsTest extends DuskTestCase
                 ->assertSee($light->name)
                 ->assertSee($light->networkId)
                 ->click("@delete-{$light->id}")
-                ->assertDialogOpened("Are you sure you want to delete {$light->name} ?")
-                ->acceptDialog()
                 ->pause(2000)
                 ->assertSee("The Light {$light->name} has been deleted.")
                 ->assertDontSee($light->networkId);

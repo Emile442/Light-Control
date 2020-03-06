@@ -29,10 +29,10 @@
                         <i v-if="loader === true || light.loader" class="fas fa-spinner fa-spin"></i>
                         <span v-else>On</span>
                     </button>
-                    <a v-bind:href="'/lights/'+ light.id +'/edit'" class="btn btn-round btn-secondary" dusk="edit-id">
+                    <a v-bind:href="'/lights/' + light.id +'/edit'" class="btn btn-round btn-secondary" v-bind:dusk="'delete-' + light.id">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <button class="btn btn-round btn-danger" dusk="delete-id" @click="deleteLight(light)">
+                    <button class="btn btn-round btn-danger" v-bind:dusk="'delete-' + light.id" @click="deleteLight(light)">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
