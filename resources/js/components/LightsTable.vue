@@ -21,15 +21,14 @@
                 </td>
                 <td>{{ light.networkId }}</td>
                 <td class="text-right">
-                    <button v-if="light.state === null && light.loader === false" type="button" class="btn btn-round btn-light-change-state btn-danger" @click="changeState(light)">
-                        <i v-if="loader === true || light.loader" class="fas fa-spinner fa-spin"></i>
-                        <span v-else>Unable to connect</span>
-                    </button>
-                    <button v-else v-bind:class="[light.state ? 'btn-success' : '']" type="button" class="btn btn-round btn-light-change-state" @click="changeState(light)">
-                        <i v-if="loader === true || light.loader" class="fas fa-spinner fa-spin"></i>
+                    <button v-if="loader || light.loader || light.state === false || light.state" v-bind:class="[light.state ? 'btn-success' : '']" type="button" class="btn btn-round btn-light-change-state" @click="changeState(light)">
+                        <i v-if="loader || light.loader" class="fas fa-spinner fa-spin"></i>
                         <span v-else>On</span>
                     </button>
-                    <a v-bind:href="'/lights/' + light.id +'/edit'" class="btn btn-round btn-secondary" v-bind:dusk="'delete-' + light.id">
+                    <button v-else type="button" class="btn btn-round btn-light-change-state btn-danger" @click="changeState(light)">
+                        <span>Unable to connect</span>
+                    </button>
+                    <a v-bind:href="'/lights/' + light.id +'/edit'" class="btn btn-round btn-secondary" v-bind:dusk="'edit-' + light.id">
                         <i class="fas fa-edit"></i>
                     </a>
                     <button class="btn btn-round btn-danger" v-bind:dusk="'delete-' + light.id" @click="deleteLight(light)">
@@ -63,7 +62,10 @@
                         axios.get(`/api/v1/lights/${light.id}`).then(response => {
                             if (response.status === 200) {
                                 light.state = response.data.state.on;
+                                light.loader = false;
                             }
+                        }).catch(response => {
+                            light.loader = false;
                         });
                     });
                     this.loader = false;

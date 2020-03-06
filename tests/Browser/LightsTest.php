@@ -64,6 +64,7 @@ class LightsTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $light) {
             $browser->loginAs($user)
                 ->visit('/lights')
+                ->pause(2000)
                 ->assertSee($light->name)
                 ->click("@edit-{$light->id}")
                 ->assertRouteIs('lights.edit', $light)
@@ -71,6 +72,7 @@ class LightsTest extends DuskTestCase
                 ->value('#networkId', '120')
                 ->pause(2000)
                 ->press('Submit')
+                ->pause(2000)
                 ->assertSee("The Light Test Light has been updated.")
                 ->assertSee("120");
         });
@@ -88,6 +90,7 @@ class LightsTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $light) {
             $browser->loginAs($user)
                 ->visit('/lights')
+                ->pause(2000)
                 ->assertSee($light->name)
                 ->assertSee($light->networkId)
                 ->click("@delete-{$light->id}")

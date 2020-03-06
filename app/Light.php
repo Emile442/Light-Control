@@ -21,7 +21,7 @@ class Light extends Model
 
     public function getLoaderAttribute()
     {
-        return null;
+        return true;
     }
 
 }
