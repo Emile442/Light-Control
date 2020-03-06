@@ -42,7 +42,7 @@ Please follow this link for setup with Supervisor
     # MySQL
     DB_HOST=127.0.0.1       # database host
     DB_PORT=3306            # database prot (def: 3306)
-    DB_DATABASE=EpiLights   # database name
+    DB_DATABASE=Light Controls   # database name
     DB_USERNAME=root        # database username
     DB_PASSWORD=root        # database password
     
