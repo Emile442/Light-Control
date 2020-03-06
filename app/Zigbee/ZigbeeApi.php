@@ -19,7 +19,7 @@ class ZigbeeApi
 
     public function getLights()
     {
-        $client = new Client();
+        $client = new Client(['connect_timeout' => 2]);
 
         try {
             $rq = $client->get($this->buildUrl('/lights'));
@@ -32,7 +32,7 @@ class ZigbeeApi
 
     public function getLight(int $lightId)
     {
-        $client = new Client();
+        $client = new Client(['connect_timeout' => 2]);
 
         try {
             $rq = $client->get($this->buildUrl("/lights/{$lightId}"));
@@ -49,7 +49,7 @@ class ZigbeeApi
 
     public function setLightState(int $lightId, ?bool $state = null): ?bool
     {
-        $client = new Client(['http_errors' => false]);
+        $client = new Client(['http_errors' => false, 'connect_timeout' => 2]);
 
         $light = $this->getLight($lightId);
         if (is_null($light))
@@ -69,7 +69,7 @@ class ZigbeeApi
 
     public function setLightsState(array $ligthsId, bool $state): array
     {
-        $client = new Client(['http_errors' => false]);
+        $client = new Client(['http_errors' => false, 'connect_timeout' => 2]);
 
         $rq = [];
         foreach ($ligthsId as $id) {
