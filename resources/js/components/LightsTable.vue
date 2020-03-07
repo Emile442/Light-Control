@@ -1,6 +1,13 @@
 <template>
-    <table class="table">
-        <thead class=" text-primary">
+    <div>
+        <div class="pull-right">
+            <button class="btn btn-info btn-round" @click="init" dusk="refresh" :disabled="loader">
+                <i v-if="loader" class="fas fa-spinner fa-spin"></i>
+                Refresh
+            </button>
+        </div>
+        <table class="table">
+            <thead class=" text-primary">
             <tr>
                 <th>#</th>
                 <th>Name</th>
@@ -8,8 +15,8 @@
                 <th>networkId</th>
                 <th class="text-right">Actions</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr class="light-list" v-for="light in lights">
                 <td>
                     <i v-if="light.state != null" v-bind:class="[light.state ? 'text-warning' : '']" class="far fa-lightbulb light-state"></i>
@@ -25,7 +32,7 @@
                         <i v-if="loader || light.loader" class="fas fa-spinner fa-spin"></i>
                         <span v-else>On</span>
                     </button>
-                    <button v-else type="button" class="btn btn-round btn-light-change-state btn-danger" @click="changeState(light)">
+                    <button v-else type="button" class="btn btn-round btn-light-change-state btn-danger">
                         <span>Unable to connect</span>
                     </button>
                     <a v-bind:href="'/lights/' + light.id +'/edit'" class="btn btn-round btn-secondary" v-bind:dusk="'edit-' + light.id">
@@ -36,9 +43,9 @@
                     </button>
                 </td>
             </tr>
-        </tbody>
-    </table>
-
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -56,9 +63,12 @@
         },
         methods: {
             init() {
+                this.loader = true;
                 axios.get('/api/v1/lights').then(response => {
                     this.lights = response.data;
                     this.lights.forEach(light => {
+                        this.$set(light, 'state', null);
+                        this.$set(light, 'loader', true);
                         axios.get(`/api/v1/lights/${light.id}`).then(response => {
                             if (response.status === 200) {
                                 light.state = response.data.state.on;
@@ -83,7 +93,6 @@
                 light.loader = false;
             },
             deleteLight(light) {
-                console.log(light.id);
                 axios.delete(`api/v1/lights/${light.id}`).then(response => {
                     let index = this.lights.indexOf(light);
                     if (index > -1) {

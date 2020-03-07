@@ -99,4 +99,28 @@ class LightsTest extends DuskTestCase
                 ->assertDontSee($light->networkId);
         });
     }
+
+    /**
+     * @group Lights
+     * @throws \Throwable
+     */
+    public function testLightRefresh()
+    {
+        $user = factory(User::class)->create(['admin' => true]);
+        $light = factory(Light::class)->create();
+
+        $this->browse(function (Browser $browser) use ($user, $light) {
+            $browser->loginAs($user)
+                ->visit('/lights')
+                ->pause(2000)
+                ->assertSee($light->name)
+                ->assertSee($light->networkId);
+            $light2 = factory(Light::class)->create();
+            $browser
+                ->click("@refresh")
+                ->pause(2000)
+                ->assertSee($light2->name)
+                ->assertSee($light2->networkId);
+        });
+    }
 }

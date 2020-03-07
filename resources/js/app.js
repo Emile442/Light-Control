@@ -1,7 +1,6 @@
 require('./bootstrap');
 require('./plugins/perfect-scrollbar.jquery.min');
 require('bootstrap-notify');
-require('./delete');
 require('./now-ui-dashboard');
 require('jquery-typeahead');
 
@@ -16,14 +15,16 @@ window.Picker = require('pickerjs');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('lights-table', require('./components/LightsTable').default);
+Vue.component('group-button', require('./components/GroupButton').default);
 
 const app = new Vue({
     el: '#app',
 });
 
+require('./delete');
 
 function hexToRGB(hex, alpha) {
-    var r = parseInt(hex.slice(1, 3), 16),
+    let r = parseInt(hex.slice(1, 3), 16),
         g = parseInt(hex.slice(3, 5), 16),
         b = parseInt(hex.slice(5, 7), 16);
 
@@ -253,10 +254,10 @@ demo = {
 };
 
 $('.form-error').each(function () {
-    let modalId = $('#modal-error')
+    let modalId = $('#modal-error');
     if (modalId.length) {
         modalId = modalId.attr('data-modal');
-        let modal = $('#' + modalId)
+        let modal = $('#' + modalId);
         if (modal.length) {
             modal.modal('show')
         }
