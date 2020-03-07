@@ -17,7 +17,7 @@
 </head>
 
 <body class="guest__body">
-<div class="wrapper">
+<div class="wrapper" id="app">
     @yield('content')
 </div>
 

@@ -16,6 +16,7 @@ window.Picker = require('pickerjs');
 
 Vue.component('lights-table', require('./components/LightsTable').default);
 Vue.component('group-button', require('./components/GroupButton').default);
+Vue.component('timer-progress', require('./components/TimerProgress').default);
 
 const app = new Vue({
     el: '#app',

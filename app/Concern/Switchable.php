@@ -32,7 +32,6 @@ trait Switchable
         if (Auth::user()->suspend)
             return false;
         $now = Carbon::now()->format('H');
-        // $now = 22;
         if (($now >= env('DAY_HOUR', 8)) && ($now < env('NIGHT_HOUR', 20)))
             return false;
 

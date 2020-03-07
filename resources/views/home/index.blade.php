@@ -20,9 +20,7 @@
                                 <div class="col-md-12">
                                     <span>{{ $timer->group->name }}</span>
                                     <div class="col-md-8">
-                                        <div class="circle-progress timer" data-animation-start-value="" data-start="{{ $timer->job->created_at->timestamp }}" data-end="{{ $timer->job->available_at }}">
-                                            <strong></strong>
-                                        </div>
+                                        <timer-progress name="{{ $timer->job->id }}" start="{{ $timer->job->created_at->timestamp }}" end="{{ $timer->job->available_at }}"></timer-progress>
                                     </div>
                                     @if($timers->count() != $k  + 1)
                                         <hr>

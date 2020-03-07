@@ -29,9 +29,7 @@
                                    </div>
                                    <div class="col-md-4">
                                        @foreach($group->timers as $timer)
-                                           <div class="circle-progress left timer" data-animation-start-value="" data-start="{{ $timer->job->created_at->timestamp }}" data-end="{{ $timer->job->available_at }}">
-                                               <strong></strong>
-                                           </div>
+                                           <timer-progress name="{{ $timer->job->id }}" start="{{ $timer->job->created_at->timestamp }}" end="{{ $timer->job->available_at }}"></timer-progress>
                                        @endforeach
                                    </div>
                                    <div class="col-md-4">
