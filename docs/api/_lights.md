@@ -140,14 +140,14 @@ Get a ZigbeeInfo about a light
 ```
 </details> 
 
-## /lights/:id/state/:mode
+## /lights/:id/state
 
-Set state to light
+Switch light state
 
 <details> 
     <summary>Request Details</summary>
 
-**URL** : `/lights/:id/state/:mode`
+**URL** : `/lights/:id/state`
 
 **Method** : `GET`
 
@@ -155,7 +155,7 @@ Set state to light
 
 **Permissions required** : Admin
 
-**Data constraints** : `{:id => Int, :mode => Int(0|1)}`
+**Data constraints** : `{:id => Int}`
 
 ### Success Responses
 
