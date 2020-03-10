@@ -9,8 +9,15 @@ use Illuminate\Http\Request;
 
 class LightsController extends Controller
 {
-    public function index() {
-        $lights = Light::with('groups')->get()->toArray();
+    public function index(Request $request) {
+        $term = $request->get('term');
+        $lights = Light::with('groups')
+        ->where('name', 'LIKE', $term . '%')
+        ->get()
+        ->map(function ($light) {
+            $light['value'] = $light->name;
+            return $light;
+          });;
         return response()->json($lights);
     }
 
@@ -18,20 +25,6 @@ class LightsController extends Controller
         $light = Light::find($id);
         $light->delete();
         return response()->json(['ok']);
-    }
-
-    public function search(Request $request)
-    {
-        $term = $request->get('term');
-
-        return Light::select('name')
-            ->where('name', 'LIKE', $term . '%')
-            ->get()
-            ->map(function ($group) {
-                return [
-                    'value' => $group->name
-                ];
-            });
     }
 
     public function getLights($id)
@@ -49,28 +42,6 @@ class LightsController extends Controller
         if (!isset($deconz->state))
             $deconz = [];
         return response()->json($deconz)->setStatusCode(empty($deconz) ? 504 : 200);
-    }
-
-    public function setLightState($id, $state)
-    {
-        $light = Light::find($id);
-        $errors = [];
-        if (!$light)
-            return response()->json([
-                'success' => false,
-                'errors' => [
-                    'Light not Found'
-                ]
-            ])->setStatusCode(404);
-
-        $rq = (new ZigbeeApi())->setLightState($light->networkId, $state);
-        if (is_null($rq))
-            $errors[] = 'Unable to connect the bridge';
-        return response()->json([
-            'success' => empty($errors) ? true : false,
-            'state' => $state,
-            'errors' => $errors
-        ])->setStatusCode(empty($errors) ? 200 : 504);
     }
 
     public function switchLightState($id)

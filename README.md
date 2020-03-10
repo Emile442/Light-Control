@@ -1,4 +1,4 @@
-# Epi Lights
+# Light Controls
 
 [![pipeline status](https://git.emile-lepetit.fr/epitech/tek-2/hub/zigbee-lights/badges/master/pipeline.svg)](https://git.emile-lepetit.fr/epitech/tek-2/hub/zigbee-lights/commits/master)
 

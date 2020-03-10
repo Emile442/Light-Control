@@ -45,7 +45,7 @@
 
                 tagify.loading(true).dropdown.hide.call(tagify)
 
-                fetch(`/api/v1/lights/search?api_token=${api_token}&term=${value}`, {signal:controller.signal})
+                fetch(`/api/v1/lights?api_token=${api_token}&term=${value}`, {signal:controller.signal})
                     .then(RES => RES.json())
                     .then(function(whitelist){
                         tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)

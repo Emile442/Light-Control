@@ -11,11 +11,6 @@
 |
 */
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/guest', 'GuestController@guest')->name('guest');
-    Route::get('/guest/group/{id}/on', 'GuestController@groupSwitch')->name('guest.group');
-});
-
 Route::get('/emile', function () {
     $user = \App\User::where('email', 'emile.lepetit@epitech.eu')->first();
     \Auth::login($user);
@@ -34,7 +29,12 @@ Route::group(['middleware' => ['auth', 'admin', 'notSuspend']], function () {
     Route::resource('users', 'UsersController', ['except' => ['new', 'show']]);
 });
 
-Route::group(['namespace' => 'Auth'], function () {
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/guest', 'GuestController@guest')->name('guest');
+    Route::get('/guest/group/{id}/on', 'GuestController@groupSwitch')->name('guest.group');
+});
+
+Route::group(['namespace' => 'Auth', 'middleware' => 'guest'], function () {
     Route::get('/oauth2/azure/redirect', 'OAuthController@azureRedirect')->name('auth.azure.redirect');
     Route::get('/oauth2/azure/callback', 'OAuthController@azureCallback')->name('auth.azure.callback');
 });
