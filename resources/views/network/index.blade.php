@@ -93,6 +93,7 @@
                         timeout: 3000
                     }).show();
                 })
+                $('#loader').html('<div class="alert alert-danger">Unable to get the network</div>');
             }).done(function () {
                 $('#loader').remove()
             });
