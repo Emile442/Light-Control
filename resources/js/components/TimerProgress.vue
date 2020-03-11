@@ -43,6 +43,9 @@
                 }
                 this.timer.circleProgress('value', 1 - (this.percent /100));
                 this.updateStr();
+                if (this.percent === 0) {
+                    this.timeStr = '00:00';
+                }
             },
             updateStr() {
                 let diff = this.endDate.getTime() - new Date().getTime();

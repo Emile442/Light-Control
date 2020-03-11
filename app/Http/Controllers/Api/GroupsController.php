@@ -12,15 +12,14 @@ class GroupsController extends Controller
     public function index(Request $request)
     {
         $term = $request->get('term');
+        $groups = Group::where('name', 'LIKE', $term . '%')
+        ->get()
+        ->map(function ($group) {
+            $group['value'] = $group->name;
+            return $group;
+          });;
 
-        return Group::select('name')
-            ->where('name', 'LIKE', $term . '%')
-            ->get()
-            ->map(function ($group) {
-                return [
-                    'value' => $group->name
-                ];
-            });
+        return $groups;
     }
 
     public function setGroupState($id, $state)
