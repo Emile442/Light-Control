@@ -23,18 +23,4 @@ class LoginTest extends DuskTestCase
         });
     }
 
-    /**
-     * @group Auth
-     * @throws \Throwable
-     */
-    public function testLoginRedirectAlreadyAuth()
-    {
-        $user = factory(User::class)->create();
-
-        $this->browse(function ($browser) use ($user) {
-            $browser->loginAs($user)
-                ->visit('/login')
-                ->assertPathIs('/guest');
-        });
-    }
 }

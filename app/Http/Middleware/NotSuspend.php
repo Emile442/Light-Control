@@ -18,7 +18,7 @@ class NotSuspend
     public function handle($request, Closure $next)
     {
         if (Auth::user()->suspend)
-            return redirect()->route('guest');
+            return abort(403);
         return $next($request);
     }
 }

@@ -43,12 +43,11 @@ class MiddlewareTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
-                ->visit('/')
+                ->visit('/guest')
                 ->assertSee('Votre compte a été suspendu, merci de prendre avec l\'ADM')
                 ->assertRouteIs('guest')
                 ->visit('/lights')
-                ->assertSee('Votre compte a été suspendu, merci de prendre avec l\'ADM')
-                ->assertRouteIs('guest');
+                ->assertSee('403');
         });
     }
 
@@ -64,12 +63,16 @@ class MiddlewareTest extends DuskTestCase
         $this->browse(function ($browser) use ($user, $group) {
             $browser->loginAs($user)
                 ->visit('/')
+                ->assertSee('403')
+                ->visit('/guest')
+                ->pause(2000)
                 ->assertSee(strtoupper($group->name))
                 ->assertDontSee('Votre compte a été suspendu, merci de prendre avec l\'ADM')
                 ->assertRouteIs('guest')
                 ->visit('/lights')
-                ->assertSee(strtoupper($group->name))
-                ->assertRouteIs('guest');
+                ->pause(2000)
+                ->assertSee('403')
+                ->assertRouteIs('lights.index');
         });
     }
 
@@ -85,9 +88,11 @@ class MiddlewareTest extends DuskTestCase
         $this->browse(function ($browser) use ($user, $group) {
             $browser->loginAs($user)
                 ->visit('/')
-                ->assertSee(strtoupper($group->name))
+                ->assertSee('403')
+                ->visit('/guest')
+                ->pause(2000)
+                ->assertDontSee(strtoupper($group->name))
                 ->assertSee('Votre compte a été suspendu, merci de prendre avec l\'ADM')
-                ->assertButtonDisabled('@on-light')
                 ->assertRouteIs('guest');
         });
     }

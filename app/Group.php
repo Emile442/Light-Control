@@ -12,6 +12,7 @@ class Group extends Model
     use Switchable, Lightable;
 
     protected $fillable = ['name', 'public'];
+    protected $appends = ['canSwitch'];
 
     public function routines()
     {

@@ -25,6 +25,7 @@ class GuestTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
                 ->visit(new GuestIndexPage())
+                ->pause(2000)
                 ->assertSee('Aucun groupe n\'est publique.');
         });
     }
@@ -44,6 +45,7 @@ class GuestTest extends DuskTestCase
         $this->browse(function ($browser) use ($user, $group, $group2) {
             $browser->loginAs($user)
                 ->visit(new GuestIndexPage())
+                ->pause(2000)
                 ->assertSee(strtoupper($group->name))
                 ->assertDontSee(strtoupper($group2->name));
         });
@@ -60,17 +62,19 @@ class GuestTest extends DuskTestCase
             'public' => true
         ]);
 
-        $this->browse(function ($browser) use ($user) {
+        $this->browse(function ($browser) use ($user, $group) {
             $now = Carbon::now()->format('H');
             if (($now >= env('DAY_HOUR')) && ($now < env('NIGHT_HOUR')))
                 $browser->loginAs($user)
                     ->visit(new GuestIndexPage())
-                    ->assertButtonDisabled('@on-light');
+                    ->pause(2000)
+                    ->assertButtonDisabled("@on-light-{$group->id}");
             else
                 $browser->loginAs($user)
                     ->visit(new GuestIndexPage())
-                    ->click('@on-light')
-                    ->assertButtonDisabled('@on-light');
+                    ->pause(2000)
+                    ->click("@on-light-{$group->id}")
+                    ->assertButtonDisabled("@on-light-{$group->id}");
         });
     }
 }

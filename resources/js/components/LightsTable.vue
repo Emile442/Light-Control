@@ -24,9 +24,7 @@
                 </td>
                 <td>{{ light.name }}</td>
                 <td>
-                    <span class="badge badge-secondary" v-for="group in light.groups">
-                        {{ group.name }}
-                    </span>
+                    <span class="badge badge-secondary" v-for="group in light.groups">{{ group.name }}</span>
                 </td>
                 <td>{{ light.networkId }}</td>
                 <td class="text-right">

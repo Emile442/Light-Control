@@ -34,5 +34,7 @@
         <server name="MAIL_DRIVER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
+        <server name="ZIGBEE_KEY" value="zigbee_key"/>
+        <server name="ZIGBEE_URL" value="https://epitech-light-control.free.beeceptor.com"/>
     </php>
 </phpunit>

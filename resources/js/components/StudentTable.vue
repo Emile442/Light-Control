@@ -10,14 +10,14 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <button class="btn btn-warning btn-lg" type="submit" dusk="on-light" @click="switchButton(group)">
+                <button class="btn btn-warning btn-lg" type="submit" :dusk="'on-light-' + group.id" :disabled="!group.canSwitch" @click="switchButton(group)">
                     <i v-if="loader || group.loader" class="fas fa-spinner fa-spin"></i>
                     <span v-else>Allumer</span>
                 </button>
             </div>
-            <hr v-if="index != groups.length - 1">
+            <hr v-if="index !== groups.length - 1">
         </div>
-        <div class="alert alert-warning" v-if="!groups && !loader">
+        <div class="alert alert-warning" v-if="!groups.length && !loader">
             Aucun groupe n'est publique.
         </div>
     </div>
@@ -29,30 +29,37 @@
         data() {
             return {
                 loader: true,
-                groups: []
+                groups: [],
+                interval: null,
             }
         },
         mounted () {
             this.init();
+            this.interval = setInterval(this.refresh, 10000)
         },
         methods: {
             init () {
                 this.loader = true;
+                this.refresh()
+            },
+            refresh() {
                 axios.get('/api/v1/guest/groups').then(response => {
                     this.groups = response.data;
                     this.groups.forEach(group => {
                         this.$set(group, 'loader', false);
                     });
                     this.loader = false;
+                }).catch(error => {
+                    clearInterval(this.interval);
                 })
             },
             switchButton(group) {
-                console.log(group);
                 group.loader = true;
+                group.canSwitch = false;
                 axios.get(`/api/v1/guest/groups/${group.id}/switch`).then(response => {
                     group.timers = response.data.group.timers;
-                    console.log(response.data);
                 }).catch(error => {
+                    group.canSwitch = true;
                     error.response.data.errors.forEach(item => {
                         new Noty({
                             type: 'error',
