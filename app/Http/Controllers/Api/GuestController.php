@@ -9,11 +9,9 @@ use Illuminate\Http\Request;
 
 class GuestController extends Controller
 {
-
     public function groups()
     {
-        $groups = Group::with('timers.job')->where('public', true)->get();
-        return $groups;
+        return Group::with('timers.job')->where('public', true)->get();
     }
 
     public function groupsSwitch(Group $group) {

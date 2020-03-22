@@ -12,12 +12,12 @@ class LightsController extends Controller
     public function index(Request $request) {
         $term = $request->get('term');
         $lights = Light::with('groups')
-        ->where('name', 'LIKE', $term . '%')
-        ->get()
-        ->map(function ($light) {
-            $light['value'] = $light->name;
-            return $light;
-          });;
+            ->where('name', 'LIKE', $term . '%')
+            ->get()
+            ->map(function ($light) {
+                $light['value'] = $light->name;
+                return $light;
+            });
         return response()->json($lights);
     }
 
