@@ -9,14 +9,14 @@ variables:
   MYSQL_USER: homestead
   MYSQL_PASSWORD: secret
   MYSQL_DATABASE: homestead
-  DB_HOST: mysql-test
+  DB_HOST: mariadb
   DB_CONNECTION: mysql
 
 build:
   stage: build
   services:
     - name: mysql:5.7
-      alias: mysql-test
+      alias: mariadb
   image: chilio/laravel-dusk-ci:stable
   script:
     - versions
@@ -38,7 +38,7 @@ unit_tests:
     policy: pull
   services:
     - name: mysql:5.7
-      alias: mysql-test
+      alias: mariadb
   image: chilio/laravel-dusk-ci:stable
   script:
     - cp .env.testing .env
@@ -56,7 +56,7 @@ browser_tests:
     policy: pull
   services:
     - name: mysql:5.7
-      alias: mysql-test
+      alias: mariadb
   image: chilio/laravel-dusk-ci:stable
   script:
     - cp .env.testing .env
