@@ -44,7 +44,7 @@ jobs:
         run: |
           cp .env.testing .env
           cp .phpunit.dusk.xml phpunit.xml
-          php artisan:dusk chrome-driver 81
+          php artisan dusk chrome-driver 81
           configure-laravel
           start-nginx-ci-project
       - name: Run dusk tests
