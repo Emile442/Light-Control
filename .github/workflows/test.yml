@@ -19,19 +19,25 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: lights-controls
+          MYSQL_DATABASE: lightscontrols
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@master
-      - name: Before Tests
+      - name: Download Dependencies
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      - name: Setup Laravel
         run: |
-          composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
           cp .env.testing .env
+          php artisan migrate
           configure-laravel
+      - name: Assets
+        run : |
           npm install
           npm run prod
+      - name: Setup Dusk
+        run: |
           start-nginx-ci-project
           cp .phpunit.dusk.xml phpunit.xml
       - name: Tests
