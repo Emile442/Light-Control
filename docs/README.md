@@ -1,6 +1,8 @@
-# Light Controls
+# Light Control
 
-[![pipeline status](https://git.emile-lepetit.fr/epitech/tek-2/hub/zigbee-lights/badges/master/pipeline.svg)](https://git.emile-lepetit.fr/epitech/tek-2/hub/zigbee-lights/commits/master)
+![Tests](https://github.com/Emile442/Light-Control/workflows/Tests/badge.svg)
+
+[Documentation](https://emile442.github.io/Light-Control/)
 
 Application Web complète permettant de gérer des ampoules utilisant le protocole [Zigbee](https://fr.wikipedia.org/wiki/ZigBee)
 
