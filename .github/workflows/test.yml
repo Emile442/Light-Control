@@ -1,0 +1,74 @@
+name: Tests
+on: [push]
+jobs:
+  assets:
+    name: Build Assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Download Dependencies
+        run: yarn
+      - name: Build
+        run: yarn run prod
+      - name: Upload build files
+        uses: actions/upload-artifact@v1
+        with:
+          name: assets
+          path: public
+  tests-dusk:
+    name: Browser Tests
+    needs: assets
+    runs-on: ubuntu-latest
+    container: docker://chilio/laravel-dusk-ci:stable
+    services:
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306
+        env:
+          MYSQL_USER: homestead
+          MYSQL_PASSWORD: secret
+          MYSQL_DATABASE: homestead
+          MYSQL_ROOT_PASSWORD: password
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+    steps:
+      - uses: actions/checkout@v1
+      - name: Download build assets
+        uses: actions/download-artifact@v1
+        with:
+          name: assets
+          path: public
+      - name: Download Dependencies
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      - name: Setup Laravel
+        run: |
+          cp .env.testing .env
+          cp .phpunit.dusk.xml phpunit.xml
+          php artisan dusk:update --detect
+          configure-laravel
+          start-nginx-ci-project
+      - name: Run dusk tests
+        run: php artisan dusk
+  tests:
+      name: Unit Tests
+      runs-on: ubuntu-latest
+      container: docker://chilio/laravel-dusk-ci:stable
+      steps:
+        - uses: actions/checkout@v1
+        - name: Download Dependencies
+          run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+        - name: Setup Laravel
+          run: |
+            cp .env.testing .env
+            configure-laravel
+        - name: Run unit tests
+          run: ./vendor/phpunit/phpunit/phpunit --coverage-text --colors=never --stderr
+  lint:
+    name: Lint & Insights
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Before Tests
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      - name: Lint
+        run: php artisan insights --no-interaction --min-quality=80 --min-complexity=75 --min-architecture=90 --min-style=95
