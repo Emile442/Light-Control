@@ -50,7 +50,9 @@ jobs:
           php artisan storage:link
           php artisan migrate:fresh --seed
       - name: Upgrade chrome driver
-        run: php artisan dusk:chrome-driver
+        run: |
+          php artisan dusk:chrome-driver
+          php artisan dusk:update 80
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
       - name: Run Laravel Server
