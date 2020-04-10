@@ -5,13 +5,19 @@ jobs:
     name: Build Assets
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - name: Download Dependencies
-        run: npm install
+        run: yarn
       - name: Build
-        run: npm run prod
+        run: yarn run prod
+      - name: Upload build files
+        uses: actions/upload-artifact@v1
+        with:
+          name: assets
+          path: public
   tests-dusk:
     name: Browser Tests
+    needs: assets
     runs-on: ubuntu-latest
     container: docker://zaherg/laravel-dusk:latest
     services:
@@ -26,7 +32,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - name: Download Dependencies
         run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
       - name: Setup Laravel
@@ -38,10 +44,11 @@ jobs:
           php artisan key:generate
           php artisan storage:link
           php artisan migrate:fresh --seed
-      - name: Assets Download & Build
-        run : |
-          npm install
-          npm run prod
+      - name: Download build assets
+        uses: actions/download-artifact@v1
+        with:
+          name: assets
+          path: public
       - name: Upgrade chrome driver
         run: php artisan dusk:chrome-driver
       - name: Start Chrome Driver
@@ -50,11 +57,13 @@ jobs:
         run: php artisan serve > /dev/null 2>&1 &
       - name: Run dusk tests
         run: php artisan dusk
+        with:
+          name: assets
   lint:
     name: Lint & Insights
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - name: Before Tests
         run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
       - name: Lint
