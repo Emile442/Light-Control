@@ -13,7 +13,7 @@ jobs:
   tests-dusk:
     name: Browser Tests
     runs-on: ubuntu-latest
-    container: docker://chilio/laravel-dusk-ci:stable
+    container: docker://zaherg/laravel-dusk:latest
     services:
       mariadb:
         image: mariadb:latest
@@ -33,15 +33,22 @@ jobs:
         run: |
           cp .env.testing .env
           cp .phpunit.dusk.xml phpunit.xml
-          configure-laravel
+          chmod -R 775 storage
+          chmod 775 bootstrap/
+          php artisan key:generate
+          php artisan storage:link
+          php artisan migrate:fresh --seed
       - name: Assets Download & Build
         run : |
           npm install
           npm run prod
-      - name: Setup Dusk
-        run: |
-          start-nginx-ci-project
-      - name: Tests
+      - name: Upgrade chrome driver
+        run: php artisan dusk:chrome-driver
+      - name: Start Chrome Driver
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+      - name: Run Laravel Server
+        run: php artisan serve > /dev/null 2>&1 &
+      - name: Run dusk tests
         run: php artisan dusk
   lint:
     name: Lint & Insights
