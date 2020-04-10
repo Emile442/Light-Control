@@ -33,6 +33,11 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
     steps:
       - uses: actions/checkout@v1
+      - name: Download build assets
+        uses: actions/download-artifact@v1
+        with:
+          name: assets
+          path: public
       - name: Download Dependencies
         run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
       - name: Setup Laravel
@@ -44,11 +49,6 @@ jobs:
           php artisan key:generate
           php artisan storage:link
           php artisan migrate:fresh --seed
-      - name: Download build assets
-        uses: actions/download-artifact@v1
-        with:
-          name: assets
-          path: public
       - name: Upgrade chrome driver
         run: php artisan dusk:chrome-driver
       - name: Start Chrome Driver
