@@ -1,4 +1,4 @@
-* [Home](/)
+* [Home](README.md)
 * [Install](install.md)
 * [CLI](cli.md)
 * [API](api.md)
