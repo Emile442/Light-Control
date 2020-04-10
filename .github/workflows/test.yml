@@ -55,6 +55,8 @@ jobs:
       container: docker://chilio/laravel-dusk-ci:stable
       steps:
         - uses: actions/checkout@v1
+        - name: Download Dependencies
+          run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
         - name: Setup Laravel
           run: |
             cp .env.testing .env
