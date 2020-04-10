@@ -1,0 +1,12 @@
+name: Tests
+on: [push]
+jobs:
+  assets:
+    name: Build Assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Download Dependencies
+        run: npm install
+      - name: Build
+        run: npm run prod
