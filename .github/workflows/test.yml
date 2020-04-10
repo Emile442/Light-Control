@@ -19,7 +19,7 @@ jobs:
     name: Browser Tests
     needs: assets
     runs-on: ubuntu-latest
-    container: docker://zaherg/laravel-dusk:latest
+    container: docker://chilio/laravel-dusk-ci:stable
     services:
       mariadb:
         image: mariadb:latest
@@ -44,17 +44,8 @@ jobs:
         run: |
           cp .env.testing .env
           cp .phpunit.dusk.xml phpunit.xml
-          chmod -R 775 storage
-          chmod 775 bootstrap/
-          php artisan key:generate
-          php artisan storage:link
-          php artisan migrate:fresh --seed
-      - name: Upgrade chrome driver
-        run: |
-          php artisan dusk:chrome-driver
-          php artisan dusk:update 80
-      - name: Run Laravel Server
-        run: php artisan serve > /dev/null 2>&1 &
+          configure-laravel
+          start-nginx-ci-project
       - name: Run dusk tests
         run: php artisan dusk
   lint:
