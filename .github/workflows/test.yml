@@ -32,16 +32,15 @@ jobs:
       - name: Setup Laravel
         run: |
           cp .env.testing .env
-          php artisan migrate
+          cp .phpunit.dusk.xml phpunit.xml
           configure-laravel
-      - name: Assets
+      - name: Assets Download & Build
         run : |
           npm install
           npm run prod
       - name: Setup Dusk
         run: |
           start-nginx-ci-project
-          cp .phpunit.dusk.xml phpunit.xml
       - name: Tests
         run: php artisan dusk
   lint:
