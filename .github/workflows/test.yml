@@ -10,3 +10,38 @@ jobs:
         run: npm install
       - name: Build
         run: npm run prod
+  dusk-php-latest:
+    runs-on: ubuntu-latest
+    container: docker://zaherg/laravel-dusk:latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Prepare the environment
+        run: cp .env.example .env
+      - name: Prepare assets
+        run: |
+          npm install
+          npm run prod
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          chmod -R 775 storage
+          chmod 775 bootstrap/cache
+          php artisan key:generate
+          php artisan storage:link
+          php artisan migrate:fresh
+      - name: Run dusk tests
+        run: |
+          cp .phpunit.dusk.xml phpunit.xml
+          php artisan dusk:chrome-driver
+          nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &'
+          nohup bash -c 'php artisan serve > /dev/null 2>&1 &'
+          php artisan dusk
+services:
+  mysql:
+    image: mysql:5.7
+    env:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: lights-controls
+    ports:
+      - 3306
+    options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
