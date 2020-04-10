@@ -27,6 +27,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Before Tests
         run: |
+          composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
           cp .env.testing .env
           configure-laravel
           npm install
@@ -35,3 +36,12 @@ jobs:
           cp .phpunit.dusk.xml phpunit.xml
       - name: Tests
         run: php artisan dusk
+  lint:
+    name: Lint & Insights
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Before Tests
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      - name: Lint
+        run: php artisan insights --no-interaction --min-quality=80 --min-complexity=75 --min-architecture=90 --min-style=95
