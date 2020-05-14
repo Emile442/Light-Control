@@ -27,6 +27,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['auth:api
         Route::get('groups', 'GroupsController@index')->name('api.groups.index');
         Route::get('groups/{id}/state/{mode}', 'GroupsController@setGroupState')->name('api.groups.state');
         Route::get('groups/{id}/state/{mode}/{period}', 'GroupsController@setGroupStateForXMinutes')->name('api.groups.state.period');
+
     });
 
     Route::group(['prefix' => 'guest'], function () {

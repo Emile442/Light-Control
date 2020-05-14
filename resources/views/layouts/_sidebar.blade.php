@@ -36,12 +36,6 @@
                     <p>Routines</p>
                 </a>
             </li>
-            <li class="{{ Request::is('network') ? 'active' : '' }}">
-                <a href="{{ route('network.index') }}">
-                    <i class="now-ui-icons design_vector"></i>
-                    <p>Network</p>
-                </a>
-            </li>
 
             <li class="{{ Request::is('users') ? 'active' : '' }} {{ Request::is('users/*') ? 'active' : '' }}">
                 <a href="{{ route('users.index') }}">

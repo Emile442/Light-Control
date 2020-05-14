@@ -19,8 +19,13 @@
                             @foreach($timers as $k => $timer)
                                 <div class="col-md-12">
                                     <span>{{ $timer->group->name }}</span>
-                                    <div class="col-md-8">
-                                        <timer-progress name="{{ $timer->job->id }}" start="{{ $timer->job->created_at->timestamp }}" end="{{ $timer->job->available_at }}"></timer-progress>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <timer-progress name="{{ $timer->job->id }}" start="{{ $timer->job->created_at->timestamp }}" end="{{ $timer->job->available_at }}"></timer-progress>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="{{ route('timers.destroy', $timer) }}" class="btn btn-round btn-outline-danger" dusk="timer-delete-{{ $timer->id }}" data-method="delete" data-confirm="Are you sure you want to reset timer about {{ $timer->group->name }} ?"><i class="fas fa-trash"></i></a>
+                                        </div>
                                     </div>
                                     @if($timers->count() != $k  + 1)
                                         <hr>
@@ -102,6 +107,7 @@
                             closeWith: ['click', 'button'],
                             timeout: 3000
                         }).show();
+                        document.location.reload(true);
                     });
                 }
 

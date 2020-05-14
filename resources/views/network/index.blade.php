@@ -25,7 +25,7 @@
                                     <th>Name</th>
                                 </tr>
                                 </thead>
-                                <tbody id="nertwork-table">
+                                <tbody id="network-table">
 
                                 </tbody>
                             </table>
@@ -72,7 +72,7 @@
             let api_token = $('meta[name=api-token]').attr('content')
             $.get(`/api/v1/network?api_token=${api_token}`, function(data) {
                 for (const item in data) {
-                    $("#nertwork-table").append(`
+                    $("#network-table").append(`
                         <tr>
                             <td>${item}</td>
                             <td>${data[item].name}</td>

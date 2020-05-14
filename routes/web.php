@@ -11,12 +11,6 @@
 |
 */
 
-Route::get('/emile', function () {
-    $user = \App\User::where('email', 'emile.lepetit@epitech.eu')->first();
-    \Auth::login($user);
-    return redirect()->route('root');
-});
-
 Route::group(['middleware' => ['auth', 'admin', 'notSuspend']], function () {
     Route::get('/', 'HomeController@index')->name('root');
     Route::get('/network', 'NetworkController@index')->name('network.index');
@@ -25,6 +19,8 @@ Route::group(['middleware' => ['auth', 'admin', 'notSuspend']], function () {
     Route::resource('groups', 'GroupsController', ['except' => ['new', 'show']]);
     Route::resource('lights', 'LightsController', ['except' => ['new', 'show']]);
     Route::resource('routines', 'RoutinesController', ['except' => ['new', 'show']]);
+
+    Route::delete('timer/{id}', 'TimersController@destroy')->name('timers.destroy');
 
     Route::resource('users', 'UsersController', ['except' => ['new', 'show']]);
 });

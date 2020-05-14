@@ -25,7 +25,7 @@ class GuestController extends Controller
         if (!$group->canSwitch)
             return redirect(route('guest'))->with('error', 'Impossible réessayer 10min avant la fin du compte à rebourd');
 
-        $group->switchDiffer(true, 30);
+        $group->switchDiffer(true, env('DEFAULT_MINUTE_STATE', 30));
 
         return redirect(route('guest'))->with('success', "Lumières du groupe {$group->name} allumées");
     }
